@@ -1,5 +1,5 @@
 // ============================================================
-// MOCK DATA – Evaluation (Front) + Funded (Back)
+// MOCK DATA — Architectural Pricing
 // ============================================================
 const propFirmData = {
     growth: {
@@ -213,7 +213,7 @@ const platformMap = {
 };
 
 // ============================================================
-// RENDER FUNCTION — IDENTICAL HEADER STRUCTURE ON BOTH SIDES
+// RENDER FUNCTION — Updated HTML with Glass Structure
 // ============================================================
 function renderPricingCards() {
     const container = document.getElementById('pricingCardsContainer');
@@ -277,7 +277,6 @@ function renderPricingCards() {
                         <!-- FRONT: Evaluation -->
                         <div class="flip-card-front">
                             <div class="card-body d-flex flex-column p-4">
-                                <!-- HEADER GROUP -->
                                 <div class="header-group">
                                     <div class="evaluation-badge">Evaluation</div>
                                     <div class="tier-label">${accountLabel}</div>
@@ -287,28 +286,25 @@ function renderPricingCards() {
                                         <span class="price-original">$${tier.originalPrice}</span>
                                     </p>
                                 </div>
-                                <!-- RULES CONTAINER -->
                                 <div class="rules-container">
                                     <div class="pricing-rules">
                                         ${evalRulesHtml}
                                     </div>
                                 </div>
-                                <!-- FOOTER ACTIONS -->
                                 <div class="card-footer-actions">
                                     <button class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
                                         <i class="bi bi-arrow-right-circle"></i> View Funded Rules
                                     </button>
-                                    <button class="btn btn-primary buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
+                                    <button class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
                                         Get Funded
                                     </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- BACK: Funded (IDENTICAL header structure) -->
+                        <!-- BACK: Funded -->
                         <div class="flip-card-back">
                             <div class="card-body d-flex flex-column p-4">
-                                <!-- HEADER GROUP (same structure as front) -->
                                 <div class="header-group">
                                     <div class="funded-badge">Funded</div>
                                     <div class="tier-label">${accountLabel}</div>
@@ -318,18 +314,16 @@ function renderPricingCards() {
                                         <span class="price-original">$${tier.originalPrice}</span>
                                     </p>
                                 </div>
-                                <!-- RULES CONTAINER -->
                                 <div class="rules-container">
                                     <div class="funded-rules">
                                         ${fundedRulesHtml}
                                     </div>
                                 </div>
-                                <!-- FOOTER ACTIONS -->
                                 <div class="back-footer-actions">
                                     <button class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
                                         <i class="bi bi-arrow-left-circle"></i> View Evaluation Rules
                                     </button>
-                                    <button class="btn btn-primary buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
+                                    <button class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
                                         Get Funded
                                     </button>
                                 </div>

@@ -1,53 +1,48 @@
 /* ============================================================
-   PRICING CARD STYLING + 3D FLIP (PERFECT ALIGNMENT)
+   PRICING CARDS — Architectural Glass 3D Flip
    ============================================================ */
 
-/* ----- Shared card elements ----- */
-.pricing-card-wrapper {
-    height: 100%;
-}
+.pricing-card-wrapper { height: 100%; }
 
-/* ----- Most Popular badge ----- */
+/* Most Popular Badge (Brass) */
 .pricing-card-wrapper .badge-most-popular {
     position: absolute;
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--neon-green);
-    color: #000;
+    background: var(--brass-gradient);
+    color: #fff;
     font-weight: 700;
     z-index: 10;
-    box-shadow: 0 0 15px var(--neon-glow);
-    animation: pulse-glow 2s infinite ease-in-out;
+    box-shadow: 0 8px 30px var(--brass-glow), var(--shadow-dir-3);
     padding: 0.3rem 1.2rem;
     border-radius: 50px;
-    font-size: 0.7rem;
-    letter-spacing: 0.05em;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    animation: brassPulse 2.5s ease-in-out infinite;
+}
+@keyframes brassPulse {
+    0%, 100% { box-shadow: 0 8px 30px var(--brass-glow), var(--shadow-dir-3); }
+    50% { box-shadow: 0 8px 50px rgba(201, 168, 76, 0.5), var(--shadow-dir-4); }
 }
 
-/* ============================================================
-   FLIP CARD STRUCTURE
-   ============================================================ */
-
+/* ----- Flip Card Container ----- */
 .flip-card {
     height: 100%;
     min-height: 520px;
+    perspective: 1200px;
 }
-
 .flip-card-inner {
     height: 100%;
     min-height: 520px;
     position: relative;
-    transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
     transform-style: preserve-3d;
 }
+.flip-card-inner.flipped { transform: rotateY(180deg); }
 
-.flip-card-inner.flipped {
-    transform: rotateY(180deg);
-}
-
-/* ----- Front and back faces ----- */
+/* Front & Back Faces (Glass) */
 .flip-card-front,
 .flip-card-back {
     position: absolute;
@@ -58,50 +53,63 @@
     min-height: 520px;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background: var(--bg-panel);
-    border: 1px solid var(--border-subtle);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255,255,255,0.8);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    box-shadow: var(--shadow-soft);
+}
+.flip-card-front { transform: rotateY(0deg); z-index: 2; }
+.flip-card-back { transform: rotateY(180deg); }
+
+/* Reflection overlay */
+.flip-card-front::before,
+.flip-card-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255,255,255,0.5) 0%,
+            rgba(255,255,255,0) 40%,
+            rgba(255,255,255,0) 60%,
+            rgba(255,255,255,0.1) 100%);
+    pointer-events: none;
+    border-radius: var(--radius-lg);
 }
 
-.flip-card-front {
-    transform: rotateY(0deg);
-    z-index: 2;
-}
-
-.flip-card-back {
-    transform: rotateY(180deg);
-}
-
-/* Most Popular glow on the card wrapper */
+/* Most Popular card glow */
 .flip-card.most-popular .flip-card-front,
 .flip-card.most-popular .flip-card-back {
-    border-color: var(--neon-green);
-    box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+    border-color: var(--brass);
+    box-shadow: 0 8px 40px var(--brass-glow), var(--shadow-soft);
 }
 .flip-card.most-popular .flip-card-front:hover,
 .flip-card.most-popular .flip-card-back:hover {
-    box-shadow: 0 0 35px rgba(0, 255, 102, 0.35);
+    box-shadow: 0 12px 60px var(--brass-glow), var(--shadow-hover);
 }
 
-/* ----- Card body — IDENTICAL flex structure on both faces ----- */
+/* Card Body */
 .flip-card-front .card-body,
 .flip-card-back .card-body {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    padding: 1.5rem;
+    padding: 1.75rem;
     height: 100%;
     min-height: 0;
     width: 100%;
 }
 
-/* ============================================================
-   HEADER SECTION — IDENTICAL STRUCTURE ON BOTH SIDES
-   ============================================================ */
-
+/* Header Group — identical on both sides */
 .flip-card-front .header-group,
 .flip-card-back .header-group {
     flex: 0 0 auto;
@@ -111,16 +119,16 @@
     justify-content: flex-start;
 }
 
-/* ----- Badge (both sides) ----- */
+/* Badges (Brass) */
 .flip-card-front .evaluation-badge,
 .flip-card-back .funded-badge {
     display: inline-block;
-    background: rgba(0, 255, 102, 0.12);
-    color: var(--neon-green);
-    border: 1px solid rgba(0, 255, 102, 0.2);
-    font-size: 0.6rem;
+    background: rgba(201, 168, 76, 0.1);
+    color: var(--brass-dark);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    font-size: 0.55rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     padding: 0.2rem 0.8rem;
     border-radius: 50px;
     text-transform: uppercase;
@@ -129,36 +137,37 @@
     align-self: center;
 }
 
-/* ----- Tier label (same on both sides) ----- */
+/* Tier Label (Timber) */
 .flip-card-front .tier-label,
 .flip-card-back .tier-label {
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     font-weight: 700;
-    font-size: 0.8rem;
-    color: var(--neon-green);
+    font-size: 0.7rem;
+    color: var(--timber-dark);
     margin-bottom: 0.25rem;
     flex-shrink: 0;
 }
 
-/* ----- Card title (same on both sides) ----- */
+/* Card Title */
 .flip-card-front .card-title,
 .flip-card-back .card-title {
-    font-weight: 700;
-    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--text-primary);
     margin-bottom: 0.25rem;
     flex-shrink: 0;
+    font-size: 1.6rem;
 }
 
-/* ===== NEON GLOW ON PRICE (both sides) ===== */
+/* Price (Brass Glow) */
 .flip-card-front .price-current,
 .flip-card-back .price-current {
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--neon-green);
-    text-shadow: 0 0 15px var(--neon-glow), 0 0 30px rgba(0, 255, 102, 0.2);
+    color: var(--brass-dark);
+    text-shadow: 0 0 20px var(--brass-glow);
 }
-
 .flip-card-front .price-original,
 .flip-card-back .price-original {
     font-size: 1rem;
@@ -167,10 +176,7 @@
     margin-left: 0.5rem;
 }
 
-/* ============================================================
-   RULES CONTAINER — BOTH SIDES
-   ============================================================ */
-
+/* Rules Container */
 .flip-card-front .rules-container,
 .flip-card-back .rules-container {
     flex: 1 1 auto;
@@ -181,64 +187,35 @@
     justify-content: flex-start;
 }
 
-/* ----- FRONT SIDE RULES ----- */
-.flip-card-front .pricing-rules {
-    display: flex;
-    flex-direction: column;
-}
-
-.flip-card-front .rule-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.3rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-.flip-card-front .rule-row:last-child {
-    border-bottom: none;
-}
-
-.flip-card-front .rule-label {
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-}
-
-.flip-card-front .rule-value {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.85rem;
-}
-
-/* ----- BACK SIDE RULES (FUNDED) ----- */
+.flip-card-front .pricing-rules,
 .flip-card-back .funded-rules {
     display: flex;
     flex-direction: column;
 }
-
+.flip-card-front .rule-row,
 .flip-card-back .funded-rule-row {
     display: flex;
     justify-content: space-between;
     padding: 0.3rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
 }
+.flip-card-front .rule-row:last-child,
 .flip-card-back .funded-rule-row:last-child {
     border-bottom: none;
 }
-
+.flip-card-front .rule-label,
 .flip-card-back .funded-rule-label {
     color: var(--text-secondary);
     font-size: 0.8rem;
 }
-
+.flip-card-front .rule-value,
 .flip-card-back .funded-rule-value {
     font-weight: 600;
     color: var(--text-primary);
     font-size: 0.85rem;
 }
 
-/* ============================================================
-   FOOTER ACTIONS — PUSHED TO BOTTOM
-   ============================================================ */
-
+/* Footer Actions */
 .flip-card-front .card-footer-actions,
 .flip-card-back .back-footer-actions {
     margin-top: auto;
@@ -246,85 +223,69 @@
     flex-direction: column;
     gap: 0.5rem;
     padding-top: 0.75rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(0,0,0,0.06);
     flex-shrink: 0;
 }
 
+/* Toggle Links (Brass) */
 .card-footer-actions .btn-link-neon,
 .back-footer-actions .btn-link-neon {
-    color: var(--neon-green);
+    color: var(--brass-dark);
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.85rem;
-    transition: all 0.2s;
+    font-size: 0.8rem;
+    transition: var(--transition-ease);
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.4rem;
     cursor: pointer;
     background: none;
     border: none;
     padding: 0;
     justify-content: center;
 }
-
 .card-footer-actions .btn-link-neon:hover,
 .back-footer-actions .btn-link-neon:hover {
-    color: #00e55a;
-    text-shadow: 0 0 12px var(--neon-glow);
+    color: var(--brass);
+    text-shadow: 0 0 12px var(--brass-glow);
     transform: translateX(4px);
 }
 
+/* Buy Buttons */
 .card-footer-actions .buy-btn,
 .back-footer-actions .buy-btn {
     margin: 0;
+    width: 100%;
 }
 
-/* ============================================================
-   TOGGLE CONTAINER
-   ============================================================ */
+/* Toggle Container */
+.toggle-container { margin-bottom: 2rem; }
 
-.toggle-container {
-    margin-bottom: 2rem;
+/* ----- Responsive ----- */
+@media (max-width: 992px) {
+    .flip-card { min-height: 480px; }
+    .flip-card-inner { min-height: 480px; }
+    .flip-card-front, .flip-card-back { min-height: 480px; }
+    .flip-card-front .price-current,
+    .flip-card-back .price-current { font-size: 2.2rem; }
+    .flip-card-front .card-title,
+    .flip-card-back .card-title { font-size: 1.4rem; }
 }
-
-/* ============================================================
-   RESPONSIVE ADJUSTMENTS
-   ============================================================ */
-
 @media (max-width: 768px) {
-    .flip-card {
-        min-height: 480px;
-    }
-    .flip-card-inner {
-        min-height: 480px;
-    }
-    .flip-card-front,
-    .flip-card-back {
-        min-height: 480px;
-    }
-    .flip-card-front .price-current,
-    .flip-card-back .price-current {
-        font-size: 2.2rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .flip-card {
-        min-height: 440px;
-    }
-    .flip-card-inner {
-        min-height: 440px;
-    }
-    .flip-card-front,
-    .flip-card-back {
-        min-height: 440px;
-    }
+    .flip-card { min-height: 460px; }
+    .flip-card-inner { min-height: 460px; }
+    .flip-card-front, .flip-card-back { min-height: 460px; }
     .flip-card-front .card-body,
-    .flip-card-back .card-body {
-        padding: 1rem;
-    }
+    .flip-card-back .card-body { padding: 1.25rem; }
+}
+@media (max-width: 576px) {
+    .flip-card { min-height: 440px; }
+    .flip-card-inner { min-height: 440px; }
+    .flip-card-front, .flip-card-back { min-height: 440px; }
+    .flip-card-front .card-body,
+    .flip-card-back .card-body { padding: 1rem; }
     .flip-card-front .price-current,
-    .flip-card-back .price-current {
-        font-size: 2rem;
-    }
+    .flip-card-back .price-current { font-size: 1.8rem; }
+    .flip-card-front .card-title,
+    .flip-card-back .card-title { font-size: 1.2rem; }
 }

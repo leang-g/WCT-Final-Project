@@ -1,49 +1,137 @@
-/* Dashboard Terminal Styling */
-.dashboard-container { padding-top: 1rem; }
+/* ============================================================
+   DASHBOARD — Architectural Glass Panels
+   ============================================================ */
+
+.dashboard-container { padding-top: 2rem; }
+
+/* Glass Panel Cards */
 .card-term {
-  background: rgba(13,13,13,0.8);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  backdrop-filter: blur(8px);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255,255,255,0.8);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-ease);
 }
-.stat-value { font-weight: 800; font-size: 1.6rem; letter-spacing: -0.02em; }
+.card-term:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+
+/* Stats */
+.stat-value {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
 .stat-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-  font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
 }
+.stat-change {
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+.stat-change.text-success { color: #22c55e; }
+.stat-change.text-danger { color: #ef4444; }
+.stat-change.text-muted { color: var(--text-muted); }
+
+/* Table */
 .table-term {
-  font-size: 0.85rem;
-  border-collapse: separate;
-  border-spacing: 0;
+    font-size: 0.85rem;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 .table-term th {
-  color: var(--text-secondary);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 0.75rem 0.5rem;
 }
 .table-term td {
-  padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  vertical-align: middle;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    vertical-align: middle;
 }
-.table-term .profit { color: #10b981; font-weight: 600; }
+.table-term .profit { color: #22c55e; font-weight: 600; }
 .table-term .loss { color: #ef4444; font-weight: 600; }
-.chart-container { position: relative; height: 250px; width: 100%; }
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+/* SMC Badge */
 .smc-badge {
-  background: rgba(0, 255, 102, 0.15);
-  color: var(--neon-green);
-  border: 1px solid rgba(0, 255, 102, 0.3);
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.2em 0.6em;
-  border-radius: 4px;
-  display: inline-block;
+    background: rgba(201, 168, 76, 0.1);
+    color: var(--brass-dark);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.dashboard-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.dashboard-header .brass-badge {
+    background: var(--brass-gradient);
+    color: #fff;
+    font-size: 0.6rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.text-brass { color: var(--brass); }
+
+/* Additional Metrics Row */
+.metric-mini-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255,255,255,0.8);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    padding: 0.75rem 1rem;
+    transition: var(--transition-ease);
+}
+.metric-mini-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+    .stat-value { font-size: 1.4rem; }
+    .chart-container { height: 180px; }
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 }

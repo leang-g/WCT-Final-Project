@@ -1,156 +1,297 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard – Apex Trading</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Apex Funded</title>
+
+    <!-- Bootstrap 5.3.2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
-  <!-- Glass Nav -->
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">🚀 Apex Trading</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-          <li class="nav-item"><a class="nav-link" href="rules.html">Rules & FAQ</a></li>
-          <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
-        </ul>
-        <div class="d-flex ms-lg-3">
-          <a href="login.html" class="btn btn-outline-light me-2">Login</a>
-          <a href="signup.html" class="btn btn-primary">Sign Up</a>
-        </div>
-      </div>
-    </div>
-  </nav>
 
-  <!-- Ticker -->
-  <div class="ticker-wrap">
-    <div class="ticker">
-      <p>
-        🏆 Trader Alex W. passed 50K Evaluation <span>|</span>
-        📊 SMC Setup: Buy-Side Liquidity Swept on XAUUSD <span>|</span>
-        💰 Recent Payout: $4,250 on MetaTrader 5 <span>|</span>
-        🔥 New Challenge: 200K Lightning Account <span>|</span>
-        📈 Fair Value Gap filled on EURUSD (1H) <span>|</span>
-        ✅ Withdrawal processed: $2,150
-      </p>
-      <p>
-        🏆 Trader Alex W. passed 50K Evaluation <span>|</span>
-        📊 SMC Setup: Buy-Side Liquidity Swept on XAUUSD <span>|</span>
-        💰 Recent Payout: $4,250 on MetaTrader 5 <span>|</span>
-        🔥 New Challenge: 200K Lightning Account <span>|</span>
-        📈 Fair Value Gap filled on EURUSD (1H) <span>|</span>
-        ✅ Withdrawal processed: $2,150
-      </p>
-    </div>
-  </div>
+    <!-- ============================================================
+    NAVBAR — Frosted Glass with Timber Accent
+    ============================================================ -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top glass-nav">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="brand-icon">◆</span>
+                <span>Apex Funded</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#pricing-section">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#faq-section">Rules &amp; FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
+                </ul>
+                <div class="d-flex ms-lg-3 gap-2">
+                    <a href="login.html" class="btn btn-outline-brass">Log In</a>
+                    <a href="signup.html" class="btn btn-brass">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-  <main class="container py-4 dashboard-container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="mb-0"><span class="text-neon">//</span> Trading Terminal <span class="smc-badge ms-2">Simulation</span></h2>
-      <span class="badge bg-neon text-dark">Live Account (Demo)</span>
-    </div>
+    <!-- ============================================================
+    DASHBOARD MAIN
+    ============================================================ -->
+    <main class="container py-5 dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="section-tag">Live Terminal</span>
+                <h2 class="mb-0">
+                    <span class="text-brass">◆</span> Trading Dashboard
+                    <span class="smc-badge ms-3">Simulation</span>
+                </h2>
+            </div>
+            <span class="brass-badge">Live Account (Demo)</span>
+        </div>
 
-    <!-- Stats Cards -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-3 col-6">
-        <div class="card card-term h-100 p-3">
-          <div class="stat-label">Balance</div>
-          <div class="stat-value text-white">$54,230.00</div>
+        <!-- ============================================================
+        STATS CARDS — Glass Panels
+        ============================================================ -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3 col-6">
+                <div class="card card-term h-100 p-3">
+                    <div class="stat-label">Balance</div>
+                    <div class="stat-value text-primary">$54,230.00</div>
+                    <div class="stat-change text-success small">
+                        <i class="bi bi-arrow-up"></i> +2.4% this week
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card card-term h-100 p-3">
+                    <div class="stat-label">Today's P&amp;L</div>
+                    <div class="stat-value text-success">+$1,240.50</div>
+                    <div class="stat-change text-success small">
+                        <i class="bi bi-arrow-up"></i> +0.8% today
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card card-term h-100 p-3">
+                    <div class="stat-label">Equity</div>
+                    <div class="stat-value text-primary">$55,470.50</div>
+                    <div class="stat-change text-muted small">
+                        <i class="bi bi-dash"></i> Stable
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card card-term h-100 p-3">
+                    <div class="stat-label">Drawdown</div>
+                    <div class="stat-value text-danger">-2.1%</div>
+                    <div class="stat-change text-danger small">
+                        <i class="bi bi-exclamation-triangle"></i> Within limits
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="card card-term h-100 p-3">
-          <div class="stat-label">Today's P&L</div>
-          <div class="stat-value text-success">+$1,240.50</div>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="card card-term h-100 p-3">
-          <div class="stat-label">Equity</div>
-          <div class="stat-value text-white">$55,470.50</div>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="card card-term h-100 p-3">
-          <div class="stat-label">Drawdown</div>
-          <div class="stat-value text-danger">-2.1%</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Chart + Open Positions -->
-    <div class="row">
-      <div class="col-lg-8 mb-4">
-        <div class="card card-term p-3 h-100">
-          <h5 class="card-title mb-3">Balance History <span class="smc-badge">Buy‑Side Liquidity Sweep</span></h5>
-          <div class="chart-container">
-            <canvas id="balanceChart"></canvas>
-          </div>
-          <div class="mt-2 text-secondary" style="font-size:0.75rem;">
-            <i class="bi bi-info-circle"></i> Simulated price action based on SMC concepts
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card card-term p-3 h-100">
-          <h5 class="card-title mb-3">Open Positions</h5>
-          <div class="table-responsive">
-            <table class="table table-term">
-              <thead>
-                <tr>
-                  <th>Symbol</th>
-                  <th>Side</th>
-                  <th>Volume</th>
-                  <th>P&L</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="fw-bold">EURUSD</span><br><small class="text-secondary">Swing Low Sweep</small></td>
-                  <td class="text-success">Buy</td>
-                  <td>0.10</td>
-                  <td class="profit">+$120.50</td>
-                </tr>
-                <tr>
-                  <td><span class="fw-bold">XAUUSD</span><br><small class="text-secondary">Liquidity Grab</small></td>
-                  <td class="text-danger">Sell</td>
-                  <td>0.05</td>
-                  <td class="loss">-$45.00</td>
-                </tr>
-                <tr>
-                  <td><span class="fw-bold">US30</span><br><small class="text-secondary">Breaker Block</small></td>
-                  <td class="text-success">Buy</td>
-                  <td>1.00</td>
-                  <td class="profit">+$310.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+        <!-- ============================================================
+        CHART + OPEN POSITIONS
+        ============================================================ -->
+        <div class="row g-4">
+            <!-- Chart Column -->
+            <div class="col-lg-8">
+                <div class="card card-term p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">
+                            Balance History
+                            <span class="smc-badge ms-2">Buy‑Side Liquidity Sweep</span>
+                        </h5>
+                        <span class="text-muted small">
+                            <i class="bi bi-calendar3 me-1"></i> Last 7 Days
+                        </span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="balanceChart"></canvas>
+                    </div>
+                    <div class="mt-3 text-muted small">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Simulated price action based on Smart Money Concepts (SMC)
+                    </div>
+                </div>
+            </div>
 
-  <footer class="bg-black text-secondary py-4 mt-5">
-    <div class="container text-center">
-      <p class="mb-0">&copy; 2026 Apex Trading – Educational Simulation.</p>
-    </div>
-  </footer>
+            <!-- Open Positions Column -->
+            <div class="col-lg-4">
+                <div class="card card-term p-4 h-100">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-list-ul text-brass me-2"></i>
+                        Open Positions
+                        <span class="badge brass-badge ms-2">3</span>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-term">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Side</th>
+                                    <th>Vol</th>
+                                    <th>P&amp;L</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="fw-bold">EURUSD</span>
+                                        <br /><small class="text-muted">Swing Low Sweep</small>
+                                    </td>
+                                    <td class="text-success">Buy</td>
+                                    <td>0.10</td>
+                                    <td class="profit">+$120.50</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fw-bold">XAUUSD</span>
+                                        <br /><small class="text-muted">Liquidity Grab</small>
+                                    </td>
+                                    <td class="text-danger">Sell</td>
+                                    <td>0.05</td>
+                                    <td class="loss">-$45.00</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fw-bold">US30</span>
+                                        <br /><small class="text-muted">Breaker Block</small>
+                                    </td>
+                                    <td class="text-success">Buy</td>
+                                    <td>1.00</td>
+                                    <td class="profit">+$310.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 pt-3 border-top border-light-subtle">
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">Total P&amp;L</span>
+                            <span class="fw-bold text-success">+$385.50</span>
+                        </div>
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">Win Rate</span>
+                            <span class="fw-bold">68%</span>
+                        </div>
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">Risk Level</span>
+                            <span class="fw-bold text-warning">Moderate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/dashboard-chart.js"></script>
+        <!-- ============================================================
+        ADDITIONAL METRICS — Bottom Row
+        ============================================================ -->
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="card card-term p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stat-label">Open Trades</div>
+                            <div class="stat-value text-primary" style="font-size:1.4rem;">3</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-label">Win Rate</div>
+                            <div class="stat-value text-success" style="font-size:1.4rem;">68%</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-label">Risk/Reward</div>
+                            <div class="stat-value text-primary" style="font-size:1.4rem;">1:2.4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-term p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stat-label">Today's Volume</div>
+                            <div class="stat-value text-primary" style="font-size:1.4rem;">1.15</div>
+                            <div class="text-muted small">Standard Lots</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Trades</div>
+                            <div class="stat-value text-primary" style="font-size:1.4rem;">4</div>
+                            <div class="text-muted small">Today</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-term p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stat-label">Account Age</div>
+                            <div class="stat-value text-primary" style="font-size:1.4rem;">12d</div>
+                            <div class="text-muted small">Active</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Next Payout</div>
+                            <div class="stat-value text-primary" style="font-size:1.4rem;">3d</div>
+                            <div class="text-muted small">Pending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ============================================================
+    FOOTER — Architectural
+    ============================================================ -->
+    <footer class="footer-arch">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <span class="footer-brand">◆ Apex Funded</span>
+                    <span class="text-secondary small ms-3">Educational Simulation</span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-secondary text-decoration-none me-3 small">Privacy</a>
+                    <a href="#" class="text-secondary text-decoration-none me-3 small">Terms</a>
+                    <a href="help-center.html" class="text-secondary text-decoration-none small">Help Center</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="row">
+                <div class="col-12 text-center text-secondary small">
+                    &copy; 2026 Apex Funded — No real money involved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    SCRIPTS
+    ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/dashboard-chart.js"></script>
 </body>
 </html>

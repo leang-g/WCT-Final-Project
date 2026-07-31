@@ -1,76 +1,180 @@
 /* ============================================================
-   HELP CENTER — Premium Slate/Navy Dark Theme
+   HELP CENTER — Architectural Design
+   Palette: Stucco · Micro-Cement · Brass · Timber · Glass
    ============================================================ */
 
-/* ----- ROOT VARIABLES ----- */
+/* ----- Root Variables (mirroring main style) ----- */
 :root {
-    --hc-bg: #0f1722;
-    --hc-surface: #1a2332;
-    --hc-surface-hover: #212e42;
-    --hc-border: rgba(255, 255, 255, 0.05);
-    --hc-border-hover: rgba(255, 255, 255, 0.15);
-    --hc-text-primary: #e2e8f0;
-    --hc-text-secondary: #94a3b8;
-    --hc-text-muted: #64748b;
-    --hc-accent: #00ff66;
-    --hc-accent-glow: rgba(0, 255, 102, 0.2);
-    --hc-radius: 12px;
-    --hc-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    /* Stucco & Micro-Cement */
+    --stucco: #f8f5f0;
+    --stucco-light: #fcfaf7;
+    --stucco-dark: #e8e3da;
+    --micro-cement: #eae7e0;
+    --micro-cement-dark: #d5d0c7;
+
+    /* Brushed Brass */
+    --brass: #c9a84c;
+    --brass-light: #e0c66a;
+    --brass-dark: #a8893a;
+    --brass-glow: rgba(201, 168, 76, 0.35);
+    --brass-gradient: linear-gradient(135deg, #e0c66a, #c9a84c, #a8893a);
+
+    /* Warm Timber */
+    --timber: #d4b896;
+    --timber-light: #e8d5b8;
+    --timber-dark: #b89870;
+
+    /* Glass */
+    --glass-bg: rgba(255, 253, 249, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 30px 80px rgba(0, 0, 0, 0.06), 0 10px 30px rgba(0, 0, 0, 0.03);
+
+    /* Text */
+    --text-primary: #2c2a28;
+    --text-secondary: #6b6864;
+    --text-muted: #a09b94;
+
+    /* Shadows — Cinematic, Volumetric */
+    --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.03);
+    --shadow-medium: 0 30px 80px rgba(0, 0, 0, 0.08), 0 12px 30px rgba(0, 0, 0, 0.05);
+    --shadow-large: 0 50px 120px rgba(0, 0, 0, 0.10), 0 20px 50px rgba(0, 0, 0, 0.06);
+    --shadow-warm: 0 40px 100px rgba(201, 168, 76, 0.08), 0 15px 35px rgba(0, 0, 0, 0.05);
+
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    /* Transitions */
+    --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* ----- GLOBAL RESET (scoped to help center) ----- */
+/* ----- Global Reset (scoped to help center) ----- */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--hc-bg);
-    color: var(--hc-text-primary);
+    background: var(--stucco);
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(212, 184, 150, 0.04) 0%, transparent 50%);
+    color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
 }
 
-/* ----- TOP NAVIGATION ----- */
-.navbar {
-    background: rgba(15, 23, 34, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--hc-border);
-}
-.navbar-brand {
-    color: var(--hc-accent) !important;
-    text-shadow: 0 0 12px var(--hc-accent-glow);
-}
-.navbar-brand i {
-    color: var(--hc-accent);
-}
-.nav-link {
-    color: var(--hc-text-secondary) !important;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-.nav-link:hover {
-    color: var(--hc-accent) !important;
-    text-shadow: 0 0 8px var(--hc-accent-glow);
-}
-.text-neon {
-    color: var(--hc-accent) !important;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
 }
 
-/* ----- HERO SEARCH SECTION ----- */
+/* ============================================================
+   GLASS PANEL — Reusable Component
+   ============================================================ */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle reflection overlay (sunlight) */
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(255, 255, 255, 0) 40%,
+            rgba(255, 255, 255, 0) 60%,
+            rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    border-radius: var(--radius-lg);
+}
+
+.glass-panel:hover {
+    box-shadow: var(--shadow-warm);
+    transform: translateY(-4px);
+}
+
+/* ============================================================
+   NAVBAR — Frosted Glass with Timber Accent
+   ============================================================ */
+.glass-nav {
+    background: rgba(255, 253, 249, 0.75) !important;
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+}
+
+.glass-nav .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+}
+.glass-nav .navbar-brand .brand-icon {
+    color: var(--brass);
+    margin-right: 0.5rem;
+}
+
+.glass-nav .nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+    position: relative;
+}
+.glass-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--brass);
+    transition: var(--transition-smooth);
+    transform: translateX(-50%);
+}
+.glass-nav .nav-link:hover,
+.glass-nav .nav-link.active {
+    color: var(--text-primary) !important;
+}
+.glass-nav .nav-link:hover::after,
+.glass-nav .nav-link.active::after {
+    width: 60%;
+}
+
+/* ============================================================
+   HERO SECTION — Warm Morning Light
+   ============================================================ */
 .help-hero {
     padding: 4rem 0 3rem;
-    background: radial-gradient(ellipse at 50% 0%, rgba(0, 255, 102, 0.04), transparent 70%),
-                linear-gradient(180deg, var(--hc-bg), #111d2b);
-    border-bottom: 1px solid var(--hc-border);
+    background: radial-gradient(ellipse at 50% 0%, rgba(201, 168, 76, 0.04) 0%, transparent 70%),
+                linear-gradient(180deg, var(--stucco-light), var(--micro-cement));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .help-hero h1 {
-    color: var(--hc-text-primary);
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--text-primary);
     letter-spacing: -0.02em;
 }
-
 .help-hero .lead {
-    color: var(--hc-text-secondary);
+    color: var(--text-secondary);
 }
 
-/* Search wrapper with icon inside input */
+/* Search Bar — Glass with Brass Focus */
 .search-wrapper {
     position: relative;
     max-width: 680px;
@@ -79,10 +183,10 @@ body {
 
 .search-wrapper .search-icon {
     position: absolute;
-    left: 18px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--hc-text-muted);
+    color: var(--text-muted);
     font-size: 1.2rem;
     pointer-events: none;
     z-index: 2;
@@ -90,33 +194,38 @@ body {
 
 .search-wrapper .search-input {
     width: 100%;
-    padding: 0.9rem 1.2rem 0.9rem 3.2rem;
+    padding: 0.9rem 1.2rem 0.9rem 3.5rem;
     border-radius: 60px;
-    background: var(--hc-surface);
-    border: 1px solid var(--hc-border);
-    color: var(--hc-text-primary);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
     font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: var(--hc-shadow);
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-soft);
 }
 
 .search-wrapper .search-input::placeholder {
-    color: var(--hc-text-muted);
+    color: var(--text-muted);
     font-weight: 400;
 }
 
 .search-wrapper .search-input:focus {
     outline: none;
-    border-color: var(--hc-accent);
-    box-shadow: 0 0 0 3px var(--hc-accent-glow), var(--hc-shadow);
-    background: var(--hc-surface);
+    border-color: var(--brass);
+    box-shadow: 0 0 0 4px var(--brass-glow), var(--shadow-medium);
+    background: var(--glass-bg);
 }
 
-/* ----- QUICK LINKS ----- */
+/* ============================================================
+   QUICK LINKS — Brass Timber Accents
+   ============================================================ */
 .quick-links {
     padding: 1.5rem 0 2rem;
-    border-bottom: 1px solid var(--hc-border);
-    background: rgba(26, 35, 50, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 253, 249, 0.3);
+    backdrop-filter: blur(4px);
 }
 
 .quick-links-scroll {
@@ -128,79 +237,101 @@ body {
 }
 
 .quick-link-item {
-    color: var(--hc-text-secondary);
+    color: var(--text-secondary);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s;
-    white-space: nowrap;
+    transition: var(--transition-smooth);
     padding: 0.3rem 0;
     border-bottom: 2px solid transparent;
 }
-
 .quick-link-item:hover {
-    color: var(--hc-accent);
-    border-bottom-color: var(--hc-accent);
+    color: var(--brass-dark);
+    border-bottom-color: var(--brass);
 }
 
 .quick-link-separator {
-    color: var(--hc-text-muted);
+    color: var(--brass);
     font-weight: 300;
     font-size: 1.1rem;
+    opacity: 0.6;
 }
 
-/* ----- CATEGORY GRID ----- */
+/* ============================================================
+   CATEGORY GRID — Glass Cards
+   ============================================================ */
 .category-grid-section {
     padding: 3rem 0 4rem;
 }
 
-/* ----- CATEGORY CARD ----- */
+/* ----- Category Card (Glass Panel) ----- */
 .category-card {
-    background: var(--hc-surface);
-    border: 1px solid var(--hc-border);
-    border-radius: var(--hc-radius);
     padding: 1.8rem 1.5rem 1.5rem;
     height: 100%;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: var(--transition-smooth);
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Reflection overlay */
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(255, 255, 255, 0) 40%,
+            rgba(255, 255, 255, 0) 60%,
+            rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    border-radius: var(--radius-lg);
 }
 
 .category-card:hover {
     transform: translateY(-6px);
-    border-color: var(--hc-border-hover);
-    background: var(--hc-surface-hover);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-warm);
+    border-color: var(--brass);
 }
 
-/* Icon */
+/* Icon — Brass with timber warmth */
 .category-card .card-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    background: rgba(0, 255, 102, 0.08);
-    border: 1px solid rgba(0, 255, 102, 0.15);
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    color: var(--hc-accent);
+    font-size: 1.6rem;
+    color: var(--brass-dark);
     margin-bottom: 1rem;
-    transition: all 0.3s ease;
+    transition: var(--transition-smooth);
     flex-shrink: 0;
 }
 
 .category-card:hover .card-icon {
-    background: rgba(0, 255, 102, 0.15);
-    border-color: var(--hc-accent);
-    box-shadow: 0 0 20px var(--hc-accent-glow);
+    background: rgba(201, 168, 76, 0.15);
+    border-color: var(--brass);
+    box-shadow: 0 0 20px var(--brass-glow);
 }
 
-/* Title */
+/* Title — Playfair Display */
 .category-card .card-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--hc-text-primary);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
     letter-spacing: -0.01em;
 }
@@ -208,40 +339,64 @@ body {
 /* Description */
 .category-card .card-description {
     font-size: 0.9rem;
-    color: var(--hc-text-secondary);
+    color: var(--text-secondary);
     line-height: 1.6;
     flex: 1;
     margin-bottom: 1.2rem;
 }
 
-/* Footer meta (articles count) */
+/* Footer meta — Timber tone */
 .category-card .card-footer-meta {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--hc-text-muted);
+    letter-spacing: 0.08em;
+    color: var(--timber-dark);
     padding-top: 0.8rem;
-    border-top: 1px solid var(--hc-border);
+    border-top: 1px solid rgba(201, 168, 76, 0.12);
     margin-top: auto;
 }
 
-/* ----- FOOTER ----- */
-.help-footer {
-    border-top: 1px solid var(--hc-border);
-    background: var(--hc-bg);
-    color: var(--hc-text-muted);
+/* ============================================================
+   FOOTER — Architectural
+   ============================================================ */
+.footer-arch {
+    background: var(--stucco-dark);
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.help-footer a {
-    color: var(--hc-text-secondary);
-    transition: color 0.2s;
-}
-.help-footer a:hover {
-    color: var(--hc-accent);
+.footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--text-primary);
 }
 
-/* ----- RESPONSIVE TWEAKS ----- */
+.footer-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--brass), transparent);
+    margin: 1.25rem 0;
+    opacity: 0.3;
+}
+
+.footer-arch a {
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+.footer-arch a:hover {
+    color: var(--brass-dark);
+}
+
+/* ============================================================
+   RESPONSIVE TWEAKS
+   ============================================================ */
+@media (max-width: 992px) {
+    .help-hero h1 {
+        font-size: 2.5rem;
+    }
+}
+
 @media (max-width: 768px) {
     .help-hero {
         padding: 2.5rem 0 2rem;
@@ -252,10 +407,10 @@ body {
     .quick-links-scroll {
         gap: 0.3rem 0.8rem;
         font-size: 0.8rem;
-        justify-content: flex-start;
         flex-wrap: nowrap;
         overflow-x: auto;
         padding-bottom: 0.5rem;
+        justify-content: flex-start;
     }
     .quick-link-item {
         white-space: nowrap;
@@ -264,15 +419,15 @@ body {
         display: none;
     }
     .category-card .card-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.25rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.3rem;
     }
     .category-card .card-title {
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
     .search-wrapper .search-input {
-        padding: 0.75rem 1rem 0.75rem 2.8rem;
+        padding: 0.75rem 1rem 0.75rem 3rem;
         font-size: 0.95rem;
     }
 }
