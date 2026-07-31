@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Google Font: Inter + Playfair Display for elegance -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
@@ -184,7 +184,7 @@
     </section>
 
     <!-- ============================================================
-    PRICING SECTION — Architectural Tiers with Toggles
+    PRICING SECTION — Choose Your Challenge (MOVED HERE)
     ============================================================ -->
     <section id="pricing-section" class="py-5 section-warm">
         <div class="container">
@@ -206,13 +206,257 @@
                 <div class="toggle-group mt-3" id="platformToggle">
                     <span class="toggle-option active" data-platform="mt5">MetaTrader 5</span>
                     <span class="toggle-option" data-platform="mt4">MetaTrader 4</span>
-                    <span class="toggle-option" data-platform="ctrader">cTrader</span>
+                    <span class="toggle-option" data-platform="tradovate">Tradovate</span>
                 </div>
             </div>
 
             <!-- Pricing Cards Container -->
             <div id="pricingCardsContainer" class="row g-4 justify-content-center mt-4">
-                <!-- Injected by JavaScript -->
+                <!-- Cards injected by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    SECTION: Us vs. Them Comparison Board
+    ============================================================ -->
+    <section class="comparison-section section-warm py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-tag">Why Choose Apex</span>
+                <h2 class="section-title">Us vs. Them</h2>
+                <p class="text-secondary" style="max-width: 560px; margin: 0 auto;">
+                    A transparent look at what sets Apex Funded apart from the competition.
+                </p>
+            </div>
+
+            <div class="comparison-grid">
+                <!-- Apex Funded Panel (Glass) -->
+                <div class="comparison-panel glass-panel comparison-apex">
+                    <div class="comparison-header">
+                        <span class="comparison-brand">◆ Apex Funded</span>
+                        <span class="comparison-badge brass-badge">Recommended</span>
+                    </div>
+                    <div class="comparison-body">
+                        <div class="comparison-row">
+                            <span class="comparison-label">Profit Split</span>
+                            <span class="comparison-value apex">Up to 90%</span>
+                            <span class="comparison-check"><i class="bi bi-check-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Evaluation Fee</span>
+                            <span class="comparison-value apex">From $149</span>
+                            <span class="comparison-check"><i class="bi bi-check-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Payout Speed</span>
+                            <span class="comparison-value apex">2-4 Hours</span>
+                            <span class="comparison-check"><i class="bi bi-check-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Hidden Rule</span>
+                            <span class="comparison-value apex">No</span>
+                            <span class="comparison-check"><i class="bi bi-check-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">News Trading</span>
+                            <span class="comparison-value apex">Allowed</span>
+                            <span class="comparison-check"><i class="bi bi-check-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">EAs Allowed</span>
+                            <span class="comparison-value apex">Yes</span>
+                            <span class="comparison-check"><i class="bi bi-check-circle-fill"></i></span>
+                        </div>
+                    </div>
+                    <div class="comparison-footer">
+                        <a href="#pricing-section" class="btn btn-brass w-100">Start Your Challenge</a>
+                    </div>
+                </div>
+
+                <!-- Competitor Panel (Subdued Glass) -->
+                <div class="comparison-panel glass-panel comparison-competitor">
+                    <div class="comparison-header">
+                        <span class="comparison-brand muted">Other Firms</span>
+                        <span class="comparison-badge muted-badge">Average Prop Firms</span>
+                    </div>
+                    <div class="comparison-body">
+                        <div class="comparison-row">
+                            <span class="comparison-label">Profit Split</span>
+                            <span class="comparison-value competitor">60-80%</span>
+                            <span class="comparison-cross"><i class="bi bi-x-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Evaluation Fee</span>
+                            <span class="comparison-value competitor">$250+</span>
+                            <span class="comparison-cross"><i class="bi bi-x-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Payout Speed</span>
+                            <span class="comparison-value competitor">3-7 Days</span>
+                            <span class="comparison-cross"><i class="bi bi-x-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Hidden Rule</span>
+                            <span class="comparison-value competitor">Many</span>
+                            <span class="comparison-cross"><i class="bi bi-x-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">News Trading</span>
+                            <span class="comparison-value competitor">Limited</span>
+                            <span class="comparison-cross"><i class="bi bi-x-circle-fill"></i></span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">EAs Allowed</span>
+                            <span class="comparison-value competitor">Restricted</span>
+                            <span class="comparison-cross"><i class="bi bi-x-circle-fill"></i></span>
+                        </div>
+                    </div>
+                    <div class="comparison-footer">
+                        <span class="text-muted small">*Based on other Prop Firms</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    SECTION: Path to Live Capital Pipeline
+    ============================================================ -->
+    <section class="pipeline-section section-light py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-tag">Your Journey</span>
+                <h2 class="section-title">Path to Live Capital</h2>
+                <p class="text-secondary" style="max-width: 560px; margin: 0 auto;">
+                    A clear, transparent roadmap from evaluation to funded trader.
+                </p>
+            </div>
+
+            <!-- Timber Slatted Pathway -->
+            <div class="pipeline-timber">
+                <div class="pipeline-track"></div>
+
+                <div class="row g-4 pipeline-steps">
+                    <!-- Step 1: Evaluation -->
+                    <div class="col-md-4">
+                        <div class="pipeline-step glass-panel">
+                            <div class="step-number">01</div>
+                            <div class="step-icon-wrapper">
+                                <i class="bi bi-clipboard-data"></i>
+                            </div>
+                            <h4>Evaluation</h4>
+                            <p>Pass our evaluation phase with a 6-10% profit target and strict risk rules.</p>
+                            <div class="step-meta">
+                                <span>30 Days</span>
+                                <span>•</span>
+                                <span>6% Drawdown</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Funded -->
+                    <div class="col-md-4">
+                        <div class="pipeline-step glass-panel step-active">
+                            <div class="step-number">02</div>
+                            <div class="step-icon-wrapper">
+                                <i class="bi bi-wallet2"></i>
+                            </div>
+                            <h4>Funded Account</h4>
+                            <p>Receive a live funded account with up to $200,000 in purchasing power.</p>
+                            <div class="step-meta">
+                                <span>Up to 90% Split</span>
+                                <span>•</span>
+                                <span>Weekly Payouts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Elite Live Capital -->
+                    <div class="col-md-4">
+                        <div class="pipeline-step glass-panel">
+                            <div class="step-number">03</div>
+                            <div class="step-icon-wrapper">
+                                <i class="bi bi-trophy"></i>
+                            </div>
+                            <h4>Elite Live Capital</h4>
+                            <p>Scale your account up to $500,000 with increased profit splits and priority support.</p>
+                            <div class="step-meta">
+                                <span>Up to 95% Split</span>
+                                <span>•</span>
+                                <span>VIP Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    SECTION: Educational & Community Hub
+    ============================================================ -->
+    <section class="hub-section section-warm py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-tag">Learn & Connect</span>
+                <h2 class="section-title">Educational & Community Hub</h2>
+                <p class="text-secondary" style="max-width: 560px; margin: 0 auto;">
+                    Everything you need to succeed — from market insights to community support.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Card 1: Daily Market Insights -->
+                <div class="col-md-4">
+                    <div class="hub-card glass-panel">
+                        <div class="hub-card-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h3 class="hub-card-title">Daily Market Insights</h3>
+                        <p class="hub-card-description">
+                            Start each day with curated market analysis, SMC setups, and high-impact news coverage from our in-house team of traders.
+                        </p>
+                        <div class="hub-card-meta">
+                            <span><i class="bi bi-clock"></i> Updated Daily</span>
+                            <a href="#" class="hub-card-link">Explore →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Trading Academy -->
+                <div class="col-md-4">
+                    <div class="hub-card glass-panel">
+                        <div class="hub-card-icon">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <h3 class="hub-card-title">Trading Academy</h3>
+                        <p class="hub-card-description">
+                            Master Smart Money Concepts, order flow, and risk management with our comprehensive library of courses, webinars, and guides.
+                        </p>
+                        <div class="hub-card-meta">
+                            <span><i class="bi bi-play-circle"></i> 40+ Lessons</span>
+                            <a href="#" class="hub-card-link">Learn →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Discord Community -->
+                <div class="col-md-4">
+                    <div class="hub-card glass-panel">
+                        <div class="hub-card-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h3 class="hub-card-title">Discord Community</h3>
+                        <p class="hub-card-description">
+                            Join 12,000+ traders sharing insights, trade ideas, and real-time market discussions in our vibrant Discord community.
+                        </p>
+                        <div class="hub-card-meta">
+                            <span><i class="bi bi-discord"></i> 12K+ Members</span>
+                            <a href="#" class="hub-card-link">Join →</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -246,6 +490,170 @@
                 <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
                 </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    SECTION: Verified Payout Marquee
+    ============================================================ -->
+    <section class="payout-marquee-section">
+        <div class="payout-marquee-wrapper">
+            <!-- Timber Bar Background -->
+            <div class="payout-timber-bar">
+                <!-- Subtle sunlight overlay -->
+                <div class="payout-sunlight"></div>
+
+                <!-- Infinite Scroll Marquee -->
+                <div class="payout-marquee-track">
+                    <div class="payout-marquee-content">
+                        <!-- Certificate 1 -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$12,450</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Sarah K.</span>
+                                <span class="cert-badge">50K Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 2 -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$8,230</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Michael R.</span>
+                                <span class="cert-badge">100K Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 3 -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$22,100</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">David L.</span>
+                                <span class="cert-badge">200K Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 4 -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$5,670</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Emma W.</span>
+                                <span class="cert-badge">25K Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 5 -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$18,900</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">James C.</span>
+                                <span class="cert-badge">100K Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Certificate 6 -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$9,340</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Lisa T.</span>
+                                <span class="cert-badge">50K Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate for seamless scroll -->
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$12,450</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Sarah K.</span>
+                                <span class="cert-badge">50K Account</span>
+                            </div>
+                        </div>
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$8,230</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Michael R.</span>
+                                <span class="cert-badge">100K Account</span>
+                            </div>
+                        </div>
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$22,100</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">David L.</span>
+                                <span class="cert-badge">200K Account</span>
+                            </div>
+                        </div>
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$5,670</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Emma W.</span>
+                                <span class="cert-badge">25K Account</span>
+                            </div>
+                        </div>
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$18,900</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">James C.</span>
+                                <span class="cert-badge">100K Account</span>
+                            </div>
+                        </div>
+                        <div class="payout-certificate">
+                            <div class="cert-icon"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="cert-details">
+                                <span class="cert-amount">$9,340</span>
+                                <span class="cert-label">Payout</span>
+                            </div>
+                            <div class="cert-user">
+                                <span class="cert-name">Lisa T.</span>
+                                <span class="cert-badge">50K Account</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -312,6 +720,7 @@
             </div>
         </div>
     </section>
+    
 
     <!-- ============================================================
     CHECKOUT MODAL
@@ -347,7 +756,7 @@
     </div>
 
     <!-- ============================================================
-    FOOTER — Timber & Brass
+    FOOTER — Architectural
     ============================================================ -->
     <footer class="footer-arch">
         <div class="container">

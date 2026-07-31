@@ -83,6 +83,16 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
 }
 
+/* ============================================================
+   FIX: Sticky Header Scroll Offset
+   ============================================================ */
+#pricing-section,
+#faq-section,
+#how-it-works,
+#hero {
+    scroll-margin-top: 80px;
+}
+
 /* ----- Glassmorphism Base ----- */
 .glass-panel {
     background: var(--glass-bg);
@@ -789,6 +799,7 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--brass);
     color: #fff;
     box-shadow: 0 8px 25px var(--brass-glow);
+}
 
 
 /* ============================================================
@@ -884,7 +895,7 @@ h1, h2, h3, h4, h5, h6 {
 
 
 /* ============================================================
-    SECTION 4: VERIFIED PAYOUT MARQUEE
+    SECTION 4: VERIFIED PAYOUT MARQUEE — FIXED
     ============================================================ */
 
 .payout-marquee-section {
@@ -957,6 +968,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-shrink: 0;
     background: var(--glass-bg);
     backdrop-filter: blur(8px) saturate(1.2);
     border: 1px solid var(--glass-border);
@@ -967,7 +979,6 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: var(--shadow-soft);
     white-space: nowrap;
     transition: var(--transition-ease);
-    flex-shrink: 0;
 }
 .payout-certificate:hover {
     box-shadow: var(--shadow-hover);
@@ -1059,7 +1070,7 @@ h1, h2, h3, h4, h5, h6 {
     .payout-certificate { padding: 0.5rem 1rem; gap: 0.6rem; }
     .cert-amount { font-size: 0.85rem; }
     .cert-name { font-size: 0.75rem; }
-    .payout-marquee-content { animation-duration: 25px; gap: 1rem; }
+    .payout-marquee-content { animation-duration: 25s; gap: 1rem; }
 }
 
 @media (max-width: 576px) {

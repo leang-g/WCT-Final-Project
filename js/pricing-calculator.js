@@ -1,5 +1,5 @@
 // ============================================================
-// MOCK DATA — Architectural Pricing
+// MOCK DATA – Evaluation (Front) + Funded (Back)
 // ============================================================
 const propFirmData = {
     growth: {
@@ -213,7 +213,7 @@ const platformMap = {
 };
 
 // ============================================================
-// RENDER FUNCTION — Updated HTML with Glass Structure
+// RENDER FUNCTION — WITH ROUTING TO signup.html
 // ============================================================
 function renderPricingCards() {
     const container = document.getElementById('pricingCardsContainer');
@@ -277,6 +277,7 @@ function renderPricingCards() {
                         <!-- FRONT: Evaluation -->
                         <div class="flip-card-front">
                             <div class="card-body d-flex flex-column p-4">
+                                <!-- HEADER GROUP -->
                                 <div class="header-group">
                                     <div class="evaluation-badge">Evaluation</div>
                                     <div class="tier-label">${accountLabel}</div>
@@ -286,18 +287,20 @@ function renderPricingCards() {
                                         <span class="price-original">$${tier.originalPrice}</span>
                                     </p>
                                 </div>
+                                <!-- RULES CONTAINER -->
                                 <div class="rules-container">
                                     <div class="pricing-rules">
                                         ${evalRulesHtml}
                                     </div>
                                 </div>
+                                <!-- FOOTER ACTIONS -->
                                 <div class="card-footer-actions">
                                     <button class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
                                         <i class="bi bi-arrow-right-circle"></i> View Funded Rules
                                     </button>
-                                    <button class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
+                                    <a href="signup.html" class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
                                         Get Funded
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -305,6 +308,7 @@ function renderPricingCards() {
                         <!-- BACK: Funded -->
                         <div class="flip-card-back">
                             <div class="card-body d-flex flex-column p-4">
+                                <!-- HEADER GROUP (matches front height) -->
                                 <div class="header-group">
                                     <div class="funded-badge">Funded</div>
                                     <div class="tier-label">${accountLabel}</div>
@@ -314,18 +318,20 @@ function renderPricingCards() {
                                         <span class="price-original">$${tier.originalPrice}</span>
                                     </p>
                                 </div>
+                                <!-- RULES CONTAINER -->
                                 <div class="rules-container">
                                     <div class="funded-rules">
                                         ${fundedRulesHtml}
                                     </div>
                                 </div>
+                                <!-- FOOTER ACTIONS -->
                                 <div class="back-footer-actions">
                                     <button class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
                                         <i class="bi bi-arrow-left-circle"></i> View Evaluation Rules
                                     </button>
-                                    <button class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
+                                    <a href="signup.html" class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
                                         Get Funded
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -349,7 +355,10 @@ function renderPricingCards() {
         });
     });
 
-    // ===== RE-BIND BUY BUTTONS =====
+    // ===== RE-BIND BUY BUTTONS (no longer needed since they're now <a> tags) =====
+    // The checkout modal is now bypassed for direct signup routing.
+    // If you still want the modal, uncomment the code below.
+    /*
     const buyBtns = container.querySelectorAll('.buy-btn');
     if (buyBtns.length > 0) {
         const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
@@ -360,6 +369,7 @@ function renderPricingCards() {
         buyBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
+                e.preventDefault();
                 const plan = this.getAttribute('data-plan');
                 selectedPlanSpan.textContent = plan;
                 checkoutForm.reset();
@@ -369,6 +379,7 @@ function renderPricingCards() {
             });
         });
     }
+    */
 }
 
 // ============================================================

@@ -1,68 +1,367 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login – Apex Trading</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In — Apex Funded</title>
+
+    <!-- Bootstrap 5.3.2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Main Stylesheet (Architectural Design System) -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Page‑Specific Authentication Styles -->
+    <style>
+        /* ============================================================
+           AUTH PAGES — Architectural Glassmorphism
+           ============================================================ */
+
+        /* ----- Auth Container (Glass Panel) ----- */
+        .auth-wrapper {
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background: var(--stucco-light);
+            background-image:
+                radial-gradient(ellipse at 20% 30%, rgba(201, 168, 76, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(212, 184, 150, 0.04) 0%, transparent 50%);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            padding: 2.5rem 2.5rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur) var(--glass-saturate);
+            -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Reflection overlay (sunlight) */
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.5) 0%,
+                    rgba(255, 255, 255, 0) 40%,
+                    rgba(255, 255, 255, 0) 60%,
+                    rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
+            border-radius: var(--radius-lg);
+        }
+
+        .auth-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        /* ----- Auth Header ----- */
+        .auth-card .auth-header {
+            text-align: center;
+            margin-bottom: 1.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-card .auth-header .auth-icon {
+            display: inline-block;
+            font-size: 2.2rem;
+            color: var(--brass);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-card .auth-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .auth-card .auth-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* ----- Form Elements ----- */
+        .auth-card .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Input fields — Micro-cement */
+        .auth-card .form-control {
+            background: rgba(255, 252, 248, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 1rem;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: var(--transition-ease);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .auth-card .form-control::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        .auth-card .form-control:focus {
+            background: rgba(255, 252, 248, 0.8);
+            border-color: var(--brass);
+            box-shadow: 0 0 0 3px var(--brass-glow), inset 0 2px 4px rgba(0, 0, 0, 0.02);
+            outline: none;
+        }
+
+        .auth-card .form-control.is-invalid {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+        }
+
+        .auth-card .invalid-feedback {
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-top: 0.25rem;
+        }
+
+        /* ----- Button — Brushed Brass ----- */
+        .auth-card .btn-brass {
+            background: var(--brass-gradient);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            letter-spacing: 0.03em;
+            transition: var(--transition-ease);
+            box-shadow: 0 8px 30px var(--brass-glow);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card .btn-brass:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 45px var(--brass-glow), var(--shadow-dir-3), var(--shadow-dir-4);
+            color: #fff;
+        }
+
+        .auth-card .btn-brass:active {
+            transform: translateY(0);
+        }
+
+        /* ----- Auth Links (Brass) ----- */
+        .auth-card .auth-links {
+            text-align: center;
+            margin-top: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-card .auth-links a {
+            color: var(--brass-dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition-ease);
+            position: relative;
+        }
+
+        .auth-card .auth-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--brass);
+            transition: var(--transition-ease);
+        }
+
+        .auth-card .auth-links a:hover {
+            color: var(--brass);
+        }
+
+        .auth-card .auth-links a:hover::after {
+            width: 100%;
+        }
+
+        .auth-card .auth-links .link-divider {
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+            font-weight: 300;
+        }
+
+        /* ----- Success / Info Alerts ----- */
+        .auth-card .alert {
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            padding: 0.75rem 1rem;
+            border: none;
+            backdrop-filter: blur(4px);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-card .alert-info {
+            background: rgba(201, 168, 76, 0.08);
+            color: var(--brass-dark);
+            border-left: 3px solid var(--brass);
+        }
+
+        .auth-card .alert-success {
+            background: rgba(34, 197, 94, 0.08);
+            color: #15803d;
+            border-left: 3px solid #22c55e;
+        }
+
+        /* ----- Responsive ----- */
+        @media (max-width: 576px) {
+            .auth-card {
+                padding: 1.75rem 1.25rem;
+            }
+            .auth-card .auth-header h2 {
+                font-size: 1.5rem;
+            }
+            .auth-card .form-control {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">🚀 Apex Trading</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-          <li class="nav-item"><a class="nav-link" href="rules.html">Rules</a></li>
-          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
-        </ul>
-        <div class="d-flex ms-lg-3">
-          <a href="login.html" class="btn btn-outline-light me-2 active">Login</a>
-          <a href="signup.html" class="btn btn-primary">Sign Up</a>
+
+    <!-- ============================================================
+    NAVBAR — Frosted Glass with Timber Accent
+    ============================================================ -->
+    <nav class="navbar navbar-expand-lg navbar-light glass-nav">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="brand-icon">◆</span>
+                <span>Apex Funded</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#pricing-section">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#faq-section">Rules &amp; FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
+                </ul>
+                <div class="d-flex ms-lg-3 gap-2">
+                    <a href="login.html" class="btn btn-outline-brass active">Log In</a>
+                    <a href="signup.html" class="btn btn-brass">Sign Up</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <main class="container d-flex justify-content-center align-items-center" style="min-height:70vh;">
-    <div class="col-md-5">
-      <div class="card border-0 p-4">
-        <h2 class="mb-3 text-center">Login</h2>
-        <form id="loginForm" novalidate>
-          <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="loginEmail" required />
-            <div class="invalid-feedback">Please enter a valid email.</div>
-          </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="loginPassword" required minlength="6" />
-            <div class="invalid-feedback">Password must be at least 6 characters.</div>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Log In</button>
-          <div id="loginMessage" class="mt-3 d-none alert alert-info text-center">
-            Simulation: Login successful (no real authentication).
-          </div>
-        </form>
-        <p class="mt-3 text-center"><a href="signup.html">Don't have an account? Sign up</a></p>
-      </div>
-    </div>
-  </main>
+    <!-- ============================================================
+    LOGIN FORM — Glass Card
+    ============================================================ -->
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-icon">◆</div>
+                <h2>Welcome Back</h2>
+                <p>Log in to your Apex Funded account</p>
+            </div>
 
-  <footer class="bg-black text-secondary py-4 mt-auto">
-    <div class="container text-center">
-      <p class="mb-0">&copy; 2026 Apex Trading – Educational Simulation.</p>
-    </div>
-  </footer>
+            <!-- Login Form -->
+            <form id="loginForm" novalidate>
+                <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="you@example.com" required />
+                    <div class="invalid-feedback">Please enter a valid email.</div>
+                </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/form-validation.js"></script>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required minlength="6" />
+                    <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                </div>
+
+                <button type="submit" class="btn btn-brass">Log In</button>
+
+                <div id="loginMessage" class="alert alert-info d-none text-center">
+                    <i class="bi bi-check-circle me-1"></i>
+                    Simulation: Login successful (no real authentication).
+                </div>
+            </form>
+
+            <!-- Links -->
+            <div class="auth-links">
+                <span>Don't have an account?</span>
+                <a href="signup.html">Sign up</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+    FOOTER — Architectural
+    ============================================================ -->
+    <footer class="footer-arch">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <span class="footer-brand">◆ Apex Funded</span>
+                    <span class="text-secondary small ms-3">Educational Simulation</span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-secondary text-decoration-none me-3 small">Privacy</a>
+                    <a href="#" class="text-secondary text-decoration-none me-3 small">Terms</a>
+                    <a href="help-center.html" class="text-secondary text-decoration-none small">Help Center</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="row">
+                <div class="col-12 text-center text-secondary small">
+                    &copy; 2026 Apex Funded — No real money involved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/form-validation.js"></script>
 </body>
 </html>
