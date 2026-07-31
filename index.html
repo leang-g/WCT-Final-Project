@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Trading – Prop Firm Funded Accounts</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/pricing.css" />
+</head>
+<body>
+  <!-- ========== FROSTED GLASS NAVBAR ========== -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#hero">🚀 Apex Trading</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pricing-section">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq-section">Rules &amp; FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
+        </ul>
+        <div class="d-flex ms-lg-3">
+          <a href="login.html" class="btn btn-outline-light me-2">Login</a>
+          <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== SMC LIVE TICKER ========== -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <p>
+        🏆 Trader Alex W. passed 50K Evaluation <span>|</span>
+        📊 SMC Setup: Buy-Side Liquidity Swept on XAUUSD <span>|</span>
+        💰 Recent Payout: $4,250 on MetaTrader 5 <span>|</span>
+        🔥 New Challenge: 200K Lightning Account <span>|</span>
+        📈 Fair Value Gap filled on EURUSD (1H) <span>|</span>
+        ✅ Withdrawal processed: $2,150
+      </p>
+      <p>
+        🏆 Trader Alex W. passed 50K Evaluation <span>|</span>
+        📊 SMC Setup: Buy-Side Liquidity Swept on XAUUSD <span>|</span>
+        💰 Recent Payout: $4,250 on MetaTrader 5 <span>|</span>
+        🔥 New Challenge: 200K Lightning Account <span>|</span>
+        📈 Fair Value Gap filled on EURUSD (1H) <span>|</span>
+        ✅ Withdrawal processed: $2,150
+      </p>
+    </div>
+  </div>
+
+  <!-- ========== HERO SECTION ========== -->
+  <header id="hero" class="hero d-flex align-items-center text-center">
+    <div class="container">
+      <h1 class="display-3 fw-bold mb-3">Trade with <span class="text-neon">Zero Risk</span></h1>
+      <p class="lead mb-4">Get funded up to <span class="text-neon fw-bold">$200,000</span>. Keep up to <span class="text-neon fw-bold">90%</span> of profits.</p>
+      <a href="#pricing-section" class="btn btn-primary btn-lg px-5 py-3">Start Your Challenge</a>
+      <div class="mt-4">
+        <span class="badge bg-neon text-dark me-2">No Risk</span>
+        <span class="badge bg-neon text-dark">Fast Payouts</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== HOW IT WORKS ========== -->
+  <section id="how-it-works" class="py-5">
+    <div class="container text-center">
+      <h2 class="mb-2">How It Works</h2>
+      <p class="text-secondary mb-5">Three simple steps to become a funded trader</p>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card border-0 h-100 p-4 shadow-lg">
+            <i class="bi bi-clipboard-check display-4 text-neon mb-3"></i>
+            <h5>1. Choose Your Plan</h5>
+            <p>Select an account size that fits your trading style. One‑time fee, full refund on first profit split.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 h-100 p-4 shadow-lg">
+            <i class="bi bi-graph-up-arrow display-4 text-neon mb-3"></i>
+            <h5>2. Pass the Evaluation</h5>
+            <p>Hit your profit target while respecting drawdown rules. Trade any strategy except HFT.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 h-100 p-4 shadow-lg">
+            <i class="bi bi-cash-stack display-4 text-neon mb-3"></i>
+            <h5>3. Get Funded &amp; Earn</h5>
+            <p>Receive a live funded account and withdraw up to 90% of the profits you generate.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRICING SECTION ========== -->
+  <section id="pricing-section" class="py-5 bg-neon-soft">
+    <div class="container">
+      <h1 class="text-center mb-3">Choose Your Challenge</h1>
+      <p class="text-center text-secondary mb-4">Select account type and trading platform</p>
+
+      <!-- Toggle Switches -->
+      <div class="toggle-container text-center">
+        <div class="toggle-group mb-3" id="accountToggle">
+          <span class="toggle-option active" data-type="growth">Growth</span>
+          <span class="toggle-option" data-type="select">Select</span>
+          <span class="toggle-option" data-type="lightning">Lightning</span>
+        </div>
+        <br />
+        <div class="toggle-group" id="platformToggle">
+          <span class="toggle-option active" data-platform="mt5">MetaTrader 5</span>
+          <span class="toggle-option" data-platform="mt4">MetaTrader 4</span>
+          <span class="toggle-option" data-platform="tradovate">Tradovate</span>
+        </div>
+      </div>
+
+      <!-- Pricing Cards Container (dynamically rendered) -->
+      <div id="pricingCardsContainer" class="row g-4 justify-content-center">
+        <!-- Cards injected by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS CAROUSEL ========== -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">What Traders Say</h2>
+      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active text-center">
+            <p class="lead fst-italic">"The evaluation was fair and the payout was incredibly fast. Best prop firm experience."</p>
+            <h5>— Alex M., 200K Account</h5>
+          </div>
+          <div class="carousel-item text-center">
+            <p class="lead fst-italic">"I passed on my second attempt and now trade full-time. Customer support is excellent."</p>
+            <h5>— Sarah K., 50K Account</h5>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FAQ SECTION ========== -->
+  <section id="faq-section" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  What is a prop firm?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  We provide capital to skilled traders who pass our evaluation. You keep up to 90% of profits. Our evaluation rules are designed to identify consistent traders who can manage risk effectively.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  How long does payout take?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Once you request a withdrawal, it's processed within 24-48 hours. We prioritise fast payouts so you can enjoy your profits.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Can I use Expert Advisors (EAs)?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes, but no high‑frequency trading or martingale strategies are permitted. We support all major EAs that comply with our risk rules.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  Do you allow Smart Money Concepts (SMC) trading?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Absolutely! SMC is fully supported. Our platform is designed to accommodate order flow, liquidity sweeps, and fair value gap strategies. Trade with confidence.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq5">
+                  Can I trade during high-impact news?
+                </button>
+              </h2>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes, we allow news trading. However, we advise caution as volatility increases. Our risk rules apply regardless of news events.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CHECKOUT MODAL ========== -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Complete Purchase</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>You selected: <strong id="selectedPlan"></strong></p>
+          <form id="checkoutForm" novalidate>
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="fullName" required />
+              <div class="invalid-feedback">Please enter your full name.</div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" required />
+              <div class="invalid-feedback">Valid email required.</div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Simulate Payment</button>
+          </form>
+          <div id="successMessage" class="mt-3 d-none alert alert-success">
+            🎉 Success! Your challenge account has been simulated.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-black text-secondary py-4">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2026 Apex Trading – Educational Simulation. No real money involved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/pricing-calculator.js"></script>
+</body>
+</html>

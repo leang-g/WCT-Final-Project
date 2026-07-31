@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up – Apex Trading</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">🚀 Apex Trading</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="rules.html">Rules</a></li>
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
+        </ul>
+        <div class="d-flex ms-lg-3">
+          <a href="login.html" class="btn btn-outline-light me-2">Login</a>
+          <a href="signup.html" class="btn btn-primary active">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container d-flex justify-content-center align-items-center" style="min-height:70vh;">
+    <div class="col-md-6">
+      <div class="card border-0 p-4">
+        <h2 class="mb-3 text-center">Create Account</h2>
+        <form id="signupForm" novalidate>
+          <div class="mb-3">
+            <label for="signupName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="signupName" required />
+            <div class="invalid-feedback">Please enter your full name.</div>
+          </div>
+          <div class="mb-3">
+            <label for="signupEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="signupEmail" required />
+            <div class="invalid-feedback">Valid email required.</div>
+          </div>
+          <div class="mb-3">
+            <label for="signupPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signupPassword" required minlength="6" />
+            <div class="invalid-feedback">Minimum 6 characters.</div>
+          </div>
+          <div class="mb-3">
+            <label for="signupConfirm" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="signupConfirm" required minlength="6" />
+            <div class="invalid-feedback">Passwords must match.</div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          <div id="signupMessage" class="mt-3 d-none alert alert-info text-center">
+            Simulation: Account created (no real backend).
+          </div>
+        </form>
+        <p class="mt-3 text-center"><a href="login.html">Already have an account? Log in</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-black text-secondary py-4 mt-auto">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2026 Apex Trading – Educational Simulation.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/form-validation.js"></script>
+</body>
+</html>

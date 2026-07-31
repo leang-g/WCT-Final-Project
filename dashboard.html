@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Apex Trading</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Glass Nav -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">🚀 Apex Trading</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="rules.html">Rules & FAQ</a></li>
+          <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
+        </ul>
+        <div class="d-flex ms-lg-3">
+          <a href="login.html" class="btn btn-outline-light me-2">Login</a>
+          <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <p>
+        🏆 Trader Alex W. passed 50K Evaluation <span>|</span>
+        📊 SMC Setup: Buy-Side Liquidity Swept on XAUUSD <span>|</span>
+        💰 Recent Payout: $4,250 on MetaTrader 5 <span>|</span>
+        🔥 New Challenge: 200K Lightning Account <span>|</span>
+        📈 Fair Value Gap filled on EURUSD (1H) <span>|</span>
+        ✅ Withdrawal processed: $2,150
+      </p>
+      <p>
+        🏆 Trader Alex W. passed 50K Evaluation <span>|</span>
+        📊 SMC Setup: Buy-Side Liquidity Swept on XAUUSD <span>|</span>
+        💰 Recent Payout: $4,250 on MetaTrader 5 <span>|</span>
+        🔥 New Challenge: 200K Lightning Account <span>|</span>
+        📈 Fair Value Gap filled on EURUSD (1H) <span>|</span>
+        ✅ Withdrawal processed: $2,150
+      </p>
+    </div>
+  </div>
+
+  <main class="container py-4 dashboard-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0"><span class="text-neon">//</span> Trading Terminal <span class="smc-badge ms-2">Simulation</span></h2>
+      <span class="badge bg-neon text-dark">Live Account (Demo)</span>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3 col-6">
+        <div class="card card-term h-100 p-3">
+          <div class="stat-label">Balance</div>
+          <div class="stat-value text-white">$54,230.00</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card card-term h-100 p-3">
+          <div class="stat-label">Today's P&L</div>
+          <div class="stat-value text-success">+$1,240.50</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card card-term h-100 p-3">
+          <div class="stat-label">Equity</div>
+          <div class="stat-value text-white">$55,470.50</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card card-term h-100 p-3">
+          <div class="stat-label">Drawdown</div>
+          <div class="stat-value text-danger">-2.1%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart + Open Positions -->
+    <div class="row">
+      <div class="col-lg-8 mb-4">
+        <div class="card card-term p-3 h-100">
+          <h5 class="card-title mb-3">Balance History <span class="smc-badge">Buy‑Side Liquidity Sweep</span></h5>
+          <div class="chart-container">
+            <canvas id="balanceChart"></canvas>
+          </div>
+          <div class="mt-2 text-secondary" style="font-size:0.75rem;">
+            <i class="bi bi-info-circle"></i> Simulated price action based on SMC concepts
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card card-term p-3 h-100">
+          <h5 class="card-title mb-3">Open Positions</h5>
+          <div class="table-responsive">
+            <table class="table table-term">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Side</th>
+                  <th>Volume</th>
+                  <th>P&L</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="fw-bold">EURUSD</span><br><small class="text-secondary">Swing Low Sweep</small></td>
+                  <td class="text-success">Buy</td>
+                  <td>0.10</td>
+                  <td class="profit">+$120.50</td>
+                </tr>
+                <tr>
+                  <td><span class="fw-bold">XAUUSD</span><br><small class="text-secondary">Liquidity Grab</small></td>
+                  <td class="text-danger">Sell</td>
+                  <td>0.05</td>
+                  <td class="loss">-$45.00</td>
+                </tr>
+                <tr>
+                  <td><span class="fw-bold">US30</span><br><small class="text-secondary">Breaker Block</small></td>
+                  <td class="text-success">Buy</td>
+                  <td>1.00</td>
+                  <td class="profit">+$310.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-black text-secondary py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2026 Apex Trading – Educational Simulation.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard-chart.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+/* Dashboard Terminal Styling */
+.dashboard-container { padding-top: 1rem; }
+.card-term {
+  background: rgba(13,13,13,0.8);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+}
+.stat-value { font-weight: 800; font-size: 1.6rem; letter-spacing: -0.02em; }
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.table-term {
+  font-size: 0.85rem;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-term th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.75rem;
+}
+.table-term td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: middle;
+}
+.table-term .profit { color: #10b981; font-weight: 600; }
+.table-term .loss { color: #ef4444; font-weight: 600; }
+.chart-container { position: relative; height: 250px; width: 100%; }
+.smc-badge {
+  background: rgba(0, 255, 102, 0.15);
+  color: var(--neon-green);
+  border: 1px solid rgba(0, 255, 102, 0.3);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  display: inline-block;
+}
