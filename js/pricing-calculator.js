@@ -209,7 +209,7 @@ const propFirmData = {
 const platformMap = {
     mt5: 'MetaTrader 5',
     mt4: 'MetaTrader 4',
-    ctrader: 'cTrader'
+    tradovate: 'Tradovate',
 };
 
 // ============================================================
