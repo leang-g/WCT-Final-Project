@@ -56,196 +56,234 @@
     <!-- ============================================================
     DASHBOARD MAIN
     ============================================================ -->
-    <main class="container py-5 dashboard-container">
-        <!-- Header -->
-        <div class="dashboard-header">
+    <main class="container py-5 dashboard-container" style="padding-top: 100px !important;">
+        <!-- Header & Multi-Account Switcher -->
+        <div class="dashboard-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div>
                 <span class="section-tag">Live Terminal</span>
                 <h2 class="mb-0">
                     <span class="text-brass">◆</span> Trading Dashboard
-                    <span class="smc-badge ms-3">Simulation</span>
+                    <span class="smc-badge ms-2" id="accountModelBadge">Growth Model</span>
                 </h2>
             </div>
-            <span class="brass-badge">Live Account (Demo)</span>
-        </div>
 
-        <!-- Stats Cards -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-3 col-6">
-                <div class="card card-term h-100 p-3">
-                    <div class="stat-label">Balance</div>
-                    <div class="stat-value text-primary">$54,230.00</div>
-                    <div class="stat-change text-success small">
-                        <i class="bi bi-arrow-up"></i> +2.4% this week
+            <!-- Dynamic Account Selector Dropdown -->
+            <div class="d-flex align-items-center gap-3 flex-wrap" id="accountSwitcherContainer">
+                <div class="account-selector-wrapper">
+                    <label for="accountSelectDropdown" class="stat-label mb-1 text-secondary d-block">
+                        <i class="bi bi-wallet2 me-1 text-brass"></i> Select Trading Account
+                    </label>
+                    <div class="d-flex align-items-center gap-2">
+                        <select id="accountSelectDropdown" class="form-select account-dropdown glass-select">
+                            <!-- Populated dynamically by accounts.js & dashboard-chart.js -->
+                        </select>
+                        <a href="pricing.html" class="btn btn-outline-brass btn-sm text-nowrap d-inline-flex align-items-center gap-1" title="Buy New Account">
+                            <i class="bi bi-plus-circle"></i> + New Account
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="card card-term h-100 p-3">
-                    <div class="stat-label">Today's P&amp;L</div>
-                    <div class="stat-value text-success">+$1,240.50</div>
-                    <div class="stat-change text-success small">
-                        <i class="bi bi-arrow-up"></i> +0.8% today
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="card card-term h-100 p-3">
-                    <div class="stat-label">Equity</div>
-                    <div class="stat-value text-primary">$55,470.50</div>
-                    <div class="stat-change text-muted small">
-                        <i class="bi bi-dash"></i> Stable
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="card card-term h-100 p-3">
-                    <div class="stat-label">Drawdown</div>
-                    <div class="stat-value text-danger">-2.1%</div>
-                    <div class="stat-change text-danger small">
-                        <i class="bi bi-exclamation-triangle"></i> Within limits
-                    </div>
-                </div>
+                <span class="brass-badge" id="accountStatusBadge">LIVE SIMULATED - ACTIVE</span>
             </div>
         </div>
 
-        <!-- Chart + Open Positions -->
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <div class="card card-term p-4 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0">
-                            Balance History
-                            <span class="smc-badge ms-2">Buy‑Side Liquidity Sweep</span>
+        <!-- ============================================================
+        EMPTY STATE (Shown when logged-in user owns 0 accounts)
+        ============================================================ -->
+        <div id="emptyStateContainer" class="d-none py-5 my-4 text-center empty-state-card">
+            <div class="mb-3" style="font-size: 3.5rem; color: var(--brass);">
+                <i class="bi bi-wallet2"></i>
+            </div>
+            <h3 class="fw-bold mb-2">No Active Evaluation Accounts Found</h3>
+            <p class="text-secondary mx-auto mb-4" style="max-width: 520px;">
+                You don't have any active evaluation accounts yet. Pick an account model to begin your funded trader challenge and access your live terminal.
+            </p>
+            <a href="pricing.html" class="btn btn-brass btn-lg px-4 py-2">
+                <i class="bi bi-rocket-takeoff me-2"></i> Browse Plans &amp; Get Funded
+            </a>
+        </div>
+
+        <!-- ============================================================
+        DASHBOARD CONTENT (Populated dynamically)
+        ============================================================ -->
+        <div id="dashboardContent">
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3 col-6">
+                    <div class="card card-term h-100 p-3">
+                        <div class="stat-label">Balance</div>
+                        <div class="stat-value text-primary" id="statBalance">$54,230.00</div>
+                        <div class="stat-change text-success small" id="statBalanceChange">
+                            <i class="bi bi-arrow-up"></i> +2.4% this week
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card card-term h-100 p-3">
+                        <div class="stat-label">Today's P&amp;L</div>
+                        <div class="stat-value text-success" id="statTodayPnl">+$1,240.50</div>
+                        <div class="stat-change text-success small" id="statTodayPnlChange">
+                            <i class="bi bi-arrow-up"></i> +0.8% today
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card card-term h-100 p-3">
+                        <div class="stat-label">Equity</div>
+                        <div class="stat-value text-primary" id="statEquity">$55,470.50</div>
+                        <div class="stat-change text-muted small">
+                            <i class="bi bi-dash"></i> Stable
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card card-term h-100 p-3">
+                        <div class="stat-label">Drawdown</div>
+                        <div class="stat-value text-danger" id="statDrawdown">-2.1%</div>
+                        <div class="stat-change text-danger small">
+                            <i class="bi bi-exclamation-triangle"></i> Within limits
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart + Open Positions -->
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card card-term p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">
+                                Balance History
+                                <span class="smc-badge ms-2">Buy‑Side Liquidity Sweep</span>
+                            </h5>
+                            <span class="text-muted small">
+                                <i class="bi bi-calendar3 me-1"></i> Last 7 Days
+                            </span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="balanceChart"></canvas>
+                        </div>
+                        <div class="mt-3 text-muted small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Simulated price action based on Smart Money Concepts (SMC)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card card-term p-4 h-100">
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-list-ul text-brass me-2"></i>
+                            Open Positions
+                            <span class="badge brass-badge ms-2" id="openPositionsCountBadge">3</span>
                         </h5>
-                        <span class="text-muted small">
-                            <i class="bi bi-calendar3 me-1"></i> Last 7 Days
-                        </span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="balanceChart"></canvas>
-                    </div>
-                    <div class="mt-3 text-muted small">
-                        <i class="bi bi-info-circle me-1"></i>
-                        Simulated price action based on Smart Money Concepts (SMC)
+                        <div class="table-responsive">
+                            <table class="table table-term">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Side</th>
+                                        <th>Vol</th>
+                                        <th>P&amp;L</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="openPositionsTableBody">
+                                    <tr>
+                                        <td>
+                                            <span class="fw-bold">EURUSD</span>
+                                            <br /><small class="text-muted">Swing Low Sweep</small>
+                                        </td>
+                                        <td class="text-success">Buy</td>
+                                        <td>0.10</td>
+                                        <td class="profit">+$120.50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-bold">XAUUSD</span>
+                                            <br /><small class="text-muted">Liquidity Grab</small>
+                                        </td>
+                                        <td class="text-danger">Sell</td>
+                                        <td>0.05</td>
+                                        <td class="loss">-$45.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-bold">US30</span>
+                                            <br /><small class="text-muted">Breaker Block</small>
+                                        </td>
+                                        <td class="text-success">Buy</td>
+                                        <td>1.00</td>
+                                        <td class="profit">+$310.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3 pt-3 border-top border-light-subtle">
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Total P&amp;L</span>
+                                <span class="fw-bold text-success" id="totalTradesPnl">+$385.50</span>
+                            </div>
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Win Rate</span>
+                                <span class="fw-bold" id="statWinRate">68%</span>
+                            </div>
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Risk Level</span>
+                                <span class="fw-bold text-warning">Moderate</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="card card-term p-4 h-100">
-                    <h5 class="card-title mb-3">
-                        <i class="bi bi-list-ul text-brass me-2"></i>
-                        Open Positions
-                        <span class="badge brass-badge ms-2">3</span>
-                    </h5>
-                    <div class="table-responsive">
-                        <table class="table table-term">
-                            <thead>
-                                <tr>
-                                    <th>Symbol</th>
-                                    <th>Side</th>
-                                    <th>Vol</th>
-                                    <th>P&amp;L</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <span class="fw-bold">EURUSD</span>
-                                        <br /><small class="text-muted">Swing Low Sweep</small>
-                                    </td>
-                                    <td class="text-success">Buy</td>
-                                    <td>0.10</td>
-                                    <td class="profit">+$120.50</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="fw-bold">XAUUSD</span>
-                                        <br /><small class="text-muted">Liquidity Grab</small>
-                                    </td>
-                                    <td class="text-danger">Sell</td>
-                                    <td>0.05</td>
-                                    <td class="loss">-$45.00</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="fw-bold">US30</span>
-                                        <br /><small class="text-muted">Breaker Block</small>
-                                    </td>
-                                    <td class="text-success">Buy</td>
-                                    <td>1.00</td>
-                                    <td class="profit">+$310.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-3 pt-3 border-top border-light-subtle">
-                        <div class="d-flex justify-content-between small">
-                            <span class="text-muted">Total P&amp;L</span>
-                            <span class="fw-bold text-success">+$385.50</span>
-                        </div>
-                        <div class="d-flex justify-content-between small">
-                            <span class="text-muted">Win Rate</span>
-                            <span class="fw-bold">68%</span>
-                        </div>
-                        <div class="d-flex justify-content-between small">
-                            <span class="text-muted">Risk Level</span>
-                            <span class="fw-bold text-warning">Moderate</span>
+            <!-- Additional Metrics -->
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="card card-term p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Open Trades</div>
+                                <div class="stat-value text-primary" style="font-size:1.4rem;">3</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="stat-label">Win Rate</div>
+                                <div class="stat-value text-success" style="font-size:1.4rem;">68%</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="stat-label">Risk/Reward</div>
+                                <div class="stat-value text-primary" style="font-size:1.4rem;">1:2.4</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Additional Metrics -->
-        <div class="row g-4 mt-2">
-            <div class="col-md-4">
-                <div class="card card-term p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stat-label">Open Trades</div>
-                            <div class="stat-value text-primary" style="font-size:1.4rem;">3</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="stat-label">Win Rate</div>
-                            <div class="stat-value text-success" style="font-size:1.4rem;">68%</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="stat-label">Risk/Reward</div>
-                            <div class="stat-value text-primary" style="font-size:1.4rem;">1:2.4</div>
+                <div class="col-md-4">
+                    <div class="card card-term p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Today's Volume</div>
+                                <div class="stat-value text-primary" style="font-size:1.4rem;" id="statVolumeLots">1.15</div>
+                                <div class="text-muted small">Standard Lots</div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Trades</div>
+                                <div class="stat-value text-primary" style="font-size:1.4rem;">4</div>
+                                <div class="text-muted small">Today</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-term p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stat-label">Today's Volume</div>
-                            <div class="stat-value text-primary" style="font-size:1.4rem;">1.15</div>
-                            <div class="text-muted small">Standard Lots</div>
-                        </div>
-                        <div>
-                            <div class="stat-label">Trades</div>
-                            <div class="stat-value text-primary" style="font-size:1.4rem;">4</div>
-                            <div class="text-muted small">Today</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-term p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stat-label">Account Age</div>
-                            <div class="stat-value text-primary" style="font-size:1.4rem;">12d</div>
-                            <div class="text-muted small">Active</div>
-                        </div>
-                        <div>
-                            <div class="stat-label">Next Payout</div>
-                            <div class="stat-value text-primary" style="font-size:1.4rem;">3d</div>
-                            <div class="text-muted small">Pending</div>
+                <div class="col-md-4">
+                    <div class="card card-term p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Account Age</div>
+                                <div class="stat-value text-primary" style="font-size:1.4rem;" id="statAccountAge">12d</div>
+                                <div class="text-muted small">Active</div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Next Payout</div>
+                                <div class="stat-value text-primary" style="font-size:1.4rem;" id="statNextPayout">3d</div>
+                                <div class="text-muted small">Pending</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -265,8 +303,8 @@
                     <span class="text-secondary small ms-3">Educational Simulation</span>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-secondary text-decoration-none me-3 small">Privacy</a>
-                    <a href="#" class="text-secondary text-decoration-none me-3 small">Terms</a>
+                    <a href="index.html" class="text-secondary text-decoration-none me-3 small">Home</a>
+                    <a href="pricing.html" class="text-secondary text-decoration-none me-3 small">Pricing</a>
                     <a href="help-center.html" class="text-secondary text-decoration-none small">Help Center</a>
                 </div>
             </div>
@@ -285,14 +323,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
     </script>
     <script src="js/auth.js"></script>
+    <script src="js/accounts.js"></script>
     <script src="js/main.js"></script>
     <script src="js/dashboard-chart.js"></script>
     <script src="js/form-validation.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            renderNavbar(); // Show user info or login/signup
-            requireAuth();  // Protect this page
-        });
-    </script>
 </body>
 </html>

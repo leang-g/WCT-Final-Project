@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: #FAF8F5;
+    background-image: 
+      radial-gradient(circle at 12% 18%, rgba(197, 154, 69, 0.06) 0%, transparent 45%),
+      radial-gradient(circle at 88% 30%, rgba(5, 150, 105, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 50% 85%, rgba(212, 184, 150, 0.07) 0%, transparent 50%);
+    background-attachment: fixed;
+    color: #1C1917;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Global SVG Noise Overlay Utility */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Radial-Masked Technical Grid Pattern for Hero and Atmosphere */
+.hero-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(28, 25, 23, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 25, 23, 0.04) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000000 60%, transparent 100%);
+}
+
+/* Refined Multi-Layer Card Elevation */
+.shadow-card-elevated {
+  box-shadow: 
+    0 20px 50px -12px rgba(28, 25, 23, 0.08),
+    0 0 0 1px rgba(28, 25, 23, 0.02);
+}
+
+/* Luxury Multi-Stop Editorial Elevations */
+.shadow-editorial {
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    0 8px 24px rgba(28, 25, 23, 0.04),
+    0 16px 40px rgba(197, 154, 69, 0.03);
+}
+
+.shadow-editorial-hover {
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.03),
+    0 20px 50px -8px rgba(28, 25, 23, 0.1),
+    0 24px 60px rgba(197, 154, 69, 0.14);
+}
+
+.shadow-brass-glow {
+  box-shadow: 0 0 30px rgba(197, 154, 69, 0.35);
+}
+
+.shadow-emerald-glow {
+  box-shadow: 0 0 30px rgba(5, 150, 105, 0.25);
+}
+
+/* Glassmorphic Luxury Effects */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(231, 226, 218, 0.85);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+}
+
+.glass-panel-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-panel-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px -4px rgba(197, 154, 69, 0.14), 0 8px 20px -2px rgba(28, 25, 23, 0.04);
+  border-color: rgba(197, 154, 69, 0.45);
+}
+
+/* Luxury Gold Gradients */
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #E6C87C 0%, #C59A45 52%, #9B6F1C 100%);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #B48432 0%, #C59A45 50%, #8C6219 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animated Shimmer Button */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 70%
+  );
+  transform: rotate(30deg);
+  animation: shimmer 4s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) rotate(30deg); }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8D0C3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C59A45;
+}
+
+/* Remove standard number spin buttons */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Infinite Marquee Animation for Live Payouts & Reviews */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-infinite {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.animate-marquee-infinite:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-fast {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee-fast:hover {
+  animation-play-state: paused;
+}
+
+/* 3D Card Flip Animation Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+

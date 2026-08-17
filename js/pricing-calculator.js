@@ -1,6 +1,7 @@
 // ============================================================
-// MOCK DATA – Evaluation (Front) + Funded (Back)
+// APEX FUNDED — Pricing Calculator & Plan Configuration
 // ============================================================
+
 const propFirmData = {
     growth: {
         label: 'Growth',
@@ -210,10 +211,11 @@ const platformMap = {
     mt5: 'MetaTrader 5',
     mt4: 'MetaTrader 4',
     tradovate: 'Tradovate',
+    ctrader: 'Tradovate',
 };
 
 // ============================================================
-// RENDER FUNCTION — WITH ROUTING TO signup.html
+// RENDER FUNCTION — WITH INTEGRATED PURCHASE GATE
 // ============================================================
 function renderPricingCards() {
     const container = document.getElementById('pricingCardsContainer');
@@ -268,6 +270,7 @@ function renderPricingCards() {
         ).join('');
 
         const flipId = `${accountType}-${tier.size.replace('K', '').replace('$', '').replace(',', '')}`;
+        const planFullName = `${accountLabel} $${tier.size} (${platformName}) - $${tier.price}`;
 
         cardsHtml += `
             <div class="col-md-6 col-lg-4">
@@ -295,12 +298,12 @@ function renderPricingCards() {
                                 </div>
                                 <!-- FOOTER ACTIONS -->
                                 <div class="card-footer-actions">
-                                    <button class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
+                                    <button type="button" class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
                                         <i class="bi bi-arrow-right-circle"></i> View Funded Rules
                                     </button>
-                                    <a href="signup.html" class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
-                                        Get Funded
-                                    </a>
+                                    <button type="button" class="btn btn-brass buy-btn w-100" data-plan="${escapeHtml(planFullName)}">
+                                        <i class="bi bi-lightning-charge me-1"></i> Get Funded
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -326,12 +329,12 @@ function renderPricingCards() {
                                 </div>
                                 <!-- FOOTER ACTIONS -->
                                 <div class="back-footer-actions">
-                                    <button class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
+                                    <button type="button" class="btn-link-neon flip-trigger" data-flip-id="${flipId}">
                                         <i class="bi bi-arrow-left-circle"></i> View Evaluation Rules
                                     </button>
-                                    <a href="signup.html" class="btn btn-brass buy-btn" data-plan="${accountLabel} ${tier.size} - $${tier.price}">
-                                        Get Funded
-                                    </a>
+                                    <button type="button" class="btn btn-brass buy-btn w-100" data-plan="${escapeHtml(planFullName)}">
+                                        <i class="bi bi-lightning-charge me-1"></i> Get Funded
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -343,50 +346,56 @@ function renderPricingCards() {
 
     container.innerHTML = cardsHtml;
 
-    // ===== RE-BIND FLIP TRIGGERS =====
-    document.querySelectorAll('.flip-trigger').forEach(btn => {
+    // ===== BIND FLIP TRIGGERS =====
+    container.querySelectorAll('.flip-trigger').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const flipId = this.dataset.flipId;
-            const inner = document.querySelector(`.flip-card-inner[data-flip-id="${flipId}"]`);
+            const inner = container.querySelector(`.flip-card-inner[data-flip-id="${flipId}"]`);
             if (inner) {
                 inner.classList.toggle('flipped');
             }
         });
     });
 
-    // ===== RE-BIND BUY BUTTONS (no longer needed since they're now <a> tags) =====
-    // The checkout modal is now bypassed for direct signup routing.
-    // If you still want the modal, uncomment the code below.
-    /*
-    const buyBtns = container.querySelectorAll('.buy-btn');
-    if (buyBtns.length > 0) {
-        const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
-        const selectedPlanSpan = document.getElementById('selectedPlan');
-        const checkoutForm = document.getElementById('checkoutForm');
-        const successMessage = document.getElementById('successMessage');
-
-        buyBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                const plan = this.getAttribute('data-plan');
-                selectedPlanSpan.textContent = plan;
-                checkoutForm.reset();
-                checkoutForm.classList.remove('was-validated');
-                successMessage.classList.add('d-none');
-                checkoutModal.show();
-            });
+    // ===== BIND GET FUNDED BUY BUTTONS =====
+    container.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            const plan = this.getAttribute('data-plan');
+            if (typeof handlePurchaseGate === 'function') {
+                handlePurchaseGate(plan);
+            }
         });
-    }
-    */
+    });
+}
+
+// Helper to escape HTML attributes safely
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
 }
 
 // ============================================================
-// INITIAL RENDER
+// INITIAL RENDER & TOGGLE ATTACHMENT
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('pricingCardsContainer')) {
         renderPricingCards();
+
+        document.querySelectorAll('.toggle-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const group = this.parentElement;
+                group.querySelectorAll('.toggle-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                renderPricingCards();
+            });
+        });
     }
 });

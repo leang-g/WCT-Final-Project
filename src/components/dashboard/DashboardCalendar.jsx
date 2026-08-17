@@ -1,0 +1,300 @@
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, RotateCcw, TrendingUp, TrendingDown, Info, Activity } from 'lucide-react';
+import AnimatedCounter from '../common/AnimatedCounter';
+
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+const weekHeaders = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+export default function DashboardCalendar({ account }) {
+  const [currentYear, setCurrentYear] = useState(2026);
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(7); // August (0-indexed)
+  const [hoveredDay, setHoveredDay] = useState(null);
+
+  const handlePrevMonth = () => {
+    if (currentMonthIndex === 0) {
+      setCurrentMonthIndex(11);
+      setCurrentYear(prev => prev - 1);
+    } else {
+      setCurrentMonthIndex(prev => prev - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonthIndex === 11) {
+      setCurrentMonthIndex(0);
+      setCurrentYear(prev => prev + 1);
+    } else {
+      setCurrentMonthIndex(prev => prev + 1);
+    }
+  };
+
+  const handleResetToCurrent = () => {
+    setCurrentYear(2026);
+    setCurrentMonthIndex(7); // August 2026
+  };
+
+  // Generate calendar days dynamically for the chosen month and year
+  const calendarDays = useMemo(() => {
+    const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
+    const firstDayOfWeek = (new Date(currentYear, currentMonthIndex, 1).getDay() + 6) % 7;
+
+    const days = [];
+
+    // Leading empty padding
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      days.push({ day: null, date: '', pnl: null, trades: 0, isWeekend: false });
+    }
+
+    const startBal = account ? (account.startingBalance || 50000) : 50000;
+    const factor = startBal / 50000;
+
+    const simRefYear = 2026;
+    const simRefMonth = 7; // August
+    const simRefDay = 17;
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dayOfWeek = (firstDayOfWeek + d - 1) % 7;
+      const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6);
+      const dateStr = `${currentYear}-${String(currentMonthIndex + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      
+      const isToday = currentYear === simRefYear && currentMonthIndex === simRefMonth && d === simRefDay;
+      const isPastOrToday = (currentYear < simRefYear) ||
+                            (currentYear === simRefYear && currentMonthIndex < simRefMonth) ||
+                            (currentYear === simRefYear && currentMonthIndex === simRefMonth && d <= simRefDay);
+
+      let pnl = null;
+      let trades = 0;
+
+      if (isPastOrToday && !isWeekend) {
+        const seed = Math.sin((currentYear * 1000) + ((currentMonthIndex + 1) * 37) + (d * 13)) * 10000;
+        const pseudoRand = Math.abs(seed - Math.floor(seed));
+
+        const isWin = pseudoRand < 0.68;
+        trades = Math.floor(pseudoRand * 4) + 1;
+
+        if (isWin) {
+          pnl = Math.round((220 + (pseudoRand * 680)) * factor * 100) / 100;
+        } else {
+          pnl = -Math.round((140 + (pseudoRand * 520)) * factor * 100) / 100;
+        }
+
+        if (isToday) {
+          pnl = account && account.todayPnL !== undefined ? account.todayPnL : 317.40;
+          trades = 2;
+        }
+      }
+
+      days.push({
+        day: d,
+        date: dateStr,
+        pnl: pnl,
+        trades: trades,
+        isWeekend: isWeekend,
+        isToday: isToday
+      });
+    }
+
+    return days;
+  }, [currentYear, currentMonthIndex, account]);
+
+  const tradingDaysList = calendarDays.filter(d => d.pnl !== null);
+  const winningDays = tradingDaysList.filter(d => d.pnl > 0);
+  const losingDays = tradingDaysList.filter(d => d.pnl < 0);
+  const totalMonthPnL = tradingDaysList.reduce((acc, curr) => acc + curr.pnl, 0);
+  const totalTradesCount = tradingDaysList.reduce((acc, curr) => acc + curr.trades, 0);
+  const winRate = tradingDaysList.length > 0 ? ((winningDays.length / tradingDaysList.length) * 100).toFixed(0) : 0;
+
+  const currentMonthLabel = `${monthNames[currentMonthIndex]} ${currentYear}`;
+  const isViewingCurrentSimMonth = currentYear === 2026 && currentMonthIndex === 7;
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-200">
+      
+      {/* Month Header & Summary Statistics */}
+      <div className="p-7 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-6">
+        
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-stone-100">
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">
+              Trading Performance Log
+            </span>
+            <h3 className="font-serif font-bold text-2xl text-stone-950 flex items-center gap-2">
+              <CalendarIcon className="w-5 h-5 text-brass-600" />
+              P&amp;L Trading Calendar
+            </h3>
+          </div>
+
+          {/* Month Selector Controls */}
+          <div className="flex items-center gap-2">
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={handlePrevMonth}
+              className="p-2 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors cursor-pointer shadow-xs"
+              title="Previous Month"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </motion.button>
+
+            <span className="font-serif font-bold text-sm text-stone-900 px-3 min-w-[140px] text-center select-none">
+              {currentMonthLabel}
+            </span>
+
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={handleNextMonth}
+              className="p-2 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors cursor-pointer shadow-xs"
+              title="Next Month"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </motion.button>
+
+            {!isViewingCurrentSimMonth && (
+              <button
+                onClick={handleResetToCurrent}
+                className="px-3 py-1.5 rounded-xl border border-brass-300 bg-brass-50 text-brass-900 text-xs font-bold hover:bg-brass-100 transition-colors flex items-center gap-1 cursor-pointer shadow-xs"
+                title="Return to Current Month"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Today</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 4 Quick Month KPI Pills */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200/70">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">Month Net P&amp;L</span>
+            <span className={`font-mono font-bold text-xl block mt-0.5 ${totalMonthPnL >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
+              <AnimatedCounter value={totalMonthPnL} prefix={totalMonthPnL >= 0 ? '+$' : '-$'} />
+            </span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">Winning Days</span>
+            <span className="font-mono font-bold text-xl text-emerald-700 block mt-0.5">
+              {winningDays.length} Days ({winRate}%)
+            </span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200/80">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-rose-800 block">Losing Days</span>
+            <span className="font-mono font-bold text-xl text-rose-700 block mt-0.5">
+              {losingDays.length} Days
+            </span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200/70">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">Total Executed Trades</span>
+            <span className="font-mono font-bold text-xl text-stone-900 block mt-0.5">
+              {totalTradesCount} Trades
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      {/* 7-Column Calendar Grid */}
+      <div className="p-7 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial relative">
+        
+        {/* Days of Week Headers */}
+        <div className="grid grid-cols-7 gap-2 mb-3 text-center">
+          {weekHeaders.map((dayName, idx) => (
+            <div key={idx} className="py-2 text-xs font-bold uppercase tracking-wider text-stone-500">
+              {dayName}
+            </div>
+          ))}
+        </div>
+
+        {/* Calendar Day Tiles */}
+        <div className="grid grid-cols-7 gap-2 sm:gap-3">
+          {calendarDays.map((item, idx) => {
+            if (!item.day) {
+              return (
+                <div key={idx} className="h-20 sm:h-24 rounded-2xl bg-transparent border border-dashed border-stone-100"></div>
+              );
+            }
+
+            const hasPnl = item.pnl !== null;
+            const isProfit = item.pnl > 0;
+            const isLoss = item.pnl < 0;
+
+            return (
+              <div
+                key={idx}
+                onMouseEnter={() => hasPnl && setHoveredDay(item)}
+                onMouseLeave={() => setHoveredDay(null)}
+                className={`relative h-20 sm:h-24 p-2.5 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer ${
+                  item.isToday
+                    ? 'border-brass-400 bg-white ring-2 ring-brass-400/40 shadow-editorial'
+                    : hasPnl
+                    ? (isProfit
+                        ? 'bg-emerald-50/80 border-emerald-200/90 hover:bg-emerald-100/90 hover:shadow-sm'
+                        : 'bg-rose-50/80 border-rose-200/90 hover:bg-rose-100/90 hover:shadow-sm')
+                    : (item.isWeekend
+                        ? 'bg-stone-50/40 border-stone-100 text-stone-400'
+                        : 'bg-white border-stone-200/70 hover:border-stone-300')
+                }`}
+              >
+                {/* Day Header */}
+                <div className="flex items-center justify-between">
+                  <span className={`font-mono text-xs font-bold ${item.isToday ? 'text-brass-900' : 'text-stone-700'}`}>
+                    {item.day}
+                  </span>
+                  {item.isToday && (
+                    <span className="px-1.5 py-0.2 rounded text-[8px] font-bold bg-brass-100 text-brass-900 uppercase">
+                      Today
+                    </span>
+                  )}
+                  {hasPnl && (
+                    <span className="text-[10px] text-stone-500 font-mono hidden sm:inline">
+                      {item.trades} trds
+                    </span>
+                  )}
+                </div>
+
+                {/* Day P&L */}
+                <div className="text-center sm:text-left">
+                  {hasPnl ? (
+                    <div>
+                      <span className={`font-mono font-bold text-xs sm:text-sm block ${isProfit ? 'text-emerald-700' : 'text-rose-700'}`}>
+                        {isProfit ? `+$${item.pnl.toFixed(2)}` : `-$${Math.abs(item.pnl).toFixed(2)}`}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-[11px] text-stone-300 font-mono">—</span>
+                  )}
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Hover Popover Breakdown */}
+        {hoveredDay && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute bottom-4 right-8 bg-stone-950 text-white p-3 rounded-2xl shadow-xl border border-stone-800 text-xs font-mono z-20 pointer-events-none"
+          >
+            <div className="text-brass-300 font-bold mb-1">{hoveredDay.date} Session</div>
+            <div className="flex items-center gap-3">
+              <span>Executed: {hoveredDay.trades} Trades</span>
+              <span className={hoveredDay.pnl >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                Net: {hoveredDay.pnl >= 0 ? `+$${hoveredDay.pnl.toFixed(2)}` : `-$${Math.abs(hoveredDay.pnl).toFixed(2)}`}
+              </span>
+            </div>
+          </motion.div>
+        )}
+
+      </div>
+
+    </div>
+  );
+}

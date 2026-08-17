@@ -2107,6 +2107,7 @@ h1, h2, h3, h4, h5, h6 {
         transform: translateY(15px);
     }
 }
+}
 .pipeline-timber {
     display: flex;
     justify-content: center;
@@ -2138,4 +2139,65 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 4px;
 }
 */
+
+/* ============================================================
+   GLASS MODALS & AUTH GATEWAY STYLES
+   ============================================================ */
+.modal-backdrop.show {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(20, 20, 20, 0.55);
+}
+
+.glass-modal {
+    background: rgba(255, 253, 249, 0.94);
+    backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.95);
+    border-left: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), var(--shadow-soft);
+    overflow: hidden;
+}
+
+.glass-modal .modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 1.5rem 1.75rem 1rem;
+}
+
+.glass-modal .modal-body {
+    padding: 1.75rem;
+}
+
+.glass-modal .form-control {
+    background: rgba(255, 252, 248, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: var(--transition-ease);
+}
+
+.glass-modal .form-control:focus {
+    border-color: var(--brass);
+    box-shadow: 0 0 0 3px var(--brass-glow);
+    background: #fff;
+}
+
+.glass-modal .nav-pills .nav-link {
+    color: var(--text-secondary);
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 0.4rem 1.2rem;
+    transition: var(--transition-ease);
+}
+
+.glass-modal .nav-pills .nav-link.active {
+    background: var(--brass-gradient);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--brass-glow);
+}
+
 

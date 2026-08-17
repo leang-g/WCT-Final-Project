@@ -1,77 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact – Apex Trading</title>
+  <title>Contact — Apex Funded</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top glass-nav">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">🚀 Apex Trading</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <span class="brand-icon">◆</span>
+        <span>Apex Funded</span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-          <li class="nav-item"><a class="nav-link" href="rules.html">Rules</a></li>
+          <li class="nav-item"><a class="nav-link" href="rules.html">Rules &amp; FAQ</a></li>
           <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link active" href="help-center.html">Help Center</a></li>
+          <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
         </ul>
-        <div class="d-flex ms-lg-3">
-          <a href="login.html" class="btn btn-outline-light me-2">Login</a>
-          <a href="signup.html" class="btn btn-primary">Sign Up</a>
-        </div>
+        <div class="d-flex ms-lg-3 gap-2 align-items-center" id="authSection"></div>
       </div>
     </div>
   </nav>
 
-  <main class="container py-5">
-    <h1 class="mb-4">Contact Us</h1>
-    <div class="row">
+  <main class="container py-5" style="padding-top: 110px !important;">
+    <div class="text-center mb-5">
+      <span class="section-tag">Direct Support</span>
+      <h1 class="display-4 fw-bold section-title mb-3">Contact Apex Funded</h1>
+      <p class="text-secondary" style="max-width: 500px; margin: 0 auto;">
+        Have questions about evaluations, SMC rules, or payouts? Our team is available 24/7.
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
       <div class="col-lg-6">
-        <p>Have questions? Fill out the form and we'll get back to you (simulation).</p>
-        <form id="contactForm" novalidate>
-          <div class="mb-3">
-            <label for="contactName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="contactName" required />
-          </div>
-          <div class="mb-3">
-            <label for="contactEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="contactEmail" required />
-          </div>
-          <div class="mb-3">
-            <label for="contactMessage" class="form-label">Message</label>
-            <textarea class="form-control" id="contactMessage" rows="4" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
-          <div id="contactSuccess" class="mt-3 d-none alert alert-success">
-            Message sent (simulated). Thank you!
-          </div>
-        </form>
+        <div class="glass-panel p-4 p-md-5">
+          <h4 class="fw-bold mb-4">Send a Message</h4>
+          <form id="contactForm" novalidate>
+            <div class="mb-3">
+              <label for="contactName" class="form-label small fw-semibold text-secondary">Your Name</label>
+              <input type="text" class="form-control" id="contactName" placeholder="Alex Mercer" required />
+            </div>
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label small fw-semibold text-secondary">Email Address</label>
+              <input type="email" class="form-control" id="contactEmail" placeholder="you@example.com" required />
+            </div>
+            <div class="mb-3">
+              <label for="contactMessage" class="form-label small fw-semibold text-secondary">Message</label>
+              <textarea class="form-control" id="contactMessage" rows="4" placeholder="How can we help with your challenge?" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-brass w-100 py-2">Submit Message</button>
+            <div id="contactSuccess" class="mt-3 d-none alert alert-success text-center">
+              <i class="bi bi-check-circle me-1"></i> Message sent successfully (simulated). We'll get back to you shortly!
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="col-lg-6 mt-4 mt-lg-0">
-        <div class="card border-0 h-100 p-4">
-          <h5>Other Ways to Reach Us</h5>
-          <p><i class="bi bi-envelope"></i> support@apextrading.edu</p>
-          <p><i class="bi bi-telephone"></i> +1 (555) 123-4567</p>
-          <p><i class="bi bi-discord"></i> Discord: ApexTrading#1234</p>
+      <div class="col-lg-5">
+        <div class="glass-panel p-4 p-md-5 h-100 d-flex flex-column justify-content-between">
+          <div>
+            <h4 class="fw-bold mb-4">Direct Channels</h4>
+            <div class="mb-4">
+              <h6 class="text-brass fw-bold mb-1"><i class="bi bi-envelope me-2"></i> Email Support</h6>
+              <p class="text-secondary small mb-0">support@apexfunded.io</p>
+            </div>
+            <div class="mb-4">
+              <h6 class="text-brass fw-bold mb-1"><i class="bi bi-discord me-2"></i> Trader Community</h6>
+              <p class="text-secondary small mb-0">discord.gg/apexfunded</p>
+            </div>
+            <div class="mb-4">
+              <h6 class="text-brass fw-bold mb-1"><i class="bi bi-clock me-2"></i> Hours of Operation</h6>
+              <p class="text-secondary small mb-0">24 Hours / 7 Days a week</p>
+            </div>
+          </div>
+          <div class="p-3 rounded bg-white mt-4">
+            <span class="badge bg-success mb-2">Simulated Prop Firm</span>
+            <p class="small text-secondary mb-0">Apex Funded is an educational trading simulation platform. No real capital is traded.</p>
+          </div>
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="bg-black text-secondary py-4 mt-5">
-    <div class="container text-center">
-      <p class="mb-0">&copy; 2026 Apex Trading – Educational Simulation.</p>
+  <footer class="footer-arch mt-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <span class="footer-brand">◆ Apex Funded</span>
+          <span class="text-secondary small ms-3">Educational Simulation</span>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="index.html" class="text-secondary text-decoration-none me-3 small">Home</a>
+          <a href="pricing.html" class="text-secondary text-decoration-none me-3 small">Pricing</a>
+          <a href="help-center.html" class="text-secondary text-decoration-none small">Help Center</a>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="row">
+        <div class="col-12 text-center text-secondary small">
+          &copy; 2026 Apex Funded — No real money involved.
+        </div>
+      </div>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/main.js"></script>
   <script src="js/form-validation.js"></script>
 </body>
