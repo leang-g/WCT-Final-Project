@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import {
   Target,
+  ShieldCheck,
   ShieldAlert,
   BarChart3,
   Calendar,
@@ -21,14 +22,11 @@ import {
   Clock,
   Sparkles,
   TrendingUp,
-  Layers,
   ArrowUpRight,
-  ShieldCheck,
-  AlertTriangle,
-  Info
+  Activity,
+  Layers
 } from 'lucide-react';
 import EconomicCalendarWidget from './EconomicCalendarWidget';
-import LiveTradeSimulator from './LiveTradeSimulator';
 import AnimatedCounter from '../common/AnimatedCounter';
 
 ChartJS.register(
@@ -44,21 +42,24 @@ ChartJS.register(
 
 export default function DashboardOverview({ account }) {
   const [timeframe, setTimeframe] = useState('7d'); // '1d' | '7d' | '30d' | 'all'
-  const [hoveredDot, setHoveredDot] = useState(null);
 
   if (!account) return null;
 
   const startingBalance = account.startingBalance || 50000;
-  const currentBalance = account.currentBalance || 50317.40;
+  const currentBalance = account.currentBalance || 54230.00;
   const netPnL = currentBalance - startingBalance;
+  const netPnLPct = ((netPnL / startingBalance) * 100).toFixed(2);
+
   const profitTargetPct = account.profitTargetPct || 10.0;
   const targetAmount = startingBalance * (profitTargetPct / 100);
+  const remainingToTarget = Math.max(0, targetAmount - netPnL);
   const targetProgress = Math.min(Math.max((netPnL / targetAmount) * 100, 0), 100);
 
   const maxLossPct = account.maxDrawdownPct || 6.0;
   const maxLossFloorAmount = startingBalance * (maxLossPct / 100);
   const currentDrawdownAmount = startingBalance * ((account.drawdownPct || 2.1) / 100);
   const remainingBuffer = Math.max(maxLossFloorAmount - currentDrawdownAmount, 0);
+  const bufferProgress = Math.max(0, Math.min(100, (remainingBuffer / maxLossFloorAmount) * 100));
 
   // Timeframe chart datasets
   const chartLabelsByTf = {
@@ -69,16 +70,15 @@ export default function DashboardOverview({ account }) {
   };
 
   const chartDataByTf = {
-    '1d': [currentBalance - 120, currentBalance - 60, currentBalance + 140, currentBalance - 20, currentBalance + 190, currentBalance + 160, currentBalance],
-    '7d': account.chartData || [startingBalance, startingBalance + 150, startingBalance + 280, startingBalance + 120, startingBalance + 350, startingBalance + 290, currentBalance],
-    '30d': [startingBalance, startingBalance + 420, startingBalance + 210, currentBalance],
-    'all': [startingBalance, startingBalance + 180, startingBalance + 320, startingBalance + 160, startingBalance + 410, startingBalance + 280, currentBalance]
+    '1d': [currentBalance - 140, currentBalance - 60, currentBalance + 120, currentBalance - 30, currentBalance + 190, currentBalance + 160, currentBalance],
+    '7d': account.chartData || [startingBalance, startingBalance + 200, startingBalance + 500, startingBalance + 1000, startingBalance + 1800, startingBalance + 2400, currentBalance],
+    '30d': [startingBalance, startingBalance + 800, startingBalance + 1900, currentBalance],
+    'all': [startingBalance, startingBalance + 400, startingBalance + 1200, startingBalance + 2100, startingBalance + 3400, currentBalance]
   };
 
   const labels = chartLabelsByTf[timeframe] || chartLabelsByTf['7d'];
   const activeCurve = chartDataByTf[timeframe] || chartDataByTf['7d'];
 
-  // Target & Loss Floor values for horizontal threshold lines
   const profitTargetThreshold = startingBalance + targetAmount;
   const maxLossThreshold = startingBalance - maxLossFloorAmount;
 
@@ -86,14 +86,15 @@ export default function DashboardOverview({ account }) {
     labels: labels,
     datasets: [
       {
-        label: 'Account Equity',
+        label: 'Equity Curve',
         data: activeCurve,
         borderColor: '#C59A45',
         backgroundColor: (context) => {
-          const ctx = context.chart.ctx;
+          const ctx = context.chart?.ctx;
+          if (!ctx) return 'rgba(197, 154, 69, 0.1)';
           const gradient = ctx.createLinearGradient(0, 0, 0, 260);
-          gradient.addColorStop(0, 'rgba(197, 154, 69, 0.4)');
-          gradient.addColorStop(0.5, 'rgba(5, 150, 105, 0.12)');
+          gradient.addColorStop(0, 'rgba(197, 154, 69, 0.35)');
+          gradient.addColorStop(0.6, 'rgba(5, 150, 105, 0.08)');
           gradient.addColorStop(1, 'rgba(197, 154, 69, 0)');
           return gradient;
         },
@@ -102,8 +103,8 @@ export default function DashboardOverview({ account }) {
         pointBorderColor: '#FFFFFF',
         pointBorderWidth: 2,
         pointRadius: 4,
-        pointHoverRadius: 7,
-        tension: 0.35,
+        pointHoverRadius: 6,
+        tension: 0.32,
         fill: true,
       },
       {
@@ -111,7 +112,7 @@ export default function DashboardOverview({ account }) {
         data: labels.map(() => profitTargetThreshold),
         borderColor: '#059669',
         borderWidth: 1.5,
-        borderDash: [6, 4],
+        borderDash: [5, 4],
         pointRadius: 0,
         fill: false,
       },
@@ -120,7 +121,7 @@ export default function DashboardOverview({ account }) {
         data: labels.map(() => maxLossThreshold),
         borderColor: '#E11D48',
         borderWidth: 1.5,
-        borderDash: [6, 4],
+        borderDash: [5, 4],
         pointRadius: 0,
         fill: false,
       }
@@ -140,278 +141,178 @@ export default function DashboardOverview({ account }) {
         position: 'top',
         align: 'end',
         labels: {
-          boxWidth: 10,
-          color: '#57534E',
-          font: { size: 10, family: 'Inter', weight: '600' }
+          boxWidth: 8,
+          boxHeight: 8,
+          usePointStyle: true,
+          color: '#78716C',
+          font: { size: 11, family: 'Inter', weight: '600' }
         }
       },
       tooltip: {
         backgroundColor: 'rgba(20, 18, 16, 0.95)',
         titleColor: '#C59A45',
         bodyColor: '#FFFFFF',
-        borderColor: 'rgba(197, 154, 69, 0.35)',
+        borderColor: 'rgba(197, 154, 69, 0.3)',
         borderWidth: 1,
-        padding: 12,
+        padding: 10,
+        cornerRadius: 12,
         callbacks: {
-          label: (context) => ` ${context.dataset.label}: $${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(context.parsed.y)}`
+          label: function(context) {
+            return ` ${context.dataset.label}: $${Number(context.raw).toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+          }
         }
       }
     },
     scales: {
-      y: {
-        grid: { color: 'rgba(0, 0, 0, 0.04)' },
-        ticks: {
-          color: '#78716C',
-          font: { family: 'JetBrains Mono', size: 10 },
-          callback: (val) => `$${val >= 1000 ? (val / 1000).toFixed(1) + 'k' : val}`
-        }
-      },
       x: {
-        grid: { color: 'rgba(0, 0, 0, 0.02)' },
+        grid: { display: false },
+        ticks: { color: '#A8A29E', font: { size: 11 } }
+      },
+      y: {
+        grid: { color: 'rgba(231, 226, 218, 0.6)' },
         ticks: {
-          color: '#78716C',
-          font: { family: 'Inter', size: 10 }
+          color: '#A8A29E',
+          font: { size: 11 },
+          callback: function(value) {
+            return '$' + (value / 1000).toFixed(0) + 'k';
+          }
         }
       }
     }
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-200">
+    <div className="space-y-6 animate-in fade-in duration-300">
       
-      {/* 2-Column Main Dashboard Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* ============================================================
+          1. TOP KPI METRICS STRIP (4 CLEAN, SPACIOUS CARDS)
+          ============================================================ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        {/* ============================================================
-            LEFT COLUMN: 5 OBJECTIVE & RULE PROGRESS GAUGES
-            ============================================================ */}
-        <div className="lg:col-span-5 space-y-4">
-          
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-stone-600 flex items-center gap-1.5">
-              <Target className="w-3.5 h-3.5 text-brass-600" />
-              Evaluation Objectives &amp; Limits
-            </span>
-            <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200">
-              5 of 5 Rules Compliant
+        {/* KPI 1: Current Account Balance */}
+        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
+          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Account Balance</span>
+            <span className="text-[10px] font-mono font-semibold bg-stone-100 px-2 py-0.5 rounded-full text-stone-700">
+              Live Equity
             </span>
           </div>
-
-          {/* GAUGE 1: Profit Target Gauge */}
-          <div className="p-5 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shadow-xs">
-                  <TrendingUp className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-serif font-bold text-sm text-stone-950">Profit Target</h4>
-                  <span className="text-[11px] text-stone-500 font-mono">Target: ${new Intl.NumberFormat('en-US').format(targetAmount)}</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="font-mono font-bold text-sm text-emerald-700 block">
-                  <AnimatedCounter value={netPnL} prefix={netPnL >= 0 ? '+$' : '-$'} />
-                </span>
-                <span className="text-[10px] font-bold text-stone-500 font-mono">
-                  {targetProgress.toFixed(1)}% Completed
-                </span>
-              </div>
-            </div>
-
-            {/* Segmented Progress Bar */}
-            <div className="w-full h-2.5 rounded-full bg-stone-100 border border-stone-200/80 overflow-hidden relative">
-              <div
-                className="h-full rounded-full gold-gradient-bg transition-all duration-700"
-                style={{ width: `${Math.max(targetProgress, 4)}%` }}
-              ></div>
-            </div>
+          <div className="font-serif font-bold text-2xl sm:text-3xl text-stone-950 font-mono tracking-tight">
+            <AnimatedCounter value={currentBalance} prefix="$" />
           </div>
-
-          {/* GAUGE 2: Max Loss / Drawdown Limit */}
-          <div className="p-5 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center font-bold shadow-xs">
-                  <ShieldAlert className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-serif font-bold text-sm text-stone-950">Max Loss Floor</h4>
-                  <span className="text-[11px] text-stone-500 font-mono">Floor: ${new Intl.NumberFormat('en-US').format(maxLossFloorAmount)} ({maxLossPct}%)</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="font-mono font-bold text-sm text-stone-950 block">
-                  <AnimatedCounter value={remainingBuffer} prefix="$" />
-                </span>
-                <span className="text-[10px] font-bold text-emerald-700 font-mono">
-                  Remaining Buffer
-                </span>
-              </div>
-            </div>
-
-            {/* Safety Indicator Bar */}
-            <div className="w-full h-2.5 rounded-full bg-stone-100 border border-stone-200/80 overflow-hidden relative">
-              <div
-                className="h-full rounded-full bg-emerald-500 transition-all duration-700 shadow-emerald-glow"
-                style={{ width: `${Math.max((remainingBuffer / maxLossFloorAmount) * 100, 8)}%` }}
-              ></div>
-            </div>
+          <div className="flex items-center justify-between text-[11px] text-stone-500 mt-2 pt-2 border-t border-stone-100 font-mono">
+            <span>Starting Capital</span>
+            <span className="font-bold text-stone-800">${startingBalance.toLocaleString()}.00</span>
           </div>
-
-          {/* GAUGE 3: Consistency Rule Meter */}
-          <div className="p-5 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-brass-100/70 text-brass-800 flex items-center justify-center font-bold shadow-xs">
-                  <BarChart3 className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-serif font-bold text-sm text-stone-950">Consistency Meter</h4>
-                  <span className="text-[11px] text-stone-500">Max Single-Day Cap: 40%</span>
-                </div>
-              </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                Score: 31.46% (Passed)
-              </span>
-            </div>
-            <p className="text-[11px] text-stone-600">
-              No individual trading session accounts for more than 40% of total profit generated.
-            </p>
-          </div>
-
-          {/* GAUGE 4: Max Inactive Days (Dot Matrix with Hover Tooltips) */}
-          <div className="p-5 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center font-bold shadow-xs">
-                  <Calendar className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-serif font-bold text-sm text-stone-950">30-Day Activity Matrix</h4>
-                  <span className="text-[11px] text-stone-500">Account Inactivity Limit</span>
-                </div>
-              </div>
-              <span className="font-mono text-xs font-bold text-stone-800">
-                12 Traded / 18 Idle
-              </span>
-            </div>
-
-            {/* 30-Day Activity Dot Matrix Grid */}
-            <div className="grid grid-cols-10 gap-1.5 pt-1 relative">
-              {Array.from({ length: 30 }).map((_, i) => {
-                const isTraded = i < 12;
-                return (
-                  <div
-                    key={i}
-                    onMouseEnter={() => setHoveredDot(i + 1)}
-                    onMouseLeave={() => setHoveredDot(null)}
-                    className={`h-3.5 rounded-md transition-all cursor-pointer ${
-                      isTraded
-                        ? 'bg-emerald-500 shadow-xs hover:scale-110'
-                        : 'bg-stone-200 hover:bg-stone-300'
-                    }`}
-                  ></div>
-                );
-              })}
-            </div>
-
-            {hoveredDot && (
-              <div className="text-[11px] text-stone-600 bg-stone-50 p-2 rounded-xl border border-stone-200 text-center font-mono">
-                Day {hoveredDot}: {hoveredDot <= 12 ? 'Active Trading Day • Rules Compliant' : 'Inactive Session'}
-              </div>
-            )}
-          </div>
-
-          {/* GAUGE 5: Clarity / Scalping Rule */}
-          <div className="p-4 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-              <div>
-                <h5 className="text-xs font-bold text-stone-950">Trading Clarity &amp; Scalping Rule</h5>
-                <span className="text-[10px] text-stone-500">No automated latency arbitrage or toxic spikes</span>
-              </div>
-            </div>
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-              Clean / Passed
-            </span>
-          </div>
-
         </div>
 
-        {/* ============================================================
-            RIGHT COLUMN: BALANCE SUMMARY & STEPPED REFERENCE CHART
-            ============================================================ */}
-        <div className="lg:col-span-7 space-y-6">
-          
-          {/* Current Balance Summary Card */}
-          <div className="p-7 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-100">
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">
-                  Current Account Balance
-                </span>
-                <h3 className="font-serif font-bold text-3xl sm:text-4xl text-stone-950 tabular-nums mt-0.5">
-                  <AnimatedCounter value={currentBalance} prefix="$" />
-                </h3>
-              </div>
+        {/* KPI 2: Net Profit & Return */}
+        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
+          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Net Profit / Loss</span>
+            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${netPnL >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
+              {netPnL >= 0 ? `+${netPnLPct}%` : `${netPnLPct}%`}
+            </span>
+          </div>
+          <div className={`font-serif font-bold text-2xl sm:text-3xl font-mono tracking-tight ${netPnL >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+            <AnimatedCounter value={netPnL} prefix={netPnL >= 0 ? '+$' : '-$'} />
+          </div>
+          <div className="flex items-center justify-between text-[11px] text-stone-500 mt-2 pt-2 border-t border-stone-100 font-mono">
+            <span>Win Rate</span>
+            <span className="font-bold text-emerald-700">{account.winRate || '68%'} (4 Trades)</span>
+          </div>
+        </div>
 
-              <div className="flex items-center gap-3 text-xs font-mono">
-                <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80">
-                  <span className="block text-[10px] uppercase text-stone-500 font-sans font-bold">Initial Balance</span>
-                  <strong className="text-stone-950 font-bold">${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(startingBalance)}</strong>
-                </div>
-                <div className="p-3 rounded-2xl bg-emerald-50/90 border border-emerald-200 text-emerald-800">
-                  <span className="block text-[10px] uppercase text-emerald-700 font-sans font-bold">Net P&amp;L</span>
-                  <strong className="font-bold">
-                    <AnimatedCounter value={netPnL} prefix={netPnL >= 0 ? '+$' : '-$'} />
-                  </strong>
-                </div>
-              </div>
+        {/* KPI 3: Profit Target Progress */}
+        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
+          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Profit Target ({profitTargetPct}%)</span>
+            <span className="text-[10px] font-mono font-bold text-emerald-700">
+              {targetProgress.toFixed(1)}% Completed
+            </span>
+          </div>
+          <div className="font-serif font-bold text-2xl sm:text-3xl text-stone-950 font-mono tracking-tight">
+            ${targetAmount.toLocaleString()}
+          </div>
+          {/* Target Progress Bar */}
+          <div className="mt-2.5">
+            <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200/80">
+              <div 
+                className="h-full rounded-full gold-gradient-bg transition-all duration-700" 
+                style={{ width: `${targetProgress}%` }}
+              />
             </div>
-
-            {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-3 gap-2.5 text-center text-xs">
-              <div className="p-2.5 rounded-2xl bg-stone-50 border border-stone-100">
-                <span className="text-[10px] text-stone-500 block uppercase font-bold">Floating Equity</span>
-                <strong className="font-mono text-stone-950 font-bold">
-                  <AnimatedCounter value={account.equity || currentBalance} prefix="$" />
-                </strong>
-              </div>
-              <div className="p-2.5 rounded-2xl bg-stone-50 border border-stone-100">
-                <span className="text-[10px] text-stone-500 block uppercase font-bold">Current Drawdown</span>
-                <strong className="font-mono text-rose-700 font-bold">-{account.drawdownPct || 2.1}%</strong>
-              </div>
-              <div className="p-2.5 rounded-2xl bg-stone-50 border border-stone-100">
-                <span className="text-[10px] text-stone-500 block uppercase font-bold">Win Rate</span>
-                <strong className="font-mono text-emerald-700 font-bold">{account.winRate || '68%'}</strong>
-              </div>
+            <div className="flex justify-between text-[10px] text-stone-500 font-mono mt-1">
+              <span>{remainingToTarget === 0 ? 'Target Achieved!' : `$${remainingToTarget.toFixed(0)} remaining`}</span>
+              <span>Target: ${profitTargetThreshold.toLocaleString()}</span>
             </div>
           </div>
+        </div>
 
-          {/* Interactive Account Status Chart */}
-          <div className="p-7 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-4">
+        {/* KPI 4: Drawdown Safety Buffer */}
+        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
+          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Max Drawdown Cushion</span>
+            <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              {account.drawdownPct || 2.1}% Used
+            </span>
+          </div>
+          <div className="font-serif font-bold text-2xl sm:text-3xl text-emerald-700 font-mono tracking-tight">
+            <AnimatedCounter value={remainingBuffer} prefix="$" />
+          </div>
+          {/* Cushion Bar */}
+          <div className="mt-2.5">
+            <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200/80">
+              <div 
+                className="h-full rounded-full bg-emerald-500 transition-all duration-700" 
+                style={{ width: `${bufferProgress}%` }}
+              />
+            </div>
+            <div className="flex justify-between text-[10px] text-stone-500 font-mono mt-1">
+              <span>Safe Buffer</span>
+              <span>Breach Floor: ${maxLossThreshold.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* ============================================================
+          2. MAIN PERFORMANCE CHART & POSITIONS (2-COLUMN GRID)
+          ============================================================ */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* Left 8-Columns: High-Resolution Equity Curve & Clean Positions */}
+        <div className="lg:col-span-8 space-y-6">
+          
+          {/* Main Equity Curve Card */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-white border border-stone-200/90 shadow-card space-y-4">
             
+            {/* Chart Header & Timeframe Switcher */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-100">
               <div>
-                <h4 className="font-serif font-bold text-lg text-stone-950">
-                  Equity Curve &amp; Target Limits
-                </h4>
+                <h3 className="font-serif font-bold text-lg text-stone-950 flex items-center gap-2">
+                  <span>Performance Equity Curve</span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    Live Stream
+                  </span>
+                </h3>
                 <p className="text-xs text-stone-500">
-                  Live performance tracking against Profit Target &amp; Max Loss threshold lines
+                  Account equity progression with profit target and loss floor thresholds.
                 </p>
               </div>
 
-              {/* Timeframe Selector */}
-              <div className="flex items-center p-1 rounded-2xl bg-stone-100 border border-stone-200 text-xs font-semibold">
+              {/* Timeframe Buttons */}
+              <div className="flex p-1 rounded-xl bg-stone-100 border border-stone-200 text-xs font-semibold">
                 {['1d', '7d', '30d', 'all'].map((tf) => (
                   <button
                     key={tf}
+                    type="button"
                     onClick={() => setTimeframe(tf)}
-                    className={`px-3 py-1 rounded-xl uppercase transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg uppercase tracking-wider transition-all cursor-pointer ${
                       timeframe === tf
-                        ? 'bg-stone-950 text-brass-300 shadow-sm font-bold'
-                        : 'text-stone-600 hover:text-stone-950'
+                        ? 'bg-white text-stone-950 font-bold shadow-xs'
+                        : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     {tf}
@@ -420,23 +321,28 @@ export default function DashboardOverview({ account }) {
               </div>
             </div>
 
-            {/* Chart Area */}
-            <div className="h-64 sm:h-72 w-full">
+            {/* Chart Canvas */}
+            <div className="h-64 sm:h-72 w-full pt-2">
               <Line data={chartData} options={chartOptions} />
             </div>
 
           </div>
 
-          {/* Open Trades Table */}
-          <div className="p-6 rounded-3xl bg-white border border-[#E7E2DA] shadow-editorial space-y-4">
+          {/* Active Open Positions Card */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E7E2DA] shadow-card space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-              <h4 className="font-serif font-bold text-base text-stone-950 flex items-center gap-2">
-                <span>Open Simulated Positions</span>
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-brass-700" />
+                <h4 className="font-serif font-bold text-base text-stone-950">
+                  Active Open Positions
+                </h4>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-brass-100 text-brass-900 border border-brass-300">
-                  {account.openPositions ? account.openPositions.length : 0} Active
+                  {account.openPositions ? account.openPositions.length : 0} Live
                 </span>
-              </h4>
-              <span className="text-xs text-stone-500 font-mono">Live MetaTrader Stream</span>
+              </div>
+              <span className="text-xs text-stone-500 font-mono">
+                Tradovate / MT5 Execution
+              </span>
             </div>
 
             <div className="overflow-x-auto">
@@ -444,7 +350,7 @@ export default function DashboardOverview({ account }) {
                 <thead>
                   <tr className="border-b border-stone-100 text-stone-500 font-bold uppercase tracking-wider text-[10px]">
                     <th className="pb-2">Symbol</th>
-                    <th className="pb-2">SMC Setup</th>
+                    <th className="pb-2">Strategy Setup</th>
                     <th className="pb-2">Side</th>
                     <th className="pb-2">Volume</th>
                     <th className="pb-2 text-right">Floating P&amp;L</th>
@@ -453,19 +359,19 @@ export default function DashboardOverview({ account }) {
                 <tbody className="divide-y divide-stone-100">
                   {account.openPositions && account.openPositions.map((pos, idx) => (
                     <tr key={idx} className="hover:bg-stone-50/80 transition-colors">
-                      <td className="py-2.5 font-bold text-stone-900">{pos.symbol}</td>
-                      <td className="py-2.5">
+                      <td className="py-3 font-bold text-stone-900">{pos.symbol}</td>
+                      <td className="py-3">
                         <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-brass-50 border border-brass-200 text-brass-850">
                           {pos.setup}
                         </span>
                       </td>
-                      <td className="py-2.5">
+                      <td className="py-3">
                         <span className={`font-bold ${pos.side === 'Buy' ? 'text-emerald-700' : 'text-rose-700'}`}>
                           {pos.side}
                         </span>
                       </td>
-                      <td className="py-2.5 font-mono text-stone-700">{pos.vol} Lots</td>
-                      <td className={`py-2.5 text-right font-mono font-bold ${pos.pnl >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
+                      <td className="py-3 font-mono text-stone-700">{pos.vol} Lots</td>
+                      <td className={`py-3 text-right font-mono font-bold ${pos.pnl >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
                         {pos.pnl >= 0 ? `+$${pos.pnl.toFixed(2)}` : `-$${Math.abs(pos.pnl).toFixed(2)}`}
                       </td>
                     </tr>
@@ -475,15 +381,67 @@ export default function DashboardOverview({ account }) {
             </div>
           </div>
 
-          {/* Live Interactive Trade Execution Simulator */}
-          <LiveTradeSimulator 
-            activeAccount={account} 
-            onTradeExecuted={(pnl) => {
-              // Real-time notification feedback
-            }} 
-          />
+        </div>
 
-          {/* Economic Calendar Widget */}
+        {/* Right 4-Columns: Consolidated Rule Health & Macro News */}
+        <div className="lg:col-span-4 space-y-6">
+          
+          {/* Challenge Health & Rule Compliance Card */}
+          <div className="p-6 rounded-3xl bg-white border border-stone-200/90 shadow-card space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-brass-100 text-brass-800 flex items-center justify-center font-bold shadow-xs">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-serif font-bold text-base text-stone-950">Rule Compliance</h4>
+                  <span className="text-[11px] text-stone-500">Risk Guard Active</span>
+                </div>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                100% Passed
+              </span>
+            </div>
+
+            {/* Rule 1: Daily Loss Limit */}
+            <div className="space-y-1.5 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-stone-700 font-semibold">Daily Loss Limit</span>
+                <span className="font-mono font-bold text-emerald-700">$0.00 / ${account.startingBalance * 0.05}</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200">
+                <div className="h-full rounded-full bg-emerald-500" style={{ width: '8%' }}></div>
+              </div>
+              <span className="text-[10px] text-stone-500 block">Resets automatically at 17:00 EST</span>
+            </div>
+
+            {/* Rule 2: Max Trailing Drawdown */}
+            <div className="space-y-1.5 text-xs pt-3 border-t border-stone-100">
+              <div className="flex items-center justify-between">
+                <span className="text-stone-700 font-semibold">Max Drawdown (EOD)</span>
+                <span className="font-mono font-bold text-stone-950">{account.drawdownPct || 2.1}% / {maxLossPct}%</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200">
+                <div className="h-full rounded-full bg-emerald-500" style={{ width: `${(account.drawdownPct / maxLossPct) * 100}%` }}></div>
+              </div>
+              <span className="text-[10px] text-stone-500 block">${remainingBuffer.toFixed(0)} safety cushion remaining</span>
+            </div>
+
+            {/* Rule 3: Consistency Metric */}
+            <div className="space-y-1.5 text-xs pt-3 border-t border-stone-100">
+              <div className="flex items-center justify-between">
+                <span className="text-stone-700 font-semibold">Consistency Score</span>
+                <span className="font-mono font-bold text-emerald-700">31.4% (Max 40%)</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200">
+                <div className="h-full rounded-full bg-emerald-500" style={{ width: '78%' }}></div>
+              </div>
+              <span className="text-[10px] text-stone-500 block">No single day dominates total profit</span>
+            </div>
+
+          </div>
+
+          {/* Compact Economic Calendar Feed */}
           <EconomicCalendarWidget />
 
         </div>
