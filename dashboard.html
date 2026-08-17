@@ -44,10 +44,11 @@
                     <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="help-center.html">Help Center</a></li>
                 </ul>
-                <div class="d-flex ms-lg-3 gap-2">
-                    <a href="login.html" class="btn btn-outline-brass">Log In</a>
-                    <a href="signup.html" class="btn btn-brass">Get Started</a>
+                <!-- ===== DYNAMIC AUTH SECTION ===== -->
+                <div class="d-flex ms-lg-3 gap-2 align-items-center" id="authSection">
+                    <!-- Will be replaced by JavaScript -->
                 </div>
+                <!-- ===== END DYNAMIC AUTH SECTION ===== -->
             </div>
         </div>
     </nav>
@@ -68,9 +69,7 @@
             <span class="brass-badge">Live Account (Demo)</span>
         </div>
 
-        <!-- ============================================================
-        STATS CARDS — Glass Panels
-        ============================================================ -->
+        <!-- Stats Cards -->
         <div class="row g-4 mb-4">
             <div class="col-md-3 col-6">
                 <div class="card card-term h-100 p-3">
@@ -110,11 +109,8 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        CHART + OPEN POSITIONS
-        ============================================================ -->
+        <!-- Chart + Open Positions -->
         <div class="row g-4">
-            <!-- Chart Column -->
             <div class="col-lg-8">
                 <div class="card card-term p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -136,7 +132,6 @@
                 </div>
             </div>
 
-            <!-- Open Positions Column -->
             <div class="col-lg-4">
                 <div class="card card-term p-4 h-100">
                     <h5 class="card-title mb-3">
@@ -203,9 +198,7 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        ADDITIONAL METRICS — Bottom Row
-        ============================================================ -->
+        <!-- Additional Metrics -->
         <div class="row g-4 mt-2">
             <div class="col-md-4">
                 <div class="card card-term p-3">
@@ -291,7 +284,15 @@
     ============================================================ -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
     </script>
+    <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
     <script src="js/dashboard-chart.js"></script>
+    <script src="js/form-validation.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNavbar(); // Show user info or login/signup
+            requireAuth();  // Protect this page
+        });
+    </script>
 </body>
 </html>
