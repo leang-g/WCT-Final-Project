@@ -162,7 +162,7 @@ export default function DashboardOverview({ account }) {
         padding: 10,
         cornerRadius: 12,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             return ` ${context.dataset.label}: $${Number(context.raw).toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
           }
         }
@@ -178,7 +178,7 @@ export default function DashboardOverview({ account }) {
         ticks: {
           color: '#64748B',
           font: { size: 11 },
-          callback: function(value) {
+          callback: function (value) {
             return '$' + (value / 1000).toFixed(0) + 'k';
           }
         }
@@ -188,12 +188,12 @@ export default function DashboardOverview({ account }) {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
-      
+
       {/* ============================================================
           1. TOP KPI METRICS STRIP (4 DARK GLASS CARDS)
           ============================================================ */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
+
         {/* KPI 1: Current Account Balance */}
         <div className="p-5 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl">
           <div className="flex items-center justify-between text-stone-400 mb-1.5">
@@ -242,8 +242,8 @@ export default function DashboardOverview({ account }) {
           {/* Target Progress Bar */}
           <div className="mt-2.5">
             <div className="w-full h-2 rounded-full bg-stone-800 overflow-hidden border border-white/5">
-              <div 
-                className="h-full rounded-full gold-gradient-bg transition-all duration-700" 
+              <div
+                className="h-full rounded-full gold-gradient-bg transition-all duration-700"
                 style={{ width: `${targetProgress}%` }}
               />
             </div>
@@ -268,8 +268,8 @@ export default function DashboardOverview({ account }) {
           {/* Cushion Bar */}
           <div className="mt-2.5">
             <div className="w-full h-2 rounded-full bg-stone-800 overflow-hidden border border-white/5">
-              <div 
-                className="h-full rounded-full bg-emerald-400 transition-all duration-700" 
+              <div
+                className="h-full rounded-full bg-emerald-400 transition-all duration-700"
                 style={{ width: `${bufferProgress}%` }}
               />
             </div>
@@ -286,13 +286,13 @@ export default function DashboardOverview({ account }) {
           2. MAIN PERFORMANCE CHART & POSITIONS (2-COLUMN GRID)
           ============================================================ */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         {/* Left 8-Columns: High-Resolution Equity Curve & Simulator */}
         <div className="lg:col-span-8 space-y-6">
-          
+
           {/* Main Equity Curve Card */}
           <div className="p-6 sm:p-7 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl space-y-4">
-            
+
             {/* Chart Header & Timeframe Switcher */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
               <div>
@@ -314,11 +314,10 @@ export default function DashboardOverview({ account }) {
                     key={tf}
                     type="button"
                     onClick={() => setTimeframe(tf)}
-                    className={`px-3 py-1 rounded-lg uppercase tracking-wider transition-all cursor-pointer ${
-                      timeframe === tf
+                    className={`px-3 py-1 rounded-lg uppercase tracking-wider transition-all cursor-pointer ${timeframe === tf
                         ? 'bg-emerald-500 text-obsidian-950 font-black shadow-neon-glow'
                         : 'text-stone-400 hover:text-white'
-                    }`}
+                      }`}
                   >
                     {tf}
                   </button>
@@ -388,7 +387,7 @@ export default function DashboardOverview({ account }) {
 
         {/* Right 4-Columns: Dynamic SVG Rule Compliance Gauges & Macro News */}
         <div className="lg:col-span-4 space-y-6">
-          
+
           {/* Circular & Multi-Zone Compliance Gauges Card */}
           <div className="p-6 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl space-y-5">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -407,109 +406,34 @@ export default function DashboardOverview({ account }) {
             </div>
 
             {/* Circular Gauge 1: Daily Loss Limit */}
-            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-stone-300 font-semibold">Daily Loss Limit</span>
-                <span className="font-mono font-bold text-emerald-400">$0.00 / ${account.startingBalance * 0.05}</span>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                {/* Mini SVG Gauge */}
-                <div className="w-10 h-10 shrink-0 relative">
-                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="rgba(255, 255, 255, 0.1)"
-                      strokeWidth="3"
-                    />
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="#00F59B"
-                      strokeWidth="3.5"
-                      strokeDasharray="8, 100"
-                    />
-                  </svg>
-                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-400">
-                    0%
-                  </span>
-                </div>
-                <div className="text-[11px] text-stone-400">
-                  Resets automatically at 17:00 EST daily market close.
-                </div>
-              </div>
-            </div>
+            <CircularRuleGauge
+              value={0}
+              max={account.startingBalance * 0.05}
+              label="Daily Loss Limit"
+              statusText={`$0.00 / $${(account.startingBalance * 0.05).toLocaleString()}`}
+              subText="Resets automatically at 17:00 EST daily market close."
+              color="emerald"
+            />
 
             {/* Circular Gauge 2: Max Trailing Drawdown (EOD) */}
-            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-stone-300 font-semibold">Max Drawdown (EOD)</span>
-                <span className="font-mono font-bold text-emerald-400">{account.drawdownPct || 2.1}% / {maxLossPct}%</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                {/* Mini SVG Gauge */}
-                <div className="w-10 h-10 shrink-0 relative">
-                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="rgba(255, 255, 255, 0.1)"
-                      strokeWidth="3"
-                    />
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="#00F59B"
-                      strokeWidth="3.5"
-                      strokeDasharray="35, 100"
-                    />
-                  </svg>
-                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-400">
-                    35%
-                  </span>
-                </div>
-                <div className="text-[11px] text-stone-400">
-                  <strong className="text-white">${remainingBuffer.toFixed(0)}</strong> safety cushion remaining above floor.
-                </div>
-              </div>
-            </div>
+            <CircularRuleGauge
+              value={account.drawdownPct || 2.1}
+              max={maxLossPct}
+              label="Max Drawdown (EOD)"
+              statusText={`${account.drawdownPct || 2.1}% / ${maxLossPct}%`}
+              subText={`$${remainingBuffer.toFixed(0)} safety cushion remaining above floor.`}
+              color="emerald"
+            />
 
             {/* Circular Gauge 3: Consistency Score */}
-            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-stone-300 font-semibold">Consistency Score</span>
-                <span className="font-mono font-bold text-emerald-400">31.4% (Max 40%)</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                {/* Mini SVG Gauge */}
-                <div className="w-10 h-10 shrink-0 relative">
-                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="rgba(255, 255, 255, 0.1)"
-                      strokeWidth="3"
-                    />
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="#E6C87C"
-                      strokeWidth="3.5"
-                      strokeDasharray="78, 100"
-                    />
-                  </svg>
-                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-brass-300">
-                    78%
-                  </span>
-                </div>
-                <div className="text-[11px] text-stone-400">
-                  Well-distributed trading. No single trade violates consistency.
-                </div>
-              </div>
-            </div>
+            <CircularRuleGauge
+              value={78}
+              max={100}
+              label="Consistency Score"
+              statusText="31.4% (Max 40%)"
+              subText="Well-distributed trading. No single trade violates consistency."
+              color="gold"
+            />
 
           </div>
 
