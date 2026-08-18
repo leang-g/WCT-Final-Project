@@ -26,7 +26,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$10,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: 'None',
           refund: '100% on Payout #1'
         }
@@ -51,7 +52,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$15,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: 'None',
           refund: '100% on Payout #1'
         }
@@ -76,7 +78,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$25,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: 'None',
           refund: '100% on Payout #1'
         }
@@ -101,7 +104,34 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$35,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
+          consistency: 'None',
+          refund: '100% on Payout #1'
+        }
+      },
+      {
+        size: '250K',
+        title: '250K Evaluation',
+        numericSize: 250000,
+        originalPrice: 549,
+        discountPrice: 329,
+        saveAmount: 220,
+        mostPopular: false,
+        rules: [
+          { label: 'Profit Target', value: '$15,000' },
+          { label: 'Trailing Max Drawdown (EOD)', value: '$6,500' },
+          { label: 'Daily Loss Limit', value: '$5,000', hasTooltip: true, tooltip: 'Calculated on the day starting balance. Protects against excessive intraday risk.' },
+          { label: 'Reset Fee', value: '$299' },
+          { label: 'Consistency', value: 'None', isHighlight: true },
+          { label: 'Activation Fee', value: 'None', isHighlight: true },
+          { label: 'Max Contracts', value: '18 minis / 180 micros' }
+        ],
+        fundedRules: {
+          payoutFrequency: '5 Days',
+          maxPayout: '$50,000',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: 'None',
           refund: '100% on Payout #1'
         }
@@ -135,7 +165,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: 'Daily / Flexible',
           maxPayout: '$10,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '40% max per day',
           refund: '100% on Payout #1'
         }
@@ -160,7 +191,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: 'Daily / Flexible',
           maxPayout: '$15,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '40% max per day',
           refund: '100% on Payout #1'
         }
@@ -185,7 +217,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: 'Daily / Flexible',
           maxPayout: '$25,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '40% max per day',
           refund: '100% on Payout #1'
         }
@@ -210,7 +243,34 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: 'Daily / Flexible',
           maxPayout: '$35,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
+          consistency: '40% max per day',
+          refund: '100% on Payout #1'
+        }
+      },
+      {
+        size: '250K',
+        title: '250K Evaluation',
+        numericSize: 250000,
+        originalPrice: 569,
+        discountPrice: 341,
+        saveAmount: 228,
+        mostPopular: false,
+        rules: [
+          { label: 'Profit Target', value: '$15,000' },
+          { label: 'Trailing Max Drawdown (EOD)', value: '$6,000' },
+          { label: 'Daily Loss Limit', value: 'None', isHighlight: true },
+          { label: 'Reset Fee', value: '$309', hasTooltip: true, tooltip: 'Cost to reset evaluation balance.' },
+          { label: 'Consistency', value: '40%' },
+          { label: 'Activation Fee', value: 'None', isHighlight: true },
+          { label: 'Max Contracts', value: '18 minis / 180 micros' }
+        ],
+        fundedRules: {
+          payoutFrequency: 'Daily / Flexible',
+          maxPayout: '$50,000',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '40% max per day',
           refund: '100% on Payout #1'
         }
@@ -244,7 +304,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$7,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '20% rule',
           refund: 'Instant Funded'
         }
@@ -269,7 +330,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$10,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '20% rule',
           refund: 'Instant Funded'
         }
@@ -294,7 +356,8 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$18,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '20% rule',
           refund: 'Instant Funded'
         }
@@ -319,7 +382,34 @@ export const propFirmData = {
         fundedRules: {
           payoutFrequency: '5 Days',
           maxPayout: '$30,000',
-          profitShare: 'Up to 90%',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
+          consistency: '20% rule',
+          refund: 'Instant Funded'
+        }
+      },
+      {
+        size: '250K',
+        title: '250K Funded',
+        numericSize: 250000,
+        originalPrice: 1190,
+        discountPrice: 714,
+        saveAmount: 476,
+        mostPopular: false,
+        isInstantFunding: true,
+        rules: [
+          { label: 'Payout Frequency', value: '5 Days' },
+          { label: 'Max Accounts', value: '5' },
+          { label: 'Consistency', value: '20%', hasTooltip: true, tooltip: 'Max 20% of total profit earned on any single day.' },
+          { label: 'Daily Loss Limit', value: '$5,000' },
+          { label: 'Max Drawdown (EOD)', value: '$7,500' },
+          { label: 'Max Contracts', value: '18 minis / 180 micros' }
+        ],
+        fundedRules: {
+          payoutFrequency: '5 Days',
+          maxPayout: '$45,000',
+          profitShare: '100% 1st $10K, then 90%',
+          maxAccounts: 'Up to 20 Accounts',
           consistency: '20% rule',
           refund: 'Instant Funded'
         }
@@ -328,21 +418,45 @@ export const propFirmData = {
   }
 };
 
+export const cmeInstruments = [
+  { symbol: 'NQ', name: 'E-mini Nasdaq-100', tickSize: '0.25 pt = $5.00', pointValue: '$20.00 / pt', exchange: 'CME', category: 'Indices', isPopular: true },
+  { symbol: 'ES', name: 'E-mini S&P 500', tickSize: '0.25 pt = $12.50', pointValue: '$50.00 / pt', exchange: 'CME', category: 'Indices', isPopular: true },
+  { symbol: 'MNQ', name: 'Micro E-mini Nasdaq', tickSize: '0.25 pt = $0.50', pointValue: '$2.00 / pt', exchange: 'CME', category: 'Micros', isPopular: true },
+  { symbol: 'MES', name: 'Micro E-mini S&P', tickSize: '0.25 pt = $1.25', pointValue: '$5.00 / pt', exchange: 'CME', category: 'Micros', isPopular: true },
+  { symbol: 'CL', name: 'Crude Oil', tickSize: '0.01 = $10.00', pointValue: '$10.00 / tick', exchange: 'NYMEX', category: 'Energy', isPopular: true },
+  { symbol: 'GC', name: 'Gold Futures', tickSize: '0.10 = $10.00', pointValue: '$10.00 / tick', exchange: 'COMEX', category: 'Metals', isPopular: true },
+  { symbol: 'YM', name: 'E-mini Dow Jones', tickSize: '1.00 pt = $5.00', pointValue: '$5.00 / pt', exchange: 'CBOT', category: 'Indices', isPopular: false },
+  { symbol: '6E', name: 'Euro FX Futures', tickSize: '0.00005 = $6.25', pointValue: '$6.25 / tick', exchange: 'CME', category: 'Currencies', isPopular: false }
+];
+
 export const platforms = [
   { 
     key: 'tradovate', 
     name: 'Tradovate', 
-    iconType: 'tradovate'
+    badge: 'Zero Data Fees',
+    iconType: 'tradovate',
+    desc: 'Web, Mac/PC & Mobile with cloud order routing'
+  },
+  { 
+    key: 'tradingview', 
+    name: 'TradingView', 
+    badge: 'Direct Connect',
+    iconType: 'tradingview',
+    desc: 'Chart & execute directly on TradingView via Tradovate'
+  },
+  { 
+    key: 'ninjatrader', 
+    name: 'NinjaTrader 8', 
+    badge: 'Trade Copier Ready',
+    iconType: 'ninjatrader',
+    desc: 'Full support for Replikanto & Group Trade Copiers'
   },
   { 
     key: 'mt5', 
     name: 'MetaTrader 5', 
-    iconType: 'mt5'
-  },
-  { 
-    key: 'ninjatrader', 
-    name: 'NinjaTrader', 
-    iconType: 'ninjatrader'
+    badge: 'Multi-Asset',
+    iconType: 'mt5',
+    desc: 'Algorithmic EAs & ultra-low latency routing'
   }
 ];
 

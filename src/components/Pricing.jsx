@@ -50,23 +50,23 @@ export default function Pricing() {
       
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-brass-100/90 border border-brass-300 text-stone-900 text-xs font-bold uppercase tracking-widest mb-3 shadow-xs">
-          <Sparkles className="w-3.5 h-3.5 text-brass-700" />
+        <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 border border-emerald-500/30 text-emerald-300 text-xs font-bold uppercase tracking-widest mb-3 shadow-neon-glow">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
           Evaluation Tiers &amp; Rules Matrix
         </div>
-        <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-stone-950 tracking-tight">
+        <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
           Choose Your Challenge Tier
         </h2>
-        <p className="text-stone-700 text-sm sm:text-base mt-3 leading-relaxed">
-          Select your evaluation model, balance, and platform. Zero hidden rules, weekly payouts, and 100% refund on first payout.
+        <p className="text-stone-300 text-sm sm:text-base mt-3 leading-relaxed">
+          Select your evaluation model, capital size, and platform. Zero hidden rules, weekly payouts, and 100% fee refund.
         </p>
       </div>
 
       {/* ============================================================
-          1. MODEL SELECTOR TABS (WARM EDITORIAL THEME)
+          1. MODEL SELECTOR TABS (DARK FINTECH)
           ============================================================ */}
       <div className="flex flex-col items-center justify-center mb-6">
-        <div className="w-full max-w-4xl p-2 rounded-3xl bg-stone-200/60 border border-stone-300/80 shadow-inner backdrop-blur-md grid grid-cols-1 md:grid-cols-3 gap-2">
+        <div className="w-full max-w-4xl p-2 rounded-3xl bg-obsidian-950/80 border border-white/10 shadow-2xl backdrop-blur-xl grid grid-cols-1 md:grid-cols-3 gap-2">
           {Object.keys(propFirmData).map((key) => {
             const isSelected = selectedModel === key;
             const model = propFirmData[key];
@@ -77,31 +77,31 @@ export default function Pricing() {
                 onClick={() => setSelectedModel(key)}
                 className={`text-left p-4 rounded-2xl transition-all cursor-pointer relative overflow-hidden ${
                   isSelected
-                    ? 'bg-white border border-stone-300 shadow-editorial ring-1 ring-brass-400/30'
-                    : 'border border-transparent hover:bg-white/50 text-stone-700'
+                    ? 'bg-white/10 border border-emerald-500/50 shadow-card-dark ring-1 ring-emerald-500/30'
+                    : 'border border-transparent hover:bg-white/5 text-stone-300'
                 }`}
               >
                 {/* Header Row: Label + Badge */}
                 <div className="flex items-center justify-between gap-2 mb-1">
                   <span className={`font-serif font-bold text-base sm:text-lg tracking-tight ${
-                    isSelected ? 'text-stone-950' : 'text-stone-800'
+                    isSelected ? 'text-white' : 'text-stone-200'
                   }`}>
                     {model.label}
                   </span>
                   
                   {model.badgeType === 'instant' ? (
-                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-xs">
                       {model.badge}
                     </span>
                   ) : (
-                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium text-stone-700 bg-stone-100 border border-stone-200">
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium text-stone-300 bg-white/5 border border-white/10 font-mono">
                       {model.badge}
                     </span>
                   )}
                 </div>
 
                 {/* Subtitle */}
-                <p className="text-stone-600 text-xs sm:text-[13px] font-normal leading-relaxed">
+                <p className="text-stone-400 text-xs sm:text-[13px] font-normal leading-relaxed">
                   {model.tagline}
                 </p>
               </button>
@@ -113,8 +113,8 @@ export default function Pricing() {
       {/* ============================================================
           2. PLATFORM SELECTOR BAR
           ============================================================ */}
-      <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-        <span className="text-xs font-bold text-stone-500 uppercase tracking-wider mr-1">Platform:</span>
+      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-10 flex-wrap">
+        <span className="text-xs font-bold text-stone-400 uppercase tracking-wider mr-1">Platform:</span>
         {platforms.map((plat) => {
           const isSelected = selectedPlatform === plat.key;
 
@@ -122,38 +122,50 @@ export default function Pricing() {
             <button
               key={plat.key}
               onClick={() => setSelectedPlatform(plat.key)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2.5 cursor-pointer border ${
+              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer border ${
                 isSelected
-                  ? 'bg-stone-950 text-white border-stone-900 shadow-sm'
-                  : 'bg-white text-stone-700 border-stone-200 hover:border-stone-300 hover:bg-stone-50'
+                  ? 'bg-white/15 text-white border-emerald-500/50 shadow-md ring-1 ring-emerald-500/30'
+                  : 'bg-white/5 text-stone-300 border-white/10 hover:border-white/20 hover:bg-white/10'
               }`}
             >
               {plat.key === 'tradovate' && (
-                <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-[11px]">
+                <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-[11px] font-mono">
                   T
                 </div>
               )}
-              {plat.key === 'mt5' && (
-                <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-[10px]">
-                  M5
+              {plat.key === 'tradingview' && (
+                <div className="w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center text-white font-bold text-[10px] font-mono">
+                  TV
                 </div>
               )}
               {plat.key === 'ninjatrader' && (
-                <div className="w-5 h-5 rounded-md bg-stone-900 flex items-center justify-center text-white font-bold text-[10px] border border-stone-700">
+                <div className="w-5 h-5 rounded-md bg-stone-800 flex items-center justify-center text-white font-bold text-[10px] font-mono border border-stone-600">
                   NT
+                </div>
+              )}
+              {plat.key === 'mt5' && (
+                <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-[10px] font-mono">
+                  M5
                 </div>
               )}
 
               <span>{plat.name}</span>
+              {plat.badge && (
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-md ${
+                  isSelected ? 'bg-emerald-400 text-obsidian-950' : 'bg-white/10 text-stone-300'
+                }`}>
+                  {plat.badge}
+                </span>
+              )}
             </button>
           );
         })}
       </div>
 
       {/* ============================================================
-          3. 3D FLIP CARD 4-TIER PRICING & RULES MATRIX (25K, 50K, 100K, 150K)
+          3. 3D FLIP CARD 5-TIER PRICING & RULES MATRIX ($25K - $250K)
           ============================================================ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
         {currentModelData.tiers.map((tier, idx) => {
           const isFlipped = !!flippedCards[tier.size];
           const isMostPopular = tier.mostPopular;
@@ -161,7 +173,7 @@ export default function Pricing() {
           return (
             <div
               key={tier.size}
-              className="perspective-1000 min-h-[590px] flex flex-col"
+              className="perspective-1000 min-h-[580px] flex flex-col"
             >
               <motion.div
                 animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -173,24 +185,16 @@ export default function Pricing() {
                     FRONT FACE: EVALUATION RULES
                     -------------------------------------------------------- */}
                 <div 
-                  className={`backface-hidden w-full h-full rounded-3xl p-6 sm:p-7 flex flex-col justify-between overflow-hidden transition-all duration-300 ${
+                  className={`backface-hidden w-full h-full rounded-3xl p-5 sm:p-6 flex flex-col justify-between overflow-hidden transition-all duration-300 ${
                     isMostPopular
-                      ? 'bg-white/95 backdrop-blur-md border-2 border-brass-400 shadow-editorial-hover ring-2 ring-brass-400/20'
-                      : 'bg-white/85 backdrop-blur-md border border-stone-200/80 ring-1 ring-white/60 shadow-editorial hover:shadow-editorial-hover'
+                      ? 'glass-panel-dark-glow border-2 border-emerald-500/60 shadow-card-dark-hover'
+                      : 'glass-panel-dark border border-white/10 shadow-2xl hover:border-white/20'
                   }`}
                 >
-                  {/* Top-Right Ambient Warm Glow for Most Popular */}
+                  {/* MOST POPULAR Glowing Badge */}
                   {isMostPopular && (
-                    <div 
-                      className="absolute top-0 right-0 w-44 h-44 bg-gradient-to-bl from-brass-400/20 via-emerald-500/10 to-transparent pointer-events-none rounded-tr-3xl"
-                      aria-hidden="true" 
-                    />
-                  )}
-
-                  {/* MOST POPULAR Luxury Gold Badge */}
-                  {isMostPopular && (
-                    <div className="absolute top-3.5 left-6">
-                      <span className="gold-gradient-bg text-stone-950 font-black text-[10px] tracking-wider px-3 py-1 rounded-full uppercase shadow-xs">
+                    <div className="absolute top-3 left-5">
+                      <span className="bg-emerald-500 text-obsidian-950 font-black text-[9px] tracking-wider px-2.5 py-0.5 rounded-full uppercase shadow-neon-glow">
                         MOST POPULAR
                       </span>
                     </div>
@@ -198,46 +202,46 @@ export default function Pricing() {
 
                   <div className="flex flex-col flex-1">
                     
-                    {/* Standardized Header Group (Matched to Back Face) */}
-                    <div className={`border-b border-stone-100 pb-4 mb-4 ${isMostPopular ? 'pt-6' : 'pt-1'}`}>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
+                    {/* Header Group */}
+                    <div className={`border-b border-white/10 pb-3 mb-3 ${isMostPopular ? 'pt-5' : 'pt-1'}`}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/5 text-stone-300 border border-white/10">
                           Phase 1: Evaluation
                         </span>
-                        <span className="text-xs font-semibold text-brass-700 font-serif">
+                        <span className="text-xs font-semibold text-brass-300 font-serif">
                           {currentModelData.label}
                         </span>
                       </div>
 
-                      <h3 className="font-serif font-bold text-2xl sm:text-3xl text-stone-950 tracking-tight">
+                      <h3 className="font-serif font-bold text-xl sm:text-2xl text-white tracking-tight">
                         {tier.title}
                       </h3>
 
-                      <div className="flex items-baseline gap-1.5 mt-2">
-                        <span className="text-stone-400 line-through text-base sm:text-lg font-mono">
+                      <div className="flex items-baseline gap-1.5 mt-1.5">
+                        <span className="text-stone-500 line-through text-sm font-mono">
                           ${tier.originalPrice}
                         </span>
-                        <span className="text-emerald-700 font-bold text-2xl sm:text-3xl font-mono">
+                        <span className="text-emerald-400 font-bold text-2xl font-mono">
                           ${tier.discountPrice}
                         </span>
-                        <span className="text-stone-500 text-xs font-normal ml-1">
-                          one time payment
+                        <span className="text-stone-400 text-[10px] font-normal ml-1">
+                          one-time
                         </span>
                       </div>
                     </div>
 
-                    {/* Explicit Rules Parameters List (Matched Height) */}
-                    <div className="flex-1 flex flex-col justify-between space-y-2 mb-4 text-xs sm:text-[13px] min-h-[220px]">
+                    {/* Rules Parameters List */}
+                    <div className="flex-1 flex flex-col justify-between space-y-1.5 mb-3 text-xs min-h-[210px]">
                       {tier.rules.map((rule, rIdx) => {
                         const isLast = rIdx === tier.rules.length - 1;
 
                         return (
                           <div 
                             key={rIdx}
-                            className={`flex items-center justify-between py-1 ${!isLast ? 'border-b border-stone-100' : ''}`}
+                            className={`flex items-center justify-between py-1 ${!isLast ? 'border-b border-white/5' : ''}`}
                           >
                             {/* Left Label */}
-                            <div className="flex items-center gap-1 text-stone-600 font-normal">
+                            <div className="flex items-center gap-1 text-stone-300 font-normal">
                               <span>{rule.label}</span>
                               {rule.hasTooltip && (
                                 <div className="relative inline-block">
@@ -246,14 +250,14 @@ export default function Pricing() {
                                     onMouseEnter={() => setActiveTooltip(`${tier.size}-${rIdx}`)}
                                     onMouseLeave={() => setActiveTooltip(null)}
                                     onClick={() => setActiveTooltip(activeTooltip === `${tier.size}-${rIdx}` ? null : `${tier.size}-${rIdx}`)}
-                                    className="text-stone-400 hover:text-stone-700 cursor-pointer ml-0.5"
+                                    className="text-stone-400 hover:text-white cursor-pointer ml-0.5"
                                     aria-label="Rule information"
                                   >
-                                    <HelpCircle className="w-3.5 h-3.5" />
+                                    <HelpCircle className="w-3 h-3" />
                                   </button>
                                   
                                   {activeTooltip === `${tier.size}-${rIdx}` && (
-                                    <div className="absolute left-0 bottom-full mb-2 w-48 p-2.5 rounded-xl bg-stone-950 text-stone-100 text-[11px] shadow-2xl border border-stone-800 z-30 pointer-events-none">
+                                    <div className="absolute left-0 bottom-full mb-2 w-48 p-2.5 rounded-xl bg-obsidian-950 text-stone-100 text-[11px] shadow-2xl border border-white/20 z-30 pointer-events-none">
                                       {rule.tooltip}
                                     </div>
                                   )}
@@ -264,14 +268,14 @@ export default function Pricing() {
                             {/* Right Value */}
                             <div className="text-right">
                               {rule.originalValue && (
-                                <span className="line-through text-stone-400 mr-1.5 font-mono">
+                                <span className="line-through text-stone-500 mr-1 font-mono text-[11px]">
                                   {rule.originalValue}
                                 </span>
                               )}
-                              <span className={`font-mono font-medium ${
+                              <span className={`font-mono ${
                                 rule.isHighlight 
-                                  ? 'text-emerald-700 font-bold' 
-                                  : 'text-stone-950 font-bold'
+                                  ? 'text-emerald-400 font-bold' 
+                                  : 'text-white font-semibold'
                               }`}>
                                 {rule.value}
                               </span>
@@ -282,161 +286,135 @@ export default function Pricing() {
                       })}
                     </div>
 
-                    {/* Standardized Flip Link Box */}
-                    <div className="h-8 flex items-center justify-center mb-3.5">
+                    {/* Flip Card Link Button */}
+                    <div className="h-7 flex items-center justify-center mb-3">
                       <button
                         type="button"
                         onClick={() => toggleFlip(tier.size)}
-                        className="inline-flex items-center justify-center gap-1.5 text-stone-700 hover:text-brass-800 font-semibold text-xs py-1 px-3 rounded-full hover:bg-stone-100 transition-colors cursor-pointer group whitespace-nowrap"
+                        className="text-[11px] font-bold text-brass-300 hover:text-brass-200 flex items-center gap-1 transition-colors cursor-pointer"
                       >
-                        <RotateCw className="w-3.5 h-3.5 text-brass-600 transition-transform group-hover:rotate-180 duration-500 shrink-0" />
-                        <span className="underline underline-offset-2">View Funded Rules</span>
+                        <RotateCw className="w-3 h-3" />
+                        <span>View Funded Stage Rules</span>
                       </button>
                     </div>
 
-                    {/* Standardized Primary CTA Button */}
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="button"
-                      onClick={() => handleStartChallenge(tier)}
-                      className={`shimmer-btn h-12 w-full px-4 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer shadow-sm ${
-                        isMostPopular
-                          ? 'gold-gradient-bg text-stone-950 hover:shadow-brass-glow'
-                          : 'bg-stone-950 hover:bg-stone-900 text-brass-300'
-                      }`}
-                    >
-                      <span>{tier.isInstantFunding ? `Get Funded with ${tier.size}` : `Start with ${tier.size}`}</span>
-                    </motion.button>
-
-                    {/* Subtext */}
-                    <p className="text-[11px] text-stone-500 text-center font-medium mt-2.5">
-                      Save ${tier.saveAmount} with code AUG
-                    </p>
-
                   </div>
+
+                  {/* Start Challenge CTA */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleStartChallenge(tier)}
+                    className="shimmer-btn w-full py-3 rounded-2xl font-bold text-xs uppercase tracking-wider gold-gradient-bg text-obsidian-950 hover:shadow-brass-glow transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                  >
+                    <span>Get Started</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-obsidian-950" />
+                  </motion.button>
+
                 </div>
 
                 {/* --------------------------------------------------------
-                    BACK FACE: FUNDED STAGE RULES (ROTATED 180 DEG)
+                    BACK FACE: FUNDED ACCOUNT STAGE RULES
                     -------------------------------------------------------- */}
                 <div 
-                  className={`backface-hidden rotate-y-180 absolute inset-0 w-full h-full rounded-3xl p-6 sm:p-7 flex flex-col justify-between overflow-hidden transition-all duration-300 ${
-                    isMostPopular
-                      ? 'bg-[#FAF8F5] border-2 border-brass-400 shadow-editorial-hover ring-2 ring-brass-400/20'
-                      : 'bg-[#FAF8F5] border border-stone-300 shadow-editorial'
-                  }`}
+                  className="backface-hidden rotate-y-180 absolute inset-0 w-full h-full rounded-3xl p-5 sm:p-6 flex flex-col justify-between overflow-hidden glass-panel-dark border border-white/20 shadow-2xl bg-obsidian-900"
                 >
-                  {/* Subtle Background Glow on Back */}
-                  <div 
-                    className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"
-                    aria-hidden="true" 
-                  />
-
-                  <div className="flex flex-col flex-1 relative z-10">
+                  <div className="flex flex-col flex-1">
                     
-                    {/* Standardized Back Header Group (Matches Front Face exactly) */}
-                    <div className={`border-b border-stone-200 pb-4 mb-4 ${isMostPopular ? 'pt-6' : 'pt-1'}`}>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brass-100 text-brass-900 border border-brass-300 shadow-xs">
-                          Phase 2: Funded
+                    {/* Header */}
+                    <div className="border-b border-white/10 pb-3 mb-3 pt-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                          Phase 2: Live Funded
                         </span>
-                        <span className="text-xs font-bold text-emerald-700">
-                          Simulated Master
+                        <span className="text-xs font-semibold text-brass-300 font-serif">
+                          {currentModelData.label}
                         </span>
                       </div>
 
-                      <h3 className="font-serif font-bold text-2xl sm:text-3xl text-stone-950 tracking-tight">
-                        {tier.size} Funded Account
+                      <h3 className="font-serif font-bold text-xl sm:text-2xl text-white tracking-tight">
+                        {tier.title} (Funded)
                       </h3>
 
-                      <div className="flex items-baseline gap-1.5 mt-2">
-                        <span className="text-stone-500 text-xs font-normal">
-                          Included with challenge:
-                        </span>
-                        <span className="text-emerald-700 font-bold text-xl sm:text-2xl font-mono">
-                          ${tier.discountPrice}
-                        </span>
-                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 uppercase">
-                          100% Refundable
+                      <div className="flex items-baseline gap-1 mt-1.5">
+                        <span className="text-emerald-400 font-bold text-lg font-mono">
+                          100% First $10,000 Profit
                         </span>
                       </div>
                     </div>
 
-                    {/* Funded Stage Parameter Matrix (Matches Front Face Height) */}
-                    <div className="flex-1 flex flex-col justify-between space-y-2 mb-4 text-xs sm:text-[13px] min-h-[220px]">
-                      
-                      <div className="flex items-center justify-between py-1 border-b border-stone-200/80">
-                        <span className="text-stone-600 font-medium">Payout Frequency</span>
-                        <span className="font-mono font-bold text-emerald-700">{tier.fundedRules.payoutFrequency}</span>
+                    {/* Funded Rules List */}
+                    <div className="flex-1 flex flex-col justify-between space-y-1.5 mb-3 text-xs min-h-[210px]">
+                      <div className="flex items-center justify-between py-1 border-b border-white/5">
+                        <span className="text-stone-400">Payout Frequency</span>
+                        <span className="font-mono font-bold text-emerald-400">{tier.fundedRules.payoutFrequency}</span>
                       </div>
 
-                      <div className="flex items-center justify-between py-1 border-b border-stone-200/80">
-                        <span className="text-stone-600 font-medium">Max Payout / Cycle</span>
-                        <span className="font-mono font-bold text-stone-950">{tier.fundedRules.maxPayout}</span>
+                      <div className="flex items-center justify-between py-1 border-b border-white/5">
+                        <span className="text-stone-400">Max Payout / Cycle</span>
+                        <span className="font-mono font-bold text-white">{tier.fundedRules.maxPayout}</span>
                       </div>
 
-                      <div className="flex items-center justify-between py-1 border-b border-stone-200/80">
-                        <span className="text-stone-600 font-medium">Trader Profit Share</span>
-                        <span className="font-mono font-bold text-emerald-700">{tier.fundedRules.profitShare}</span>
+                      <div className="flex items-center justify-between py-1 border-b border-white/5">
+                        <span className="text-stone-400">Trader Profit Share</span>
+                        <span className="font-mono font-bold text-emerald-400">{tier.fundedRules.profitShare}</span>
                       </div>
 
-                      <div className="flex items-center justify-between py-1 border-b border-stone-200/80">
-                        <span className="text-stone-600 font-medium">Consistency Rule</span>
-                        <span className="font-semibold text-stone-900">{tier.fundedRules.consistency}</span>
+                      <div className="flex items-center justify-between py-1 border-b border-white/5">
+                        <span className="text-stone-400">Consistency Rule</span>
+                        <span className="font-semibold text-white">{tier.fundedRules.consistency}</span>
                       </div>
 
-                      <div className="flex items-center justify-between py-1 border-b border-stone-200/80">
-                        <span className="text-stone-600 font-medium">Evaluation Fee Refund</span>
-                        <span className="font-mono font-bold text-emerald-700">{tier.fundedRules.refund}</span>
+                      <div className="flex items-center justify-between py-1 border-b border-white/5">
+                        <span className="text-stone-400">Fee Refund</span>
+                        <span className="font-mono font-bold text-emerald-400">{tier.fundedRules.refund}</span>
                       </div>
 
                       <div className="flex items-center justify-between py-1">
-                        <span className="text-stone-600 font-medium">Withdrawal Fee</span>
-                        <span className="font-mono font-bold text-emerald-700">$0 (Free)</span>
+                        <span className="text-stone-400">Withdrawal Fee</span>
+                        <span className="font-mono font-bold text-emerald-400">$0 (Free)</span>
                       </div>
-
                     </div>
 
-                    {/* Standardized Flip Back Button Container */}
-                    <div className="h-8 flex items-center justify-center mb-3.5">
+                    {/* Flip Back Link */}
+                    <div className="h-7 flex items-center justify-center mb-3">
                       <button
                         type="button"
                         onClick={() => toggleFlip(tier.size)}
-                        className="inline-flex items-center justify-center gap-1.5 text-stone-700 hover:text-brass-800 font-semibold text-xs py-1 px-3 rounded-full hover:bg-stone-200/60 transition-colors cursor-pointer group whitespace-nowrap"
+                        className="text-[11px] font-bold text-stone-300 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
                       >
-                        <RotateCw className="w-3.5 h-3.5 text-brass-600 transition-transform group-hover:-rotate-180 duration-500 shrink-0" />
-                        <span className="underline underline-offset-2">View Evaluation Rules</span>
+                        <RotateCw className="w-3 h-3" />
+                        <span>Flip Back to Phase 1</span>
                       </button>
                     </div>
 
-                    {/* Standardized Back CTA Button (Same height, text & offset) */}
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="button"
-                      onClick={() => handleStartChallenge(tier)}
-                      className={`shimmer-btn h-12 w-full px-4 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer shadow-sm ${
-                        isMostPopular
-                          ? 'gold-gradient-bg text-stone-950 hover:shadow-brass-glow'
-                          : 'bg-stone-950 hover:bg-stone-900 text-brass-300'
-                      }`}
-                    >
-                      <span>{tier.isInstantFunding ? `Get Funded with ${tier.size}` : `Start with ${tier.size}`}</span>
-                    </motion.button>
-
-                    {/* Subtext */}
-                    <p className="text-[11px] text-stone-500 text-center font-medium mt-2.5">
-                      Save ${tier.saveAmount} with code AUG
-                    </p>
-
                   </div>
+
+                  {/* Start Challenge CTA */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleStartChallenge(tier)}
+                    className="shimmer-btn w-full py-3 rounded-2xl font-bold text-xs uppercase tracking-wider gold-gradient-bg text-obsidian-950 hover:shadow-brass-glow transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                  >
+                    <span>Start Evaluation</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-obsidian-950" />
+                  </motion.button>
+
                 </div>
 
               </motion.div>
             </div>
           );
         })}
+      </div>
+
+      {/* Auto-applied discount banner */}
+      <div className="mt-10 text-center">
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-emerald-500/30 text-stone-300 text-xs font-mono">
+          <Zap className="w-3.5 h-3.5 text-emerald-400" />
+          <span>Promo Code <strong className="text-emerald-400">AUG</strong> Auto-Applied: 40% OFF Evaluation Fees</span>
+        </span>
       </div>
 
     </section>

@@ -19,13 +19,13 @@ export default function LoginInfoModal({ isOpen, onClose, account }) {
   const investorPass = 'Inv_V13w0nly$99';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian-950/80 backdrop-blur-xl animate-in fade-in duration-200">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        className="relative w-full max-w-md bg-[#FAF8F5] border border-[#E7E2DA] rounded-3xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-md bg-obsidian-900/95 border border-white/15 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-2xl"
       >
         
         {/* Top Gold Trim */}
@@ -34,7 +34,7 @@ export default function LoginInfoModal({ isOpen, onClose, account }) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-full text-stone-500 hover:text-stone-900 hover:bg-stone-200/60 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-full text-stone-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -42,84 +42,84 @@ export default function LoginInfoModal({ isOpen, onClose, account }) {
         <div className="p-6 sm:p-8">
           
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-11 h-11 rounded-2xl bg-stone-950 text-brass-400 flex items-center justify-center font-bold shadow-md border border-stone-800">
+            <div className="w-11 h-11 rounded-2xl bg-obsidian-950 text-emerald-400 flex items-center justify-center font-bold shadow-md border border-white/10">
               <Key className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-serif font-bold text-xl text-stone-950">
+              <h3 className="font-serif font-bold text-xl text-white">
                 Terminal Credentials
               </h3>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-stone-400">
                 {account.plan} • {account.platform}
               </p>
             </div>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-brass-50 border border-brass-200 text-stone-800 text-xs mb-5 flex items-start gap-2.5 shadow-xs">
-            <Shield className="w-4 h-4 text-brass-700 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-stone-300 text-xs mb-5 flex items-start gap-2.5 shadow-xs">
+            <Shield className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
             <span>
-              Use these credentials to connect your simulated evaluation account directly to {account.platform}.
+              Use these connection keys to link your simulated evaluation account directly to {account.platform}.
             </span>
           </div>
 
           <div className="space-y-3">
             
             {/* Server */}
-            <div className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-center justify-between">
+            <div className="p-3.5 rounded-2xl bg-obsidian-950/70 border border-white/10 shadow-xs flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">Server Name</span>
-                <span className="font-mono font-bold text-stone-900 text-xs">{server}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">Server Name</span>
+                <span className="font-mono font-bold text-white text-xs">{server}</span>
               </div>
               <button
                 onClick={() => copyToClipboard(server, 'server')}
-                className="p-1.5 px-2.5 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                className="p-1.5 px-2.5 rounded-xl border border-white/10 hover:bg-white/10 text-stone-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
               >
-                {copiedField === 'server' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedField === 'server' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedField === 'server' ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
 
             {/* Login / Account Number */}
-            <div className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-center justify-between">
+            <div className="p-3.5 rounded-2xl bg-obsidian-950/70 border border-white/10 shadow-xs flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">Login / Account ID</span>
-                <span className="font-mono font-bold text-stone-950 text-sm">{loginId}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">Login / Account ID</span>
+                <span className="font-mono font-bold text-emerald-400 text-sm">{loginId}</span>
               </div>
               <button
                 onClick={() => copyToClipboard(loginId, 'login')}
-                className="p-1.5 px-2.5 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                className="p-1.5 px-2.5 rounded-xl border border-white/10 hover:bg-white/10 text-stone-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
               >
-                {copiedField === 'login' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedField === 'login' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedField === 'login' ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
 
             {/* Master Password */}
-            <div className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-center justify-between">
+            <div className="p-3.5 rounded-2xl bg-obsidian-950/70 border border-white/10 shadow-xs flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">Master Trader Password</span>
-                <span className="font-mono font-bold text-stone-900 text-xs">{masterPass}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">Master Trader Password</span>
+                <span className="font-mono font-bold text-white text-xs">{masterPass}</span>
               </div>
               <button
                 onClick={() => copyToClipboard(masterPass, 'master')}
-                className="p-1.5 px-2.5 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                className="p-1.5 px-2.5 rounded-xl border border-white/10 hover:bg-white/10 text-stone-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
               >
-                {copiedField === 'master' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedField === 'master' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedField === 'master' ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
 
             {/* Investor Password */}
-            <div className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-center justify-between">
+            <div className="p-3.5 rounded-2xl bg-obsidian-950/70 border border-white/10 shadow-xs flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">Read-Only Investor Password</span>
-                <span className="font-mono font-bold text-stone-900 text-xs">{investorPass}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">Read-Only Investor Password</span>
+                <span className="font-mono font-bold text-white text-xs">{investorPass}</span>
               </div>
               <button
                 onClick={() => copyToClipboard(investorPass, 'investor')}
-                className="p-1.5 px-2.5 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                className="p-1.5 px-2.5 rounded-xl border border-white/10 hover:bg-white/10 text-stone-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold cursor-pointer"
               >
-                {copiedField === 'investor' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedField === 'investor' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedField === 'investor' ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
@@ -131,7 +131,7 @@ export default function LoginInfoModal({ isOpen, onClose, account }) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onClose}
-              className="w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider bg-stone-950 hover:bg-stone-900 text-brass-300 transition-colors cursor-pointer shadow-sm"
+              className="w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider gold-gradient-bg text-obsidian-950 hover:shadow-brass-glow transition-all cursor-pointer shadow-md"
             >
               Done
             </motion.button>

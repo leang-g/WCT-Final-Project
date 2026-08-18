@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useApp } from '../../context/AppContext';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,7 +25,10 @@ import {
   TrendingUp,
   ArrowUpRight,
   Activity,
-  Layers
+  Layers,
+  Zap,
+  Play,
+  Gauge
 } from 'lucide-react';
 import EconomicCalendarWidget from './EconomicCalendarWidget';
 import AnimatedCounter from '../common/AnimatedCounter';
@@ -41,6 +45,7 @@ ChartJS.register(
 );
 
 export default function DashboardOverview({ account }) {
+  const { updateAccount } = useApp();
   const [timeframe, setTimeframe] = useState('7d'); // '1d' | '7d' | '30d' | 'all'
 
   if (!account) return null;
@@ -71,9 +76,9 @@ export default function DashboardOverview({ account }) {
 
   const chartDataByTf = {
     '1d': [currentBalance - 140, currentBalance - 60, currentBalance + 120, currentBalance - 30, currentBalance + 190, currentBalance + 160, currentBalance],
-    '7d': account.chartData || [startingBalance, startingBalance + 200, startingBalance + 500, startingBalance + 1000, startingBalance + 1800, startingBalance + 2400, currentBalance],
-    '30d': [startingBalance, startingBalance + 800, startingBalance + 1900, currentBalance],
-    'all': [startingBalance, startingBalance + 400, startingBalance + 1200, startingBalance + 2100, startingBalance + 3400, currentBalance]
+    '7d': account.chartData || [startingBalance, startingBalance + 400, startingBalance + 850, startingBalance + 1500, startingBalance + 2800, startingBalance + 3600, currentBalance],
+    '30d': [startingBalance, startingBalance + 800, startingBalance + 2200, currentBalance],
+    'all': [startingBalance, startingBalance + 600, startingBalance + 1600, startingBalance + 2900, startingBalance + 4200, currentBalance]
   };
 
   const labels = chartLabelsByTf[timeframe] || chartLabelsByTf['7d'];
@@ -88,19 +93,19 @@ export default function DashboardOverview({ account }) {
       {
         label: 'Equity Curve',
         data: activeCurve,
-        borderColor: '#C59A45',
+        borderColor: '#00F59B',
         backgroundColor: (context) => {
           const ctx = context.chart?.ctx;
-          if (!ctx) return 'rgba(197, 154, 69, 0.1)';
+          if (!ctx) return 'rgba(0, 245, 155, 0.1)';
           const gradient = ctx.createLinearGradient(0, 0, 0, 260);
-          gradient.addColorStop(0, 'rgba(197, 154, 69, 0.35)');
-          gradient.addColorStop(0.6, 'rgba(5, 150, 105, 0.08)');
-          gradient.addColorStop(1, 'rgba(197, 154, 69, 0)');
+          gradient.addColorStop(0, 'rgba(0, 245, 155, 0.35)');
+          gradient.addColorStop(0.6, 'rgba(0, 245, 155, 0.08)');
+          gradient.addColorStop(1, 'rgba(0, 245, 155, 0)');
           return gradient;
         },
         borderWidth: 2.5,
-        pointBackgroundColor: '#059669',
-        pointBorderColor: '#FFFFFF',
+        pointBackgroundColor: '#00F59B',
+        pointBorderColor: '#0B0F17',
         pointBorderWidth: 2,
         pointRadius: 4,
         pointHoverRadius: 6,
@@ -110,7 +115,7 @@ export default function DashboardOverview({ account }) {
       {
         label: 'Profit Target ($' + new Intl.NumberFormat('en-US').format(profitTargetThreshold) + ')',
         data: labels.map(() => profitTargetThreshold),
-        borderColor: '#059669',
+        borderColor: '#E6C87C',
         borderWidth: 1.5,
         borderDash: [5, 4],
         pointRadius: 0,
@@ -119,7 +124,7 @@ export default function DashboardOverview({ account }) {
       {
         label: 'Max Loss Floor ($' + new Intl.NumberFormat('en-US').format(maxLossThreshold) + ')',
         data: labels.map(() => maxLossThreshold),
-        borderColor: '#E11D48',
+        borderColor: '#F43F5E',
         borderWidth: 1.5,
         borderDash: [5, 4],
         pointRadius: 0,
@@ -144,15 +149,15 @@ export default function DashboardOverview({ account }) {
           boxWidth: 8,
           boxHeight: 8,
           usePointStyle: true,
-          color: '#78716C',
+          color: '#94A3B8',
           font: { size: 11, family: 'Inter', weight: '600' }
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(20, 18, 16, 0.95)',
-        titleColor: '#C59A45',
+        backgroundColor: 'rgba(11, 15, 23, 0.95)',
+        titleColor: '#00F59B',
         bodyColor: '#FFFFFF',
-        borderColor: 'rgba(197, 154, 69, 0.3)',
+        borderColor: 'rgba(0, 245, 155, 0.3)',
         borderWidth: 1,
         padding: 10,
         cornerRadius: 12,
@@ -166,12 +171,12 @@ export default function DashboardOverview({ account }) {
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: '#A8A29E', font: { size: 11 } }
+        ticks: { color: '#64748B', font: { size: 11 } }
       },
       y: {
-        grid: { color: 'rgba(231, 226, 218, 0.6)' },
+        grid: { color: 'rgba(255, 255, 255, 0.06)' },
         ticks: {
-          color: '#A8A29E',
+          color: '#64748B',
           font: { size: 11 },
           callback: function(value) {
             return '$' + (value / 1000).toFixed(0) + 'k';
@@ -185,64 +190,64 @@ export default function DashboardOverview({ account }) {
     <div className="space-y-6 animate-in fade-in duration-300">
       
       {/* ============================================================
-          1. TOP KPI METRICS STRIP (4 CLEAN, SPACIOUS CARDS)
+          1. TOP KPI METRICS STRIP (4 DARK GLASS CARDS)
           ============================================================ */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* KPI 1: Current Account Balance */}
-        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
-          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+        <div className="p-5 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl">
+          <div className="flex items-center justify-between text-stone-400 mb-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider">Account Balance</span>
-            <span className="text-[10px] font-mono font-semibold bg-stone-100 px-2 py-0.5 rounded-full text-stone-700">
+            <span className="text-[10px] font-mono font-semibold bg-white/10 px-2 py-0.5 rounded-full text-stone-200">
               Live Equity
             </span>
           </div>
-          <div className="font-serif font-bold text-2xl sm:text-3xl text-stone-950 font-mono tracking-tight">
+          <div className="font-serif font-bold text-2xl sm:text-3xl text-white font-mono tracking-tight">
             <AnimatedCounter value={currentBalance} prefix="$" />
           </div>
-          <div className="flex items-center justify-between text-[11px] text-stone-500 mt-2 pt-2 border-t border-stone-100 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-stone-400 mt-2 pt-2 border-t border-white/10 font-mono">
             <span>Starting Capital</span>
-            <span className="font-bold text-stone-800">${startingBalance.toLocaleString()}.00</span>
+            <span className="font-bold text-stone-200">${startingBalance.toLocaleString()}.00</span>
           </div>
         </div>
 
         {/* KPI 2: Net Profit & Return */}
-        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
-          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+        <div className="p-5 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl">
+          <div className="flex items-center justify-between text-stone-400 mb-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider">Net Profit / Loss</span>
-            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${netPnL >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
+            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${netPnL >= 0 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}`}>
               {netPnL >= 0 ? `+${netPnLPct}%` : `${netPnLPct}%`}
             </span>
           </div>
-          <div className={`font-serif font-bold text-2xl sm:text-3xl font-mono tracking-tight ${netPnL >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+          <div className={`font-serif font-bold text-2xl sm:text-3xl font-mono tracking-tight ${netPnL >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
             <AnimatedCounter value={netPnL} prefix={netPnL >= 0 ? '+$' : '-$'} />
           </div>
-          <div className="flex items-center justify-between text-[11px] text-stone-500 mt-2 pt-2 border-t border-stone-100 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-stone-400 mt-2 pt-2 border-t border-white/10 font-mono">
             <span>Win Rate</span>
-            <span className="font-bold text-emerald-700">{account.winRate || '68%'} (4 Trades)</span>
+            <span className="font-bold text-emerald-400">{account.winRate || '68%'} (4 Trades)</span>
           </div>
         </div>
 
         {/* KPI 3: Profit Target Progress */}
-        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
-          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+        <div className="p-5 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl">
+          <div className="flex items-center justify-between text-stone-400 mb-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider">Profit Target ({profitTargetPct}%)</span>
-            <span className="text-[10px] font-mono font-bold text-emerald-700">
+            <span className="text-[10px] font-mono font-bold text-emerald-400">
               {targetProgress.toFixed(1)}% Completed
             </span>
           </div>
-          <div className="font-serif font-bold text-2xl sm:text-3xl text-stone-950 font-mono tracking-tight">
+          <div className="font-serif font-bold text-2xl sm:text-3xl text-white font-mono tracking-tight">
             ${targetAmount.toLocaleString()}
           </div>
           {/* Target Progress Bar */}
           <div className="mt-2.5">
-            <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200/80">
+            <div className="w-full h-2 rounded-full bg-stone-800 overflow-hidden border border-white/5">
               <div 
                 className="h-full rounded-full gold-gradient-bg transition-all duration-700" 
                 style={{ width: `${targetProgress}%` }}
               />
             </div>
-            <div className="flex justify-between text-[10px] text-stone-500 font-mono mt-1">
+            <div className="flex justify-between text-[10px] text-stone-400 font-mono mt-1">
               <span>{remainingToTarget === 0 ? 'Target Achieved!' : `$${remainingToTarget.toFixed(0)} remaining`}</span>
               <span>Target: ${profitTargetThreshold.toLocaleString()}</span>
             </div>
@@ -250,25 +255,25 @@ export default function DashboardOverview({ account }) {
         </div>
 
         {/* KPI 4: Drawdown Safety Buffer */}
-        <div className="p-5 rounded-3xl bg-white border border-stone-200/90 shadow-card">
-          <div className="flex items-center justify-between text-stone-500 mb-1.5">
+        <div className="p-5 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl">
+          <div className="flex items-center justify-between text-stone-400 mb-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider">Max Drawdown Cushion</span>
-            <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-500/30">
               {account.drawdownPct || 2.1}% Used
             </span>
           </div>
-          <div className="font-serif font-bold text-2xl sm:text-3xl text-emerald-700 font-mono tracking-tight">
+          <div className="font-serif font-bold text-2xl sm:text-3xl text-emerald-400 font-mono tracking-tight">
             <AnimatedCounter value={remainingBuffer} prefix="$" />
           </div>
           {/* Cushion Bar */}
           <div className="mt-2.5">
-            <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200/80">
+            <div className="w-full h-2 rounded-full bg-stone-800 overflow-hidden border border-white/5">
               <div 
-                className="h-full rounded-full bg-emerald-500 transition-all duration-700" 
+                className="h-full rounded-full bg-emerald-400 transition-all duration-700" 
                 style={{ width: `${bufferProgress}%` }}
               />
             </div>
-            <div className="flex justify-between text-[10px] text-stone-500 font-mono mt-1">
+            <div className="flex justify-between text-[10px] text-stone-400 font-mono mt-1">
               <span>Safe Buffer</span>
               <span>Breach Floor: ${maxLossThreshold.toLocaleString()}</span>
             </div>
@@ -282,28 +287,28 @@ export default function DashboardOverview({ account }) {
           ============================================================ */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Left 8-Columns: High-Resolution Equity Curve & Clean Positions */}
+        {/* Left 8-Columns: High-Resolution Equity Curve & Simulator */}
         <div className="lg:col-span-8 space-y-6">
           
           {/* Main Equity Curve Card */}
-          <div className="p-6 sm:p-7 rounded-3xl bg-white border border-stone-200/90 shadow-card space-y-4">
+          <div className="p-6 sm:p-7 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl space-y-4">
             
             {/* Chart Header & Timeframe Switcher */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-100">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
               <div>
-                <h3 className="font-serif font-bold text-lg text-stone-950 flex items-center gap-2">
+                <h3 className="font-serif font-bold text-lg text-white flex items-center gap-2">
                   <span>Performance Equity Curve</span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                     Live Stream
                   </span>
                 </h3>
-                <p className="text-xs text-stone-500">
-                  Account equity progression with profit target and loss floor thresholds.
+                <p className="text-xs text-stone-400">
+                  Account equity progression with profit target ceiling and loss floor threshold.
                 </p>
               </div>
 
               {/* Timeframe Buttons */}
-              <div className="flex p-1 rounded-xl bg-stone-100 border border-stone-200 text-xs font-semibold">
+              <div className="flex p-1 rounded-xl bg-obsidian-950 border border-white/10 text-xs font-semibold">
                 {['1d', '7d', '30d', 'all'].map((tf) => (
                   <button
                     key={tf}
@@ -311,8 +316,8 @@ export default function DashboardOverview({ account }) {
                     onClick={() => setTimeframe(tf)}
                     className={`px-3 py-1 rounded-lg uppercase tracking-wider transition-all cursor-pointer ${
                       timeframe === tf
-                        ? 'bg-white text-stone-950 font-bold shadow-xs'
-                        : 'text-stone-600 hover:text-stone-900'
+                        ? 'bg-emerald-500 text-obsidian-950 font-black shadow-neon-glow'
+                        : 'text-stone-400 hover:text-white'
                     }`}
                   >
                     {tf}
@@ -329,49 +334,47 @@ export default function DashboardOverview({ account }) {
           </div>
 
           {/* Active Open Positions Card */}
-          <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E7E2DA] shadow-card space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+          <div className="p-6 sm:p-7 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-brass-700" />
-                <h4 className="font-serif font-bold text-base text-stone-950">
+                <Layers className="w-4 h-4 text-emerald-400" />
+                <h4 className="font-serif font-bold text-base text-white">
                   Active Open Positions
                 </h4>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-brass-100 text-brass-900 border border-brass-300">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                   {account.openPositions ? account.openPositions.length : 0} Live
                 </span>
               </div>
-              <span className="text-xs text-stone-500 font-mono">
-                Tradovate / MT5 Execution
+              <span className="text-xs text-stone-400 font-mono">
+                Tradovate / NinjaTrader Execution
               </span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-stone-100 text-stone-500 font-bold uppercase tracking-wider text-[10px]">
+                  <tr className="border-b border-white/10 text-stone-400 font-bold uppercase tracking-wider text-[10px]">
                     <th className="pb-2">Symbol</th>
-                    <th className="pb-2">Strategy Setup</th>
                     <th className="pb-2">Side</th>
                     <th className="pb-2">Volume</th>
-                    <th className="pb-2 text-right">Floating P&amp;L</th>
+                    <th className="pb-2 text-right">Floating PnL</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100">
-                  {account.openPositions && account.openPositions.map((pos, idx) => (
-                    <tr key={idx} className="hover:bg-stone-50/80 transition-colors">
-                      <td className="py-3 font-bold text-stone-900">{pos.symbol}</td>
+                <tbody className="divide-y divide-white/5">
+                  {(account.openPositions || []).map((pos, idx) => (
+                    <tr key={idx} className="hover:bg-white/5 transition-colors">
                       <td className="py-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-brass-50 border border-brass-200 text-brass-850">
-                          {pos.setup}
+                        <span className="font-mono font-bold text-white block">
+                          {pos.symbol}
                         </span>
                       </td>
                       <td className="py-3">
-                        <span className={`font-bold ${pos.side === 'Buy' ? 'text-emerald-700' : 'text-rose-700'}`}>
+                        <span className={`font-bold font-mono text-[11px] px-2 py-0.5 rounded ${pos.side === 'Buy' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>
                           {pos.side}
                         </span>
                       </td>
-                      <td className="py-3 font-mono text-stone-700">{pos.vol} Lots</td>
-                      <td className={`py-3 text-right font-mono font-bold ${pos.pnl >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
+                      <td className="py-3 font-mono text-stone-300">{pos.vol} Lots</td>
+                      <td className={`py-3 text-right font-mono font-bold ${pos.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                         {pos.pnl >= 0 ? `+$${pos.pnl.toFixed(2)}` : `-$${Math.abs(pos.pnl).toFixed(2)}`}
                       </td>
                     </tr>
@@ -383,60 +386,129 @@ export default function DashboardOverview({ account }) {
 
         </div>
 
-        {/* Right 4-Columns: Consolidated Rule Health & Macro News */}
+        {/* Right 4-Columns: Dynamic SVG Rule Compliance Gauges & Macro News */}
         <div className="lg:col-span-4 space-y-6">
           
-          {/* Challenge Health & Rule Compliance Card */}
-          <div className="p-6 rounded-3xl bg-white border border-stone-200/90 shadow-card space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+          {/* Circular & Multi-Zone Compliance Gauges Card */}
+          <div className="p-6 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-brass-100 text-brass-800 flex items-center justify-center font-bold shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shadow-xs border border-emerald-500/30">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-base text-stone-950">Rule Compliance</h4>
-                  <span className="text-[11px] text-stone-500">Risk Guard Active</span>
+                  <h4 className="font-serif font-bold text-base text-white">Rule Compliance</h4>
+                  <span className="text-[11px] text-stone-400">Risk Guard Engine</span>
                 </div>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                 100% Passed
               </span>
             </div>
 
-            {/* Rule 1: Daily Loss Limit */}
-            <div className="space-y-1.5 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-stone-700 font-semibold">Daily Loss Limit</span>
-                <span className="font-mono font-bold text-emerald-700">$0.00 / ${account.startingBalance * 0.05}</span>
+            {/* Circular Gauge 1: Daily Loss Limit */}
+            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-stone-300 font-semibold">Daily Loss Limit</span>
+                <span className="font-mono font-bold text-emerald-400">$0.00 / ${account.startingBalance * 0.05}</span>
               </div>
-              <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200">
-                <div className="h-full rounded-full bg-emerald-500" style={{ width: '8%' }}></div>
+              
+              <div className="flex items-center gap-3">
+                {/* Mini SVG Gauge */}
+                <div className="w-10 h-10 shrink-0 relative">
+                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="3"
+                    />
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#00F59B"
+                      strokeWidth="3.5"
+                      strokeDasharray="8, 100"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-400">
+                    0%
+                  </span>
+                </div>
+                <div className="text-[11px] text-stone-400">
+                  Resets automatically at 17:00 EST daily market close.
+                </div>
               </div>
-              <span className="text-[10px] text-stone-500 block">Resets automatically at 17:00 EST</span>
             </div>
 
-            {/* Rule 2: Max Trailing Drawdown */}
-            <div className="space-y-1.5 text-xs pt-3 border-t border-stone-100">
-              <div className="flex items-center justify-between">
-                <span className="text-stone-700 font-semibold">Max Drawdown (EOD)</span>
-                <span className="font-mono font-bold text-stone-950">{account.drawdownPct || 2.1}% / {maxLossPct}%</span>
+            {/* Circular Gauge 2: Max Trailing Drawdown (EOD) */}
+            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-stone-300 font-semibold">Max Drawdown (EOD)</span>
+                <span className="font-mono font-bold text-emerald-400">{account.drawdownPct || 2.1}% / {maxLossPct}%</span>
               </div>
-              <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200">
-                <div className="h-full rounded-full bg-emerald-500" style={{ width: `${(account.drawdownPct / maxLossPct) * 100}%` }}></div>
+
+              <div className="flex items-center gap-3">
+                {/* Mini SVG Gauge */}
+                <div className="w-10 h-10 shrink-0 relative">
+                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="3"
+                    />
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#00F59B"
+                      strokeWidth="3.5"
+                      strokeDasharray="35, 100"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-400">
+                    35%
+                  </span>
+                </div>
+                <div className="text-[11px] text-stone-400">
+                  <strong className="text-white">${remainingBuffer.toFixed(0)}</strong> safety cushion remaining above floor.
+                </div>
               </div>
-              <span className="text-[10px] text-stone-500 block">${remainingBuffer.toFixed(0)} safety cushion remaining</span>
             </div>
 
-            {/* Rule 3: Consistency Metric */}
-            <div className="space-y-1.5 text-xs pt-3 border-t border-stone-100">
-              <div className="flex items-center justify-between">
-                <span className="text-stone-700 font-semibold">Consistency Score</span>
-                <span className="font-mono font-bold text-emerald-700">31.4% (Max 40%)</span>
+            {/* Circular Gauge 3: Consistency Score */}
+            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-stone-300 font-semibold">Consistency Score</span>
+                <span className="font-mono font-bold text-emerald-400">31.4% (Max 40%)</span>
               </div>
-              <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden border border-stone-200">
-                <div className="h-full rounded-full bg-emerald-500" style={{ width: '78%' }}></div>
+
+              <div className="flex items-center gap-3">
+                {/* Mini SVG Gauge */}
+                <div className="w-10 h-10 shrink-0 relative">
+                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="3"
+                    />
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#E6C87C"
+                      strokeWidth="3.5"
+                      strokeDasharray="78, 100"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-brass-300">
+                    78%
+                  </span>
+                </div>
+                <div className="text-[11px] text-stone-400">
+                  Well-distributed trading. No single trade violates consistency.
+                </div>
               </div>
-              <span className="text-[10px] text-stone-500 block">No single day dominates total profit</span>
             </div>
 
           </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Award, Download, Share2, Check, Sparkles, Printer, ShieldCheck, Edit3 } from 'lucide-react';
+import Logo from './common/Logo';
 
 export default function CertificateModal({ isOpen, onClose, account, user }) {
   const [copied, setCopied] = useState(false);
@@ -222,18 +223,8 @@ export default function CertificateModal({ isOpen, onClose, account, user }) {
           <div className="relative z-10 flex items-end justify-between pt-4">
             
             {/* Bottom Left: Brand Mark */}
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-stone-700 via-stone-900 to-black border border-stone-600 flex items-center justify-center text-brass-400 shadow-md">
-                <span className="font-serif font-bold text-xs">◆</span>
-              </div>
-              <div className="text-left">
-                <span className="font-sans font-bold text-xs sm:text-sm tracking-wider uppercase text-white block leading-tight">
-                  APEX FUNDED
-                </span>
-                <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest block">
-                  PROPRIETARY FIRM
-                </span>
-              </div>
+            <div className="flex items-center">
+              <Logo size="sm" inverted={true} showSubtitle={false} />
             </div>
 
             {/* Bottom Right: Signature */}

@@ -5,249 +5,289 @@ import {
   Calculator, 
   TrendingUp, 
   DollarSign, 
-  Percent, 
   Sparkles, 
   ArrowRight, 
   CheckCircle2, 
-  ShieldCheck, 
+  Layers,
   Zap,
-  Award
+  Award,
+  Copy
 } from 'lucide-react';
 import AnimatedCounter from './common/AnimatedCounter';
 
 export default function ProfitCalculator() {
   const { triggerGetFunded } = useApp();
 
-  const [accountSize, setAccountSize] = useState(100000); // 25000, 50000, 100000, 150000
-  const [monthlyReturnPct, setMonthlyReturnPct] = useState(6.0); // 2% to 15%
-  const [splitPct, setSplitPct] = useState(90); // 80% to 90%
-
-  const accountTiers = [
-    { label: '$25,000', value: 25000, sizeStr: '25K', fee: 59 },
-    { label: '$50,000', value: 50000, sizeStr: '50K', fee: 87 },
-    { label: '$100,000', value: 100000, sizeStr: '100K', fee: 153 },
-    { label: '$150,000', value: 150000, sizeStr: '150K', fee: 221 }
+  // Futures Asset Definitions
+  const futuresAssets = [
+    { key: 'NQ', name: 'E-mini Nasdaq (NQ)', pointValue: 20, defaultPoints: 15, maxPoints: 50, step: 1, unit: 'pts' },
+    { key: 'ES', name: 'E-mini S&P (ES)', pointValue: 50, defaultPoints: 6, maxPoints: 20, step: 0.5, unit: 'pts' },
+    { key: 'MNQ', name: 'Micro Nasdaq (MNQ)', pointValue: 2, defaultPoints: 20, maxPoints: 80, step: 2, unit: 'pts' },
+    { key: 'MES', name: 'Micro S&P (MES)', pointValue: 5, defaultPoints: 8, maxPoints: 30, step: 1, unit: 'pts' },
+    { key: 'CL', name: 'Crude Oil (CL)', pointValue: 10, defaultPoints: 30, maxPoints: 100, step: 5, unit: 'ticks' },
+    { key: 'GC', name: 'Gold Futures (GC)', pointValue: 10, defaultPoints: 25, maxPoints: 100, step: 5, unit: 'ticks' }
   ];
 
-  const currentTierObj = accountTiers.find(t => t.value === accountSize) || accountTiers[2];
+  const [selectedAssetKey, setSelectedAssetKey] = useState('NQ');
+  const [contractsCount, setContractsCount] = useState(2);
+  const [pointsTarget, setPointsTarget] = useState(15);
+  const [tradingDays, setTradingDays] = useState(20);
+  const [accountsCount, setAccountsCount] = useState(3); // 1 to 20 accounts
+
+  const currentAsset = futuresAssets.find(a => a.key === selectedAssetKey) || futuresAssets[0];
 
   // Mathematical Calculations
-  const monthlyGrossProfit = accountSize * (monthlyReturnPct / 100);
-  const traderTakeHome = monthlyGrossProfit * (splitPct / 100);
-  const evaluationRefund = currentTierObj.fee;
-  const firstMonthTotal = traderTakeHome + evaluationRefund;
-  const roiMultiplier = ((firstMonthTotal / currentTierObj.fee) * 100).toFixed(0);
+  const dailyPnLPerAccount = pointsTarget * currentAsset.pointValue * contractsCount;
+  const monthlyGrossPerAccount = dailyPnLPerAccount * tradingDays;
+  
+  // 100% of first $10,000, 90% thereafter
+  const calculateTraderPayoutPerAccount = (gross) => {
+    if (gross <= 10000) {
+      return gross; // 100% of first $10K
+    }
+    return 10000 + (gross - 10000) * 0.90; // 10K + 90% of remainder
+  };
+
+  const traderTakeHomePerAccount = calculateTraderPayoutPerAccount(monthlyGrossPerAccount);
+  const totalMultiAccountPayout = traderTakeHomePerAccount * accountsCount;
+  const totalMultiAccountGross = monthlyGrossPerAccount * accountsCount;
 
   const handleClaim = () => {
     triggerGetFunded({
       model: 'Growth',
-      size: currentTierObj.sizeStr,
-      numericSize: currentTierObj.value,
+      size: '50K',
+      numericSize: 50000,
       platform: 'Tradovate',
-      price: currentTierObj.fee,
-      originalPrice: Math.round(currentTierObj.fee * 1.6),
+      price: 87,
+      originalPrice: 145,
       discountCode: 'AUG'
     });
   };
 
   return (
-    <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="calculator" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-brass-100/90 border border-brass-300 text-stone-900 text-xs font-bold uppercase tracking-widest mb-3 shadow-xs">
           <Calculator className="w-3.5 h-3.5 text-brass-700" />
-          Interactive Profit &amp; Payout Engine
+          Futures Points &amp; Multi-Account Calculator
         </div>
         <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-stone-950 tracking-tight">
-          Calculate Your Monthly Payout Potential
+          Estimate Your CME Futures Payouts
         </h2>
         <p className="text-stone-700 text-sm sm:text-base mt-3 leading-relaxed">
-          See how simulated capital multiplies your trading returns compared to risking personal savings. Keep up to 90% of all generated profits with weekly payouts.
+          Calculate your net returns based on contracts, point targets, and trade copier multi-account scaling.
         </p>
       </div>
 
-      {/* Main Interactive Calculator Card */}
-      <div className="p-6 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-xl border border-stone-200/90 shadow-editorial ring-1 ring-white/60">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        {/* ============================================================
+            LEFT: INTERACTIVE FUTURES PARAMETERS (7 COLS)
+            ============================================================ */}
+        <div className="lg:col-span-7 p-7 sm:p-9 rounded-3xl bg-white border border-[#E7E2DA] shadow-card flex flex-col justify-between space-y-7">
           
-          {/* Left 7 Columns: Interactive Controls & Sliders */}
-          <div className="lg:col-span-7 space-y-8">
-            
-            {/* Control 1: Account Capital Tier Selector */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
-                  1. Select Simulated Capital Tier
-                </label>
-                <span className="text-xs font-mono font-bold text-emerald-700">
-                  ${(accountSize / 1000).toFixed(0)}K Account
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                {accountTiers.map((tier) => {
-                  const isSelected = accountSize === tier.value;
-
-                  return (
-                    <button
-                      key={tier.value}
-                      type="button"
-                      onClick={() => setAccountSize(tier.value)}
-                      className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-stone-950 text-brass-300 border-stone-950 shadow-md ring-2 ring-brass-400/30'
-                          : 'bg-stone-50/80 border-stone-200/90 hover:bg-stone-100 text-stone-800'
-                      }`}
-                    >
-                      <span className="block font-serif font-bold text-base sm:text-lg">
-                        {tier.label}
-                      </span>
-                      <span className={`block text-[10px] font-mono mt-0.5 ${isSelected ? 'text-brass-400' : 'text-stone-500'}`}>
-                        Fee: ${tier.fee} (Refundable)
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+          {/* 1. Asset Selection Pills */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                1. Select Futures Instrument
+              </label>
+              <span className="text-xs font-mono font-bold text-brass-800 bg-brass-100/80 px-2 py-0.5 rounded">
+                ${currentAsset.pointValue}.00 / {currentAsset.unit === 'pts' ? 'Point' : 'Tick'}
+              </span>
             </div>
 
-            {/* Control 2: Expected Monthly Return % Slider */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingUp className="w-4 h-4 text-emerald-600" />
-                  2. Expected Monthly Return Rate
-                </label>
-                <span className="text-lg font-mono font-bold text-emerald-700 bg-emerald-50 px-3 py-0.5 rounded-xl border border-emerald-200">
-                  {monthlyReturnPct.toFixed(1)}% / month
-                </span>
-              </div>
-
-              <input
-                type="range"
-                min="2.0"
-                max="15.0"
-                step="0.5"
-                value={monthlyReturnPct}
-                onChange={(e) => setMonthlyReturnPct(parseFloat(e.target.value))}
-                className="w-full h-2.5 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-[#C59A45]"
-              />
-
-              <div className="flex justify-between text-[11px] text-stone-500 font-mono mt-1.5">
-                <span>Conservative (2%)</span>
-                <span>Realistic (6%–8%)</span>
-                <span>High Performance (15%)</span>
-              </div>
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+              {futuresAssets.map(asset => (
+                <button
+                  key={asset.key}
+                  onClick={() => {
+                    setSelectedAssetKey(asset.key);
+                    setPointsTarget(asset.defaultPoints);
+                  }}
+                  className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+                    selectedAssetKey === asset.key
+                      ? 'bg-stone-950 text-brass-300 border-stone-900 shadow-sm font-bold'
+                      : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-stone-300'
+                  }`}
+                >
+                  <div className="font-mono font-bold text-xs sm:text-sm">{asset.key}</div>
+                  <div className="text-[9px] text-stone-400 font-mono mt-0.5">${asset.pointValue}/{asset.unit === 'pts' ? 'pt' : 'tk'}</div>
+                </button>
+              ))}
             </div>
-
-            {/* Control 3: Profit Split Selection */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
-                  3. Trader Profit Share
-                </label>
-                <span className="text-xs font-mono font-bold text-stone-900">
-                  {splitPct}% Split
-                </span>
-              </div>
-
-              <div className="flex gap-3">
-                {[80, 85, 90].map((pct) => (
-                  <button
-                    key={pct}
-                    type="button"
-                    onClick={() => setSplitPct(pct)}
-                    className={`flex-1 py-2.5 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer border ${
-                      splitPct === pct
-                        ? 'bg-stone-950 text-brass-300 border-stone-950 shadow-xs'
-                        : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100'
-                    }`}
-                  >
-                    {pct}% Profit Split
-                  </button>
-                ))}
-              </div>
-            </div>
-
           </div>
 
-          {/* Right 5 Columns: Dynamic Financial Summary Card */}
-          <div className="lg:col-span-5">
-            <div className="p-7 rounded-3xl bg-[#FAF8F5] border border-stone-300/80 shadow-card space-y-6 relative overflow-hidden">
-              
-              <div className="flex items-center justify-between pb-4 border-b border-stone-200">
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
-                    Calculated Projection
-                  </span>
-                  <h4 className="font-serif font-bold text-xl text-stone-950">
-                    Your Take-Home Payout
-                  </h4>
-                </div>
-                <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[11px] font-bold border border-emerald-300 shadow-xs">
-                  {splitPct}% Trader Share
-                </span>
+          {/* 2. Number of Contracts Slider */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                2. Contracts Traded Per Position
+              </label>
+              <span className="font-mono font-bold text-sm sm:text-base text-stone-950 bg-stone-100 px-3 py-0.5 rounded-lg border border-stone-200">
+                {contractsCount} {contractsCount === 1 ? 'Contract' : 'Contracts'}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={12}
+              step={1}
+              value={contractsCount}
+              onChange={(e) => setContractsCount(Number(e.target.value))}
+              className="w-full accent-stone-950 h-2 bg-stone-200 rounded-lg cursor-pointer"
+            />
+            <div className="flex justify-between text-[11px] font-mono text-stone-500 mt-1">
+              <span>1 Contract</span>
+              <span>4 Contracts</span>
+              <span>8 Contracts</span>
+              <span>12 Contracts (Max)</span>
+            </div>
+          </div>
+
+          {/* 3. Daily Target in Points/Ticks Slider */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                3. Daily Target ({currentAsset.unit.toUpperCase()})
+              </label>
+              <span className="font-mono font-bold text-sm sm:text-base text-emerald-700 bg-emerald-50 px-3 py-0.5 rounded-lg border border-emerald-200">
+                +{pointsTarget} {currentAsset.unit} / day
+              </span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={currentAsset.maxPoints}
+              step={currentAsset.step}
+              value={pointsTarget}
+              onChange={(e) => setPointsTarget(Number(e.target.value))}
+              className="w-full accent-emerald-600 h-2 bg-stone-200 rounded-lg cursor-pointer"
+            />
+            <div className="flex justify-between text-[11px] font-mono text-stone-500 mt-1">
+              <span>1 {currentAsset.unit}</span>
+              <span>{Math.round(currentAsset.maxPoints / 2)} {currentAsset.unit}</span>
+              <span>{currentAsset.maxPoints} {currentAsset.unit}</span>
+            </div>
+          </div>
+
+          {/* 4. Multi-Account Copier Slider (1 to 20 Accounts) */}
+          <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Copy className="w-4 h-4 text-brass-700" />
+                <label className="text-xs font-bold uppercase tracking-wider text-stone-900">
+                  4. Multi-Account Trade Copier
+                </label>
               </div>
-
-              {/* Breakdown Rows */}
-              <div className="space-y-3 text-xs sm:text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-stone-600">Monthly Simulated Profit ({monthlyReturnPct}%):</span>
-                  <span className="font-mono font-bold text-stone-950">
-                    <AnimatedCounter value={monthlyGrossProfit} prefix="$" />
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-stone-600">Your {splitPct}% Profit Share:</span>
-                  <span className="font-mono font-bold text-emerald-700 text-base">
-                    <AnimatedCounter value={traderTakeHome} prefix="$" />
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-                  <span className="text-stone-600 flex items-center gap-1">
-                    <span>100% Evaluation Fee Refund:</span>
-                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 rounded">Bonus</span>
-                  </span>
-                  <span className="font-mono font-bold text-emerald-700">
-                    +${evaluationRefund}
-                  </span>
-                </div>
-
-                {/* Total Highlight */}
-                <div className="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
-                    Total Estimated First Month Payout
-                  </span>
-                  <div className="font-serif font-bold text-3xl text-emerald-700 font-mono mt-0.5">
-                    <AnimatedCounter value={firstMonthTotal} prefix="$" />
-                  </div>
-                  <span className="text-[11px] text-stone-600 font-medium block mt-1">
-                    An astonishing <strong className="text-stone-950 font-bold">{roiMultiplier}% return</strong> on your ${currentTierObj.fee} one-time evaluation fee.
-                  </span>
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="button"
-                  onClick={handleClaim}
-                  className="shimmer-btn w-full py-4 rounded-2xl gold-gradient-bg text-stone-950 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-brass-glow cursor-pointer"
-                >
-                  <span>Start ${currentTierObj.sizeStr} Challenge — ${currentTierObj.fee}</span>
-                  <ArrowRight className="w-4 h-4 text-stone-950" />
-                </motion.button>
-              </div>
-
+              <span className="font-mono font-bold text-sm text-stone-950 bg-brass-100 text-brass-950 px-2.5 py-0.5 rounded-md border border-brass-300">
+                {accountsCount} {accountsCount === 1 ? 'Master Account' : 'Synced Accounts'}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={20}
+              step={1}
+              value={accountsCount}
+              onChange={(e) => setAccountsCount(Number(e.target.value))}
+              className="w-full accent-brass-600 h-2 bg-stone-200 rounded-lg cursor-pointer"
+            />
+            <div className="flex justify-between text-[11px] font-mono text-stone-500 mt-1">
+              <span>1 Account</span>
+              <span>5 Accounts</span>
+              <span>10 Accounts</span>
+              <span>20 Accounts (Max)</span>
             </div>
           </div>
 
         </div>
+
+        {/* ============================================================
+            RIGHT: PROJECTED PAYOUT & CASHFLOW CARD (5 COLS)
+            ============================================================ */}
+        <div className="lg:col-span-5 p-7 sm:p-9 rounded-3xl bg-stone-950 text-white border border-stone-800 shadow-2xl flex flex-col justify-between relative overflow-hidden space-y-6">
+          
+          {/* Subtle Ambient Gold Glow */}
+          <div 
+            className="w-48 h-48 bg-[#C59A45]/20 rounded-full blur-3xl pointer-events-none absolute -top-10 -right-10" 
+            aria-hidden="true" 
+          />
+
+          <div className="relative z-10 space-y-5">
+            
+            {/* Header Badge */}
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                100% 1st $10K • 90% Split
+              </span>
+              <span className="text-xs text-stone-400 font-mono">
+                {tradingDays} Trading Days / mo
+              </span>
+            </div>
+
+            {/* Estimated Total Take-Home Payout */}
+            <div className="pt-2">
+              <span className="text-xs uppercase tracking-widest text-stone-400 font-semibold block">
+                Total Projected Trader Payout
+              </span>
+              <div className="flex items-baseline gap-2 mt-1">
+                <span className="font-serif font-bold text-4xl sm:text-5xl text-brass-300 tracking-tight">
+                  $<AnimatedCounter value={totalMultiAccountPayout} />
+                </span>
+                <span className="text-xs text-stone-400 font-mono">
+                  / month
+                </span>
+              </div>
+              {accountsCount > 1 && (
+                <p className="text-[11px] text-emerald-400 font-mono mt-1">
+                  Includes ${Math.round(traderTakeHomePerAccount).toLocaleString()} per account across {accountsCount} accounts
+                </p>
+              )}
+            </div>
+
+            {/* Breakdown Stats */}
+            <div className="space-y-3 pt-3 border-t border-stone-800 text-xs sm:text-sm">
+              <div className="flex justify-between text-stone-300">
+                <span>Daily PnL / Account:</span>
+                <span className="font-mono font-bold text-white">${dailyPnLPerAccount.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-stone-300">
+                <span>Monthly Gross / Account:</span>
+                <span className="font-mono font-bold text-white">${monthlyGrossPerAccount.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-stone-300">
+                <span>Profit Split Policy:</span>
+                <span className="font-mono font-bold text-emerald-400">100% first $10K, 90% after</span>
+              </div>
+              <div className="flex justify-between text-stone-300">
+                <span>Withdrawal Fee:</span>
+                <span className="font-mono font-bold text-emerald-400">$0 (Free Weekly Payouts)</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Action CTA */}
+          <div className="relative z-10 pt-4">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleClaim}
+              className="shimmer-btn w-full py-4 rounded-2xl font-bold text-xs uppercase tracking-widest gold-gradient-bg text-stone-950 hover:shadow-brass-glow transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            >
+              <span>Launch Evaluation Challenge</span>
+              <ArrowRight className="w-4 h-4 text-stone-950" />
+            </motion.button>
+            <p className="text-[10px] text-stone-500 text-center font-mono mt-2">
+              Level 1 &amp; Level 2 CME Market Data Included with Challenge
+            </p>
+          </div>
+
+        </div>
+
       </div>
 
     </section>

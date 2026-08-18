@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../context/AppContext';
+import Logo from './common/Logo';
 import { 
   LogOut, 
   Menu, 
@@ -12,7 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function Navbar() {
-  const { user, logout, activeTab, setActiveTab, setAuthModalOpen, setAuthModalMode, triggerGetFunded } = useApp();
+  const { user, logout, activeTab, navigateToTab, setAuthModalOpen, setAuthModalMode, triggerGetFunded } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Exact same unified navigation links on EVERY page/tab
@@ -26,8 +27,7 @@ export default function Navbar() {
 
   const handleNavClick = (tabId) => {
     setMobileMenuOpen(false);
-    setActiveTab(tabId);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigateToTab(tabId);
   };
 
   const handleOpenAuth = (mode) => {
@@ -49,7 +49,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-[#FAF8F5]/90 backdrop-blur-xl border-b border-[#E7E2DA] shadow-xs transition-all duration-300 select-none">
+    <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-obsidian-900/80 backdrop-blur-2xl border-b border-white/10 shadow-2xl transition-all duration-300 select-none">
       <div className="max-w-7xl h-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-full gap-4">
           
@@ -61,19 +61,9 @@ export default function Navbar() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleNavClick('home')}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-xl bg-stone-950 flex items-center justify-center text-brass-400 font-serif font-bold text-lg shadow-md border border-stone-800 group-hover:border-brass-500/50 transition-colors shrink-0">
-                ◆
-              </div>
-              <div className="flex flex-col">
-                <span className="font-serif font-bold text-xl tracking-tight text-stone-950 leading-none">
-                  Apex Funded
-                </span>
-                <span className="text-[10px] tracking-[0.2em] uppercase text-brass-700 font-mono mt-1 font-bold">
-                  Institutional Simulation
-                </span>
-              </div>
+              <Logo size="md" />
             </motion.div>
           </div>
 
@@ -81,7 +71,7 @@ export default function Navbar() {
               2. CENTER: UNIFIED NAVIGATION PILL (Zero-CLS Spring Layout)
               ============================================================ */}
           <nav className="hidden md:flex flex-1 items-center justify-center">
-            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-stone-200/60 border border-stone-300/80 backdrop-blur-md shadow-inner">
+            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-inner">
               {navLinks.map((link) => {
                 const isActive = activeTab === link.id;
 
@@ -95,11 +85,11 @@ export default function Navbar() {
                       <motion.div
                         layoutId="activeNavPill"
                         transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                        className="absolute inset-0 bg-stone-950 rounded-full shadow-xs"
+                        className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-neon-glow"
                       />
                     )}
                     <span className={`relative z-10 whitespace-nowrap transition-colors duration-200 ${
-                      isActive ? 'text-brass-300 font-bold' : 'text-stone-700 hover:text-stone-950'
+                      isActive ? 'text-obsidian-950 font-black' : 'text-stone-300 hover:text-white'
                     }`}>
                       {link.label}
                     </span>
@@ -117,11 +107,11 @@ export default function Navbar() {
               <div className="flex items-center gap-2.5">
                 {/* User Name Pill */}
                 <div 
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 border border-stone-200 text-stone-800 text-xs font-medium shadow-xs max-w-[130px]"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-stone-200 text-xs font-medium shadow-xs max-w-[130px]"
                   title={user.name}
                 >
-                  <User className="w-3.5 h-3.5 text-brass-700 shrink-0" />
-                  <span className="truncate text-stone-950 font-semibold">{user.name}</span>
+                  <User className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                  <span className="truncate text-stone-100 font-semibold">{user.name}</span>
                 </div>
 
                 {/* Logout Button */}
@@ -129,7 +119,7 @@ export default function Navbar() {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={logout}
-                  className="p-2 rounded-full border border-stone-300 hover:border-rose-300 hover:bg-rose-50 text-stone-600 hover:text-rose-700 transition-colors shadow-xs cursor-pointer shrink-0"
+                  className="p-2 rounded-full border border-white/10 hover:border-rose-500/50 hover:bg-rose-500/10 text-stone-400 hover:text-rose-400 transition-colors shadow-xs cursor-pointer shrink-0"
                   title="Sign out of account"
                 >
                   <LogOut className="w-4 h-4" />
@@ -141,7 +131,7 @@ export default function Navbar() {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => handleOpenAuth('login')}
-                  className="px-3.5 py-2 rounded-full text-xs font-bold text-stone-800 hover:text-stone-950 border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 transition-all shadow-xs cursor-pointer whitespace-nowrap"
+                  className="px-3.5 py-2 rounded-full text-xs font-bold text-stone-200 hover:text-white border border-white/15 hover:border-white/30 bg-white/5 hover:bg-white/10 transition-all shadow-xs cursor-pointer whitespace-nowrap"
                 >
                   Sign In
                 </motion.button>
@@ -150,23 +140,25 @@ export default function Navbar() {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={handleGetFundedClick}
-                  className="shimmer-btn gold-gradient-bg text-stone-950 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-brass-glow transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0"
+                  className="shimmer-btn gold-gradient-bg text-obsidian-950 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-brass-glow transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0"
                 >
                   <span>Get Funded</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-stone-950" />
+                  <ArrowRight className="w-3.5 h-3.5 text-obsidian-950" />
                 </motion.button>
               </div>
             )}
           </div>
 
-          {/* Mobile Hamburger Toggle Button */}
-          <div className="flex md:hidden items-center">
+          {/* ============================================================
+              4. MOBILE HAMBURGER BUTTON
+              ============================================================ */}
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-stone-700 hover:text-stone-950 hover:bg-stone-200/60 transition-colors cursor-pointer"
-              aria-label="Toggle Navigation Menu"
+              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-white transition-colors cursor-pointer"
+              aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
@@ -174,7 +166,7 @@ export default function Navbar() {
       </div>
 
       {/* ============================================================
-          4. MOBILE DRAWER MENU (RESPONSIVE)
+          5. MOBILE EXPANDABLE MENU DRAWER
           ============================================================ */}
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -182,72 +174,72 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden bg-[#FAF8F5] border-b border-[#E7E2DA] shadow-xl overflow-hidden px-4 py-5 space-y-4"
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="md:hidden bg-obsidian-900/95 backdrop-blur-2xl border-b border-white/10 overflow-hidden shadow-2xl"
           >
-            {/* Mobile Navigation Links */}
-            <div className="space-y-1">
-              {navLinks.map((link) => {
-                const isActive = activeTab === link.id;
+            <div className="px-5 py-6 space-y-4">
+              
+              {/* Navigation Links */}
+              <div className="flex flex-col space-y-1">
+                {navLinks.map((link) => {
+                  const isActive = activeTab === link.id;
 
-                return (
-                  <button
-                    key={link.id}
-                    onClick={() => handleNavClick(link.id)}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between cursor-pointer ${
-                      isActive 
-                        ? 'bg-stone-950 text-brass-300 font-bold shadow-xs' 
-                        : 'text-stone-700 hover:bg-stone-200/60 hover:text-stone-950'
-                    }`}
-                  >
-                    <span>{link.label}</span>
-                    {isActive && <span className="w-2 h-2 rounded-full bg-brass-400"></span>}
-                  </button>
-                );
-              })}
-            </div>
+                  return (
+                    <button
+                      key={link.id}
+                      onClick={() => handleNavClick(link.id)}
+                      className={`px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all flex items-center justify-between cursor-pointer ${
+                        isActive
+                          ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
+                          : 'text-stone-300 hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      {isActive && <Sparkles className="w-4 h-4 text-emerald-400" />}
+                    </button>
+                  );
+                })}
+              </div>
 
-            {/* Mobile Auth / User Section */}
-            <div className="pt-4 border-t border-stone-200/80 space-y-2.5">
-              {user ? (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-white border border-stone-200 text-xs">
-                    <span className="text-stone-600">Logged in as:</span>
-                    <strong className="text-stone-950 font-bold">{user.name}</strong>
+              {/* Mobile Auth & CTA */}
+              <div className="pt-4 border-t border-white/10 space-y-2.5">
+                {user ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-stone-200 text-xs">
+                      <User className="w-4 h-4 text-brass-400" />
+                      <span className="font-semibold">{user.name}</span>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="w-full py-2.5 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out</span>
+                    </button>
                   </div>
-                  <button
-                    onClick={logout}
-                    className="w-full py-2.5 rounded-xl border border-rose-300 text-rose-700 text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-50 transition-colors"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleOpenAuth('login')}
-                    className="flex-1 py-2.5 rounded-xl border border-stone-300 bg-white text-stone-900 text-xs font-bold hover:bg-stone-50 transition-colors"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      handleGetFundedClick();
-                    }}
-                    className="flex-1 py-2.5 rounded-xl gold-gradient-bg text-stone-950 text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow-brass-glow transition-all"
-                  >
-                    Get Funded
-                  </button>
-                </div>
-              )}
-            </div>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleOpenAuth('login')}
+                      className="w-full py-3 rounded-xl border border-white/15 bg-white/5 text-stone-100 font-bold text-xs tracking-wider uppercase cursor-pointer"
+                    >
+                      Sign In to Portal
+                    </button>
+                    <button
+                      onClick={handleGetFundedClick}
+                      className="w-full py-3 rounded-xl gold-gradient-bg text-obsidian-950 font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                    >
+                      <span>Start Challenge Simulation</span>
+                      <ArrowRight className="w-4 h-4 text-obsidian-950" />
+                    </button>
+                  </>
+                )}
+              </div>
 
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-
     </header>
   );
 }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useSpring, useTransform } from 'framer-motion';
+import { motion, useSpring } from 'framer-motion';
 
 export default function AnimatedCounter({ value, prefix = '', suffix = '', decimals = 2, className = '' }) {
   const numericVal = typeof value === 'number' ? value : parseFloat(String(value).replace(/[^0-9.-]+/g, '')) || 0;
+  const isNegative = numericVal < 0;
+  const absVal = Math.abs(numericVal);
   
-  const spring = useSpring(numericVal, {
+  const spring = useSpring(absVal, {
     stiffness: 75,
     damping: 18,
     mass: 0.6
@@ -14,12 +16,12 @@ export default function AnimatedCounter({ value, prefix = '', suffix = '', decim
     new Intl.NumberFormat('en-US', {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals
-    }).format(numericVal)
+    }).format(absVal)
   );
 
   useEffect(() => {
-    spring.set(numericVal);
-  }, [numericVal, spring]);
+    spring.set(absVal);
+  }, [absVal, spring]);
 
   useEffect(() => {
     const unsubscribe = spring.on('change', (latest) => {
@@ -27,15 +29,21 @@ export default function AnimatedCounter({ value, prefix = '', suffix = '', decim
         new Intl.NumberFormat('en-US', {
           minimumFractionDigits: decimals,
           maximumFractionDigits: decimals
-        }).format(latest)
+        }).format(Math.abs(latest))
       );
     });
     return () => unsubscribe();
   }, [spring, decimals]);
 
+  // Adjust sign prefix cleanly
+  let finalPrefix = prefix;
+  if (isNegative && !prefix.includes('-')) {
+    finalPrefix = `-${prefix}`;
+  }
+
   return (
     <span className={`tabular-nums font-mono ${className}`}>
-      {prefix}{displayVal}{suffix}
+      {finalPrefix}{displayVal}{suffix}
     </span>
   );
 }

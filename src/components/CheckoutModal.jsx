@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../context/AppContext';
-import { X, CheckCircle, Shield, CreditCard, Sparkles, ArrowRight } from 'lucide-react';
+import { X, CheckCircle, Shield, CreditCard, Sparkles, ArrowRight, Zap } from 'lucide-react';
 import AnimatedCounter from './common/AnimatedCounter';
 
 export default function CheckoutModal() {
@@ -25,8 +25,8 @@ export default function CheckoutModal() {
     model: 'Growth',
     size: '50K',
     numericSize: 50000,
-    price: 299,
-    platform: 'MetaTrader 5'
+    price: 99,
+    platform: 'Tradovate'
   };
 
   const handleStartChallenge = (e) => {
@@ -38,7 +38,7 @@ export default function CheckoutModal() {
         model: plan.model,
         size: plan.size,
         numericSize: plan.numericSize || 50000,
-        platform: plan.platform || 'MetaTrader 5',
+        platform: plan.platform || 'Tradovate',
         price: plan.price
       });
 
@@ -55,13 +55,13 @@ export default function CheckoutModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian-950/80 backdrop-blur-xl animate-in fade-in duration-200">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        className="relative w-full max-w-lg bg-[#FAF8F5] border border-[#E7E2DA] rounded-3xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-lg bg-obsidian-900/95 border border-white/15 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-2xl text-white"
       >
         
         {/* Gold Trim Header */}
@@ -73,7 +73,7 @@ export default function CheckoutModal() {
             setCheckoutModalOpen(false);
             setCreatedAccountResult(null);
           }}
-          className="absolute top-4 right-4 p-1.5 rounded-full text-stone-500 hover:text-stone-900 hover:bg-stone-200/60 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-full text-stone-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -86,47 +86,47 @@ export default function CheckoutModal() {
               {/* Modal Header */}
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-widest font-bold bg-brass-100 border border-brass-300 text-brass-900 shadow-xs">
-                    Instant Simulation
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-widest font-bold bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 shadow-neon-glow">
+                    Instant CME Simulation
                   </span>
                 </div>
-                <h3 className="font-serif font-bold text-2xl text-stone-950">
+                <h3 className="font-serif font-bold text-2xl text-white">
                   Complete Evaluation Checkout
                 </h3>
-                <p className="text-xs text-stone-600 mt-1">
-                  Launch your simulated prop trading challenge in seconds.
+                <p className="text-xs text-stone-400 mt-1">
+                  Launch your simulated futures prop trading challenge in seconds.
                 </p>
               </div>
 
               {/* Order Summary Card */}
-              <div className="p-5 rounded-2xl bg-white border border-stone-200/90 shadow-editorial mb-5">
-                <div className="flex items-center justify-between border-b border-stone-100 pb-3.5 mb-3.5">
+              <div className="p-5 rounded-2xl bg-obsidian-950/80 border border-white/10 shadow-2xl mb-5">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3.5 mb-3.5">
                   <div>
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Selected Challenge</span>
-                    <h4 className="font-serif font-bold text-xl text-stone-950">
+                    <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Selected Challenge</span>
+                    <h4 className="font-serif font-bold text-xl text-white">
                       {plan.model} ${plan.size}
                     </h4>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Fee (100% Refundable)</span>
-                    <div className="font-mono font-bold text-xl text-stone-950">
+                    <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Evaluation Fee (100% Refundable)</span>
+                    <div className="font-mono font-bold text-xl text-emerald-400">
                       <AnimatedCounter value={plan.price} prefix="$" decimals={0} />
                     </div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2.5 text-center text-xs">
-                  <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
-                    <span className="block text-[10px] uppercase tracking-wider text-stone-500 font-bold">Starting Capital</span>
-                    <strong className="text-stone-950 font-mono font-bold">${new Intl.NumberFormat('en-US').format(plan.numericSize || 50000)}</strong>
+                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                    <span className="block text-[10px] uppercase tracking-wider text-stone-400 font-bold">Capital</span>
+                    <strong className="text-white font-mono font-bold">${new Intl.NumberFormat('en-US').format(plan.numericSize || 50000)}</strong>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
-                    <span className="block text-[10px] uppercase tracking-wider text-stone-500 font-bold">Platform</span>
-                    <strong className="text-stone-950 font-bold">{plan.platform || 'MetaTrader 5'}</strong>
+                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                    <span className="block text-[10px] uppercase tracking-wider text-stone-400 font-bold">Platform</span>
+                    <strong className="text-white font-bold">{plan.platform || 'Tradovate'}</strong>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
-                    <span className="block text-[10px] uppercase tracking-wider text-stone-500 font-bold">Profit Split</span>
-                    <strong className="text-emerald-700 font-mono font-bold">Up to 90%</strong>
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                    <span className="block text-[10px] uppercase tracking-wider text-emerald-300 font-bold">Profit Split</span>
+                    <strong className="text-emerald-400 font-mono font-bold">100% 1st $10K</strong>
                   </div>
                 </div>
               </div>
@@ -134,127 +134,97 @@ export default function CheckoutModal() {
               {/* Checkout Form */}
               <form onSubmit={handleStartChallenge} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1">
                     Trader Name
                   </label>
                   <input
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-stone-300 text-stone-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brass-400 focus:border-brass-500 transition-all"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-950 border border-white/15 text-white text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 font-mono"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1">
-                    Email for Terminal Credentials
+                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1">
+                    Notification Email
                   </label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-stone-300 text-stone-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brass-400 focus:border-brass-500 transition-all"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-950 border border-white/15 text-white text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 font-mono"
                     required
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1">
-                    Payment Method (Simulation Sandbox)
-                  </label>
-                  <div className="p-3.5 rounded-xl bg-stone-100/90 border border-stone-200 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2 text-stone-900 font-semibold">
-                      <CreditCard className="w-4 h-4 text-brass-700" />
-                      <span>Instant Simulation Activation (Zero Risk)</span>
-                    </div>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 font-mono">
-                      FREE DEMO
-                    </span>
-                  </div>
+                {/* Promo Code Callout */}
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-300 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                    Promo Code <strong className="text-white font-bold">AUG</strong> Applied
+                  </span>
+                  <span className="font-bold text-emerald-400">-40% DISCOUNT</span>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  disabled={isProcessing}
-                  className="shimmer-btn w-full py-4 rounded-full text-xs font-bold uppercase tracking-wider text-stone-950 gold-gradient-bg hover:shadow-brass-glow transition-all shadow-sm mt-3 flex items-center justify-center gap-2 disabled:opacity-75 cursor-pointer"
-                >
-                  {isProcessing ? (
-                    <span>Generating Institutional Credentials...</span>
-                  ) : (
-                    <>
-                      <Shield className="w-4 h-4" />
-                      <span>Start Challenge Simulation</span>
-                    </>
-                  )}
-                </motion.button>
+                <div className="pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    disabled={isProcessing}
+                    className="shimmer-btn w-full py-4 rounded-full text-xs font-bold uppercase tracking-wider text-obsidian-950 gold-gradient-bg hover:shadow-brass-glow transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                  >
+                    <span>{isProcessing ? 'Provisioning Simulated Feed...' : `Instant Launch ($${plan.price})`}</span>
+                    <ArrowRight className="w-4 h-4 text-obsidian-950" />
+                  </motion.button>
+                </div>
               </form>
             </>
           ) : (
-            /* SUCCESS STATE */
-            <div className="text-center py-4 animate-in zoom-in-95 duration-200">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
+            /* Success Step */
+            <div className="text-center py-4 space-y-5">
+              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto shadow-neon-glow">
                 <CheckCircle className="w-8 h-8" />
               </div>
-              
-              <h3 className="font-serif font-bold text-2xl text-stone-950 mb-1">
-                Challenge Account Activated!
-              </h3>
-              <p className="text-xs text-stone-600 mb-6">
-                Your simulated evaluation account has been provisioned and added to your trader profile.
-              </p>
 
-              {/* Account Card Details */}
-              <div className="p-5 rounded-2xl bg-white border border-stone-200 text-left mb-6 shadow-editorial">
-                <div className="flex items-center justify-between border-b border-stone-100 pb-2.5 mb-2.5">
-                  <span className="text-xs text-stone-500 font-medium">Account ID</span>
-                  <span className="font-mono font-bold text-stone-950 text-sm">
-                    #{createdAccountResult.id}
-                  </span>
+              <div>
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 block">
+                  Challenge Provisioned
+                </span>
+                <h3 className="font-serif font-bold text-2xl text-white mt-1">
+                  Account #{createdAccountResult.id} is Live!
+                </h3>
+                <p className="text-xs text-stone-300 mt-2 max-w-sm mx-auto leading-relaxed">
+                  Your simulated evaluation capital has been deployed. CME Level 1 &amp; Level 2 feeds are connected.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-obsidian-950 border border-white/10 text-xs font-mono space-y-2 text-left">
+                <div className="flex justify-between">
+                  <span className="text-stone-400">Account ID:</span>
+                  <strong className="text-emerald-400 font-bold">{createdAccountResult.id}</strong>
                 </div>
-                <div className="flex items-center justify-between border-b border-stone-100 pb-2.5 mb-2.5">
-                  <span className="text-xs text-stone-500 font-medium">Evaluation Plan</span>
-                  <span className="font-bold text-stone-950 text-xs">
-                    {createdAccountResult.plan} ({createdAccountResult.platform})
-                  </span>
+                <div className="flex justify-between">
+                  <span className="text-stone-400">Starting Balance:</span>
+                  <strong className="text-white">${createdAccountResult.startingBalance.toLocaleString()}.00</strong>
                 </div>
-                <div className="flex items-center justify-between border-b border-stone-100 pb-2.5 mb-2.5">
-                  <span className="text-xs text-stone-500 font-medium">Starting Capital</span>
-                  <span className="font-mono font-bold text-emerald-700 text-sm">
-                    ${new Intl.NumberFormat('en-US').format(createdAccountResult.startingBalance)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-stone-500 font-medium">Account Status</span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    LIVE SIMULATED - ACTIVE
-                  </span>
+                <div className="flex justify-between">
+                  <span className="text-stone-400">Trading Terminal:</span>
+                  <strong className="text-white">{createdAccountResult.platform}</strong>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-2.5">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleGoToDashboard}
-                  className="shimmer-btn w-full py-4 rounded-full text-xs font-bold uppercase tracking-wider text-stone-950 gold-gradient-bg hover:shadow-brass-glow transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <span>Go to Dashboard</span>
-                  <ArrowRight className="w-4 h-4 text-stone-900" />
-                </motion.button>
-                <button
-                  onClick={() => {
-                    setCheckoutModalOpen(false);
-                    setCreatedAccountResult(null);
-                  }}
-                  className="w-full py-2.5 rounded-full text-xs font-semibold text-stone-700 hover:text-stone-950 transition-colors cursor-pointer"
-                >
-                  Close &amp; Keep Browsing
-                </button>
-              </div>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleGoToDashboard}
+                className="w-full py-3.5 rounded-full text-xs font-bold uppercase tracking-wider text-obsidian-950 gold-gradient-bg hover:shadow-brass-glow transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Launch Trader Dashboard</span>
+                <ArrowRight className="w-4 h-4 text-obsidian-950" />
+              </motion.button>
             </div>
           )}
 

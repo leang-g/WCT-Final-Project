@@ -20,6 +20,55 @@ export function AppProvider({ children }) {
 
   // 2. Navigation Tab State: 'home' | 'pricing' | 'rules' | 'dashboard' | 'help'
   const [activeTab, setActiveTab] = useState('home');
+  const isNavigatingRef = React.useRef(false);
+
+  // 2b. Unified Smooth Scrolling & Tab Navigation Handler
+  const navigateToTab = (tabId) => {
+    isNavigatingRef.current = true;
+
+    if (tabId === 'dashboard' || tabId === 'help') {
+      setActiveTab(tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 800);
+      return;
+    }
+
+    const isCurrentlyOnLanding = ['home', 'pricing', 'rules'].includes(activeTab);
+
+    if (!isCurrentlyOnLanding) {
+      setActiveTab(tabId);
+      setTimeout(() => {
+        if (tabId === 'home') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const targetEl = document.getElementById(tabId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+        setTimeout(() => {
+          isNavigatingRef.current = false;
+        }, 800);
+      }, 60);
+    } else {
+      setActiveTab(tabId);
+      if (tabId === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const targetEl = document.getElementById(tabId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+      setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 800);
+    }
+  };
 
   // 3. User's Purchased Accounts List
   const [accounts, setAccounts] = useState(() => {
@@ -116,7 +165,7 @@ export function AppProvider({ children }) {
       id: 'APX-104928',
       plan: 'Growth $50,000',
       model: 'Growth',
-      platform: 'MetaTrader 5',
+      platform: 'Tradovate',
       startingBalance: 50000,
       currentBalance: 54230.00,
       equity: 55470.50,
@@ -127,11 +176,11 @@ export function AppProvider({ children }) {
       profitTargetPct: 10.0,
       status: 'Active (Evaluation)',
       createdAt: '2026-08-17',
-      chartData: [50000, 50200, 50500, 51000, 51800, 52400, 54230],
+      chartData: [50000, 50400, 50850, 51500, 52800, 53600, 54230],
       openPositions: [
-        { symbol: 'EURUSD', setup: 'Swing Low Sweep', side: 'Buy', vol: '0.10', pnl: 120.50 },
-        { symbol: 'XAUUSD', setup: 'Liquidity Grab', side: 'Sell', vol: '0.05', pnl: -45.00 },
-        { symbol: 'US30', setup: 'Breaker Block', side: 'Buy', vol: '1.00', pnl: 310.00 }
+        { symbol: 'NQ', setup: 'Opening Range Breakout', side: 'Buy', vol: '2', pnl: 640.00 },
+        { symbol: 'ES', setup: 'Liquidity Pool Sweep', side: 'Buy', vol: '2', pnl: 380.50 },
+        { symbol: 'GC', setup: 'Session High Rejection', side: 'Sell', vol: '1', pnl: 220.00 }
       ],
       winRate: '68%',
       tradesCount: 4,
@@ -269,8 +318,8 @@ export function AppProvider({ children }) {
       createdAt: dateStr,
       chartData: [startBal, startBal, startBal, startBal, startBal, startBal, startBal],
       openPositions: [
-        { symbol: 'EURUSD', setup: 'Order Block Sweep', side: 'Buy', vol: (0.10 * lotMultiplier).toFixed(2), pnl: 45.00 * lotMultiplier },
-        { symbol: 'US30', setup: 'Fair Value Gap', side: 'Buy', vol: (1.00 * lotMultiplier).toFixed(2), pnl: 110.00 * lotMultiplier }
+        { symbol: 'NQ', setup: 'Order Flow Imbalance', side: 'Buy', vol: '2', pnl: 240.00 * lotMultiplier },
+        { symbol: 'ES', setup: 'Fair Value Gap Fill', side: 'Buy', vol: '2', pnl: 150.00 * lotMultiplier }
       ],
       winRate: '75%',
       tradesCount: 2,
@@ -316,6 +365,8 @@ export function AppProvider({ children }) {
         user,
         activeTab,
         setActiveTab,
+        navigateToTab,
+        isNavigatingRef,
         accounts,
         activeAccountId,
         activeAccount,

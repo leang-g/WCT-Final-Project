@@ -7,6 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
+        obsidian: {
+          950: '#06080C',
+          900: '#0B0F17',
+          850: '#0F1522',
+          800: '#141C2B',
+          700: '#1C263A',
+          600: '#283652',
+          500: '#3B4D72',
+        },
         cream: {
           50: '#FDFCFB',
           100: '#FAF8F5',
@@ -18,6 +27,11 @@ export default {
         stone: {
           850: '#23201E',
           950: '#141210',
+        },
+        neon: {
+          emerald: '#00F59B',
+          lime: '#22C55E',
+          cyan: '#06B6D4',
         },
         brass: {
           50: '#FBF7EE',
@@ -43,10 +57,14 @@ export default {
         mono: ['"JetBrains Mono"', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(28, 25, 23, 0.05), 0 2px 6px -1px rgba(28, 25, 23, 0.03)',
-        'card': '0 10px 30px -4px rgba(28, 25, 23, 0.06), 0 4px 10px -2px rgba(28, 25, 23, 0.03)',
-        'card-hover': '0 20px 40px -6px rgba(197, 154, 69, 0.12), 0 8px 16px -4px rgba(28, 25, 23, 0.04)',
-        'brass-glow': '0 0 25px rgba(197, 154, 69, 0.25)',
+        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2)',
+        'card': '0 10px 30px -4px rgba(0, 0, 0, 0.5), 0 4px 10px -2px rgba(0, 0, 0, 0.3)',
+        'card-hover': '0 20px 40px -6px rgba(0, 245, 155, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.4)',
+        'card-dark': '0 12px 36px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.07)',
+        'card-dark-hover': '0 20px 50px -6px rgba(0, 245, 155, 0.18), 0 0 0 1px rgba(0, 245, 155, 0.35)',
+        'neon-glow': '0 0 25px rgba(0, 245, 155, 0.35)',
+        'brass-glow': '0 0 25px rgba(197, 154, 69, 0.35)',
+        'cyan-glow': '0 0 25px rgba(6, 182, 212, 0.35)',
       }
     },
   },
