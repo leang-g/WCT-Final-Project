@@ -76,16 +76,16 @@ export default function DashboardOverview({ account }) {
 
   const chartDataByTf = {
     '1d': [currentBalance - 140, currentBalance - 60, currentBalance + 120, currentBalance - 30, currentBalance + 190, currentBalance + 160, currentBalance],
-    '7d': account.chartData || [startingBalance, startingBalance + 400, startingBalance + 850, startingBalance + 1500, startingBalance + 2800, startingBalance + 3600, currentBalance],
+    '7d': (account.chartData && account.chartData.length === 7) ? account.chartData : [startingBalance, startingBalance + 400, startingBalance + 850, startingBalance + 1500, startingBalance + 2800, startingBalance + 3600, currentBalance],
     '30d': [startingBalance, startingBalance + 800, startingBalance + 2200, currentBalance],
-    'all': [startingBalance, startingBalance + 600, startingBalance + 1600, startingBalance + 2900, startingBalance + 4200, currentBalance]
+    'all': [startingBalance, startingBalance + 600, startingBalance + 1200, startingBalance + 1900, startingBalance + 2900, startingBalance + 4200, currentBalance]
   };
 
   const labels = chartLabelsByTf[timeframe] || chartLabelsByTf['7d'];
   const activeCurve = chartDataByTf[timeframe] || chartDataByTf['7d'];
 
   const profitTargetThreshold = startingBalance + targetAmount;
-  const maxLossThreshold = startingBalance - maxLossFloorAmount;
+  const maxLossThreshold = Math.max(0, startingBalance - maxLossFloorAmount);
 
   const chartData = {
     labels: labels,
@@ -95,13 +95,17 @@ export default function DashboardOverview({ account }) {
         data: activeCurve,
         borderColor: '#00F59B',
         backgroundColor: (context) => {
-          const ctx = context.chart?.ctx;
-          if (!ctx) return 'rgba(0, 245, 155, 0.1)';
-          const gradient = ctx.createLinearGradient(0, 0, 0, 260);
-          gradient.addColorStop(0, 'rgba(0, 245, 155, 0.35)');
-          gradient.addColorStop(0.6, 'rgba(0, 245, 155, 0.08)');
-          gradient.addColorStop(1, 'rgba(0, 245, 155, 0)');
-          return gradient;
+          try {
+            const ctx = context.chart?.ctx;
+            if (!ctx) return 'rgba(0, 245, 155, 0.1)';
+            const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+            gradient.addColorStop(0, 'rgba(0, 245, 155, 0.35)');
+            gradient.addColorStop(0.6, 'rgba(0, 245, 155, 0.08)');
+            gradient.addColorStop(1, 'rgba(0, 245, 155, 0)');
+            return gradient;
+          } catch {
+            return 'rgba(0, 245, 155, 0.1)';
+          }
         },
         borderWidth: 2.5,
         pointBackgroundColor: '#00F59B',
@@ -315,8 +319,8 @@ export default function DashboardOverview({ account }) {
                     type="button"
                     onClick={() => setTimeframe(tf)}
                     className={`px-3 py-1 rounded-lg uppercase tracking-wider transition-all cursor-pointer ${timeframe === tf
-                        ? 'bg-emerald-500 text-obsidian-950 font-black shadow-neon-glow'
-                        : 'text-stone-400 hover:text-white'
+                      ? 'bg-emerald-500 text-obsidian-950 font-black shadow-neon-glow'
+                      : 'text-stone-400 hover:text-white'
                       }`}
                   >
                     {tf}
@@ -406,34 +410,109 @@ export default function DashboardOverview({ account }) {
             </div>
 
             {/* Circular Gauge 1: Daily Loss Limit */}
-            <CircularRuleGauge
-              value={0}
-              max={account.startingBalance * 0.05}
-              label="Daily Loss Limit"
-              statusText={`$0.00 / $${(account.startingBalance * 0.05).toLocaleString()}`}
-              subText="Resets automatically at 17:00 EST daily market close."
-              color="emerald"
-            />
+            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-stone-300 font-semibold">Daily Loss Limit</span>
+                <span className="font-mono font-bold text-emerald-400">$0.00 / ${Math.round(startingBalance * 0.05).toLocaleString()}</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Mini SVG Gauge */}
+                <div className="w-10 h-10 shrink-0 relative">
+                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="3"
+                    />
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#00F59B"
+                      strokeWidth="3.5"
+                      strokeDasharray="8, 100"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-400">
+                    0%
+                  </span>
+                </div>
+                <div className="text-[11px] text-stone-400">
+                  Resets automatically at 17:00 EST daily market close.
+                </div>
+              </div>
+            </div>
 
             {/* Circular Gauge 2: Max Trailing Drawdown (EOD) */}
-            <CircularRuleGauge
-              value={account.drawdownPct || 2.1}
-              max={maxLossPct}
-              label="Max Drawdown (EOD)"
-              statusText={`${account.drawdownPct || 2.1}% / ${maxLossPct}%`}
-              subText={`$${remainingBuffer.toFixed(0)} safety cushion remaining above floor.`}
-              color="emerald"
-            />
+            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-stone-300 font-semibold">Max Drawdown (EOD)</span>
+                <span className="font-mono font-bold text-emerald-400">{(account.drawdownPct ?? 0).toFixed(1)}% / {maxLossPct}%</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Mini SVG Gauge */}
+                <div className="w-10 h-10 shrink-0 relative">
+                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="3"
+                    />
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#00F59B"
+                      strokeWidth="3.5"
+                      strokeDasharray="35, 100"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-emerald-400">
+                    35%
+                  </span>
+                </div>
+                <div className="text-[11px] text-stone-400">
+                  <strong className="text-white">${Math.round(remainingBuffer).toLocaleString()}</strong> safety cushion remaining above floor.
+                </div>
+              </div>
+            </div>
 
             {/* Circular Gauge 3: Consistency Score */}
-            <CircularRuleGauge
-              value={78}
-              max={100}
-              label="Consistency Score"
-              statusText="31.4% (Max 40%)"
-              subText="Well-distributed trading. No single trade violates consistency."
-              color="gold"
-            />
+            <div className="p-4 rounded-2xl bg-obsidian-950/70 border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-stone-300 font-semibold">Consistency Score</span>
+                <span className="font-mono font-bold text-emerald-400">31.4% (Max 40%)</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Mini SVG Gauge */}
+                <div className="w-10 h-10 shrink-0 relative">
+                  <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="3"
+                    />
+                    <path
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#E6C87C"
+                      strokeWidth="3.5"
+                      strokeDasharray="78, 100"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-brass-300">
+                    78%
+                  </span>
+                </div>
+                <div className="text-[11px] text-stone-400">
+                  Well-distributed trading. No single trade violates consistency.
+                </div>
+              </div>
+            </div>
 
           </div>
 

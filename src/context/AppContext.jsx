@@ -287,7 +287,13 @@ export function AppProvider({ children }) {
 
   // --- Multi-Account Generation & Switching ---
   const createAccount = (planData) => {
-    if (!user) return null;
+    let currentUser = user;
+    if (!currentUser) {
+      currentUser = { name: 'Funded Trader', email: 'trader@apexfunded.io' };
+      setUser(currentUser);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(currentUser));
+      localStorage.setItem('user', JSON.stringify(currentUser));
+    }
 
     const startBal = planData.numericSize || 50000;
     const randomSuffix = Math.floor(100000 + Math.random() * 900000);
@@ -305,7 +311,7 @@ export function AppProvider({ children }) {
       id: accountId,
       plan: `${planData.model || 'Growth'} $${new Intl.NumberFormat('en-US').format(startBal)}`,
       model: planData.model || 'Growth',
-      platform: planData.platform || 'MetaTrader 5',
+      platform: planData.platform || 'Tradovate',
       startingBalance: startBal,
       currentBalance: currentBalance,
       equity: equity,
@@ -326,8 +332,8 @@ export function AppProvider({ children }) {
       accountAge: '1d'
     };
 
-    const userKey = user.email.toLowerCase();
-    const updatedAccounts = [newAccount, ...accounts];
+    const userKey = currentUser.email.toLowerCase();
+    const updatedAccounts = [newAccount, ...(accounts || [])];
     setAccounts(updatedAccounts);
     setActiveAccountId(newAccount.id);
 

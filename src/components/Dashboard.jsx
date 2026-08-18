@@ -60,7 +60,39 @@ export default function Dashboard() {
     );
   }
 
-  const current = activeAccount || accounts[0];
+  const current = activeAccount || (accounts && accounts.length > 0 ? accounts[0] : null);
+
+  // Fallback safety if current account cannot be resolved
+  if (!current) {
+    return (
+      <div className="py-16 md:py-24 max-w-4xl mx-auto px-4 text-center animate-in fade-in duration-300">
+        <div className="p-8 sm:p-12 rounded-3xl glass-panel-dark border border-white/10 shadow-2xl">
+          <div className="w-20 h-20 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-6 shadow-neon-glow">
+            <Wallet className="w-10 h-10" />
+          </div>
+
+          <h2 className="font-serif font-bold text-3xl text-white mb-3">
+            No Active Evaluation Accounts Found
+          </h2>
+
+          <p className="text-stone-300 text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed">
+            {user
+              ? "You don't have any active challenge accounts yet. Pick an institutional model to activate your live simulated terminal."
+              : "Sign in to access your trading terminal or browse our challenge evaluation tiers to get funded."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={() => navigateToTab('pricing')}
+              className="w-full sm:w-auto gold-gradient-bg text-obsidian-950 font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full shadow-md hover:shadow-brass-glow transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+            >
+              Browse Evaluation Plans &amp; Get Funded
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleResetSimulation = () => {
     // Reset simulated balance to starting balance with persistent storage
