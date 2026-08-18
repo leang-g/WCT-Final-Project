@@ -37,15 +37,8 @@ export default function Navbar() {
   };
 
   const handleGetFundedClick = () => {
-    triggerGetFunded({
-      model: 'Growth',
-      size: '50K',
-      numericSize: 50000,
-      platform: 'Tradovate',
-      price: 87,
-      originalPrice: 145,
-      discountCode: 'AUG'
-    });
+    setMobileMenuOpen(false);
+    navigateToTab('pricing');
   };
 
   return (
