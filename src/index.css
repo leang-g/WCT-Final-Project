@@ -107,20 +107,29 @@
   100% { transform: translateX(100%) rotate(30deg); }
 }
 
-/* Custom Scrollbars */
+/* Sleek Dark Obsidian Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF8F5;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8D0C3;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C59A45;
+  background: rgba(0, 245, 155, 0.4);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Remove standard number spin buttons */
